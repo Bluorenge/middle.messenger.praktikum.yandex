@@ -14,7 +14,7 @@
     },
     "homepage": "https://github.com/Bluorenge/middle.messenger.praktikum.yandex#readme",
     "scripts": {
-        "start": "parcel build ./static/index.html && node ./src/server.js",
+        "start": "npm run build && node ./src/server.js",
         "dev": "parcel ./static/index.html --port 3000",
         "build": "parcel build ./static/index.html"
     },
