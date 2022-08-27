@@ -1,0 +1,24 @@
+<li class="chat-list-item">
+    <div class="chat-list-item__img-wrap">
+        {{#if img}}
+        <img src="{{img}}" alt="chat-img">
+        {{/if}}
+    </div>
+
+    <div class="chat-list-item__content">
+        <h3 class="chat-list-item__name">{{chatName}}</h3>
+        <p class="chat-list-item__text">
+            {{#ifEquals senderId 1}}
+            <span class="color-primary">Вы:</span>
+            {{/ifEquals}}
+            {{text}}
+        </p>
+    </div>
+
+    <div class="chat-list-item__info">
+        <div class="chat-list-item__datetime">{{datetime}}</div>
+        {{#if count}}
+        <div class="chat-list-item__count">{{count}}</div>
+        {{/if}}
+    </div>
+</li>

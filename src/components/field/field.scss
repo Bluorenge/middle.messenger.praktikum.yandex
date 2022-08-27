@@ -1,0 +1,119 @@
+.field {
+    position: relative;
+    display: flex;
+    height: 28px;
+
+    &:not(:last-child) {
+        margin-bottom: 25px;
+    }
+
+    &--message,
+    &--search,
+    &--oneline {
+        height: 32px;
+
+        &:not(:last-child) {
+            margin-bottom: 0;
+        }
+    }
+
+    &--oneline &__input {
+        text-align: end;
+        padding-left: 80px;
+    }
+
+    &--file {
+        justify-content: center;
+        height: auto;
+
+        &:not(:last-child) {
+            margin-bottom: 45px;
+        }
+    }
+
+    &--file &__title {
+        position: relative;
+        top: 0;
+        max-width: 120px;
+        margin: auto;
+        color: $primary-color;
+        cursor: pointer;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    &--file &__input {
+        display: none;
+    }
+
+    &__input--filled ~ &__title,
+    &--top-title &__input:focus ~ &__title {
+        top: -15px;
+        font-size: 9px;
+    }
+
+    &--message &__input,
+    &--search &__input {
+        background-color: $grey-lighter;
+        border: none;
+        font-size: 12px;
+    }
+
+    &--search &__title {
+        left: 36px;
+    }
+
+    &--message &__title {
+        left: 10px;
+    }
+
+    &--message &__input:focus ~ &__title,
+    &--search &__input:focus ~ &__title {
+        display: none;
+    }
+
+    &__title {
+        position: absolute;
+        left: 0;
+        top: calc(50% - 9px);
+        color: $grey-dark;
+        transition: all 0.2s ease-in-out;
+        z-index: 10;
+    }
+
+    &__input {
+        width: 100%;
+        height: 100%;
+        border-bottom: 1px solid $primary-color;
+
+        &:focus {
+            z-index: 10;
+            outline: 1px solid $primary-color;
+            border: none;
+        }
+
+        &[disabled] {
+            background-color: inherit;
+            color: $grey-dark;
+            border-color: $grey-light;
+        }
+    }
+
+    &__input[disabled] ~ &__title {
+        color: $text-color;
+    }
+
+    &__icon {
+        position: absolute;
+        left: 10px;
+        top: calc(50% - 10px);
+        width: 20px;
+        height: 20px;
+    }
+
+    &__error {
+        color: $red;
+    }
+}

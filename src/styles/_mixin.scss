@@ -1,0 +1,86 @@
+@mixin respond-to($device) {
+    @if $device == tablet {
+        @media (min-width: 768px) {
+            @content;
+        }
+    } @else if $device == desktop {
+        @media (min-width: 1000px) {
+            @content;
+        }
+    } @else if $device == desktop-xl {
+        @media (min-width: 1400px) {
+            @content;
+        }
+    }
+}
+
+@mixin text-overflow() {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+@mixin center-element() {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+}
+
+@mixin cross($color: currentColor, $size: 20px) {
+    position: relative;
+    display: block;
+    width: $size;
+    height: $size;
+    cursor: pointer;
+
+    &:hover {
+        opacity: 0.7;
+    }
+
+    &:active {
+        opacity: 0.9;
+    }
+
+    &:before,
+    &:after {
+        content: '';
+        position: absolute;
+        top: 8px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: $color;
+        border-radius: 4px;
+    }
+
+    &:before {
+        transform: rotate(45deg);
+    }
+
+    &:after {
+        transform: rotate(-45deg);
+    }
+}
+
+@mixin reset() {
+    appearance: none;
+    background: 0 0;
+    border: none;
+    color: currentColor;
+    font-family: inherit;
+    font-size: 1em;
+    margin: 0;
+    padding: 0;
+}
+
+@mixin opacity-hover() {
+    &:hover {
+        opacity: 0.7;
+    }
+
+    &:active {
+        opacity: 0.9;
+    }
+}

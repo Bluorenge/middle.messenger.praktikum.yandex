@@ -1,0 +1,60 @@
+@import './account-img/account-img';
+
+.account {
+    display: flex;
+    height: 100vh;
+
+    &__sidebar {
+        width: 30px;
+        background-color: $grey-lightest;
+        border-right: 1px solid $grey-lighter;
+
+        @include respond-to(tablet) {
+            width: 64px;
+        }
+    }
+
+    &__main-content {
+        position: relative;
+        flex: 1 0 auto;
+    }
+
+    &__prev-btn-wrap {
+        height: 46px;
+    }
+
+    &__main-content-wrap {
+        padding: 15px;
+
+        @include respond-to(tablet) {
+            @include center-element;
+            left: 48%;
+            width: 510px;
+        }
+    }
+
+    &__img-wrap {
+        margin-bottom: 40px;
+    }
+
+    &__actions-wrap {
+        display: flex;
+        flex-direction: column;
+        margin-top: 30px;
+    }
+
+    &__action-item {
+        display: block;
+        height: 33px;
+        line-height: 33px;
+
+        &:not(:last-child) {
+            border-bottom: 1px solid $grey-light;
+        }
+    }
+
+    &__btn-wrap {
+        height: 37px;
+        margin-top: 60px;
+    }
+}

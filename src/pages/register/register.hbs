@@ -1,0 +1,18 @@
+<main class="register">
+    <div class="register__wrap">
+        <h1 class="register__title">{{title}}</h1>
+        <form class="register__form">
+            {{#each fields}}
+            {{>field}}
+            {{/each}}
+
+            <div class="register__form-btn-wrap">
+                {{>button btn}}
+            </div>
+        </form>
+
+        <div class="register__register-link-wrap">
+            <a class="link" href="{{registerLink.link}}">{{registerLink.text}}</a>
+        </div>
+    </div>
+</main>

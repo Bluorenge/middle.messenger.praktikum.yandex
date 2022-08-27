@@ -1,0 +1,16 @@
+<form class="send-form">
+
+    <div class="send-form__actions-wrap">
+        <button class="send-form__action-btn open-sm-popup">
+            <img src="{{attacheActions.icon}}" alt="attaches-icon">
+        </button>
+        {{>action-popup attacheActions}}
+    </div>
+
+    <div class="send-form__field-wrap">
+        {{>field field}}
+    </div>
+    <div class="send-form__send-btn-wrap">
+        {{>button btn}}
+    </div>
+</form>

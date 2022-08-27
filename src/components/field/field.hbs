@@ -1,0 +1,21 @@
+<label class="field {{class}}">
+    <input
+        type="{{type}}"
+        name="{{name}}"
+        class="field__input"
+        value="{{value}}"
+        required
+        {{#if isDisable}}
+        disabled
+        {{/if}}
+    />
+    {{#if icon}}
+    <img src="{{icon}}" class="field__icon">
+    {{/if}}
+    <span class="field__title">
+        {{label}}
+    </span>
+    <p class="field__error">
+        {{error}}
+    </p>
+</label>

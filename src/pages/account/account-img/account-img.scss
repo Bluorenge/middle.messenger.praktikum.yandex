@@ -1,0 +1,43 @@
+.account-img {
+    display: flex;
+    align-items: center;
+
+    &__img-wrap {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100px;
+        height: 100px;
+        margin-right: 40px;
+        background-color: $grey-lighter;
+        cursor: pointer;
+    }
+
+    &__overlay {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        width: inherit;
+        height: inherit;
+        opacity: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        text-align: center;
+        color: #fff;
+        transition: all 0.5s ease-in-out;
+    }
+
+    &__img-wrap:hover &__overlay {
+        opacity: 1;
+    }
+
+    &__name {
+        font-size: 18px;
+        font-weight: 600;
+    }
+}

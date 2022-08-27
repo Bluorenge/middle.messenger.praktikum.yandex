@@ -1,0 +1,18 @@
+.error-page {
+    @include center-element;
+    text-align: center;
+
+    &__error {
+        font-size: 122px;
+        line-height: 1.1;
+    }
+
+    &__desc {
+        font-size: 20px;
+        margin-bottom: 30px;
+    }
+
+    &__link {
+        font-size: 13px;
+    }
+}
