@@ -1,0 +1,17 @@
+<div class="popup hidden">
+    <div class="popup__wrap">
+        <span class="popup__close"></span>
+        <p class="popup__title">{{title}}</p>
+        <form class="popup__form">
+            {{>field field}}
+            <div class="popup__form-btn-wrap">
+                {{>button btn}}
+            </div>
+            <p class="popup__error">
+                {{error}}
+            </p>
+        </form>
+    </div>
+
+    <div class="popup__overlay"></div>
+</div>

@@ -1,0 +1,33 @@
+<main class="messenger">
+    <aside class="messenger__sidebar">
+        <div class="messenger__sidebar-header">
+            <div class="messenger__account">
+                <div class="messenger__account-img-wrap">
+                    {{#if account.img}}
+                    <img src="{{account.img}}" alt="account-img">
+                    {{/if}}
+                </div>
+                <div class="messenger__account-link-wrap">
+                    <a href="{{account.link}}" class="">
+                        {{account.text}}
+                        <span class="arrow-right-icon"></span>
+                    </a>
+                </div>
+            </div>
+
+            <form class="messenger__search-form">
+                {{>field search}}
+            </form>
+        </div>
+
+        <ul class="messenger__chat-list">
+            {{#each chatList}}
+            {{>chat-list-item}}
+            {{/each}}
+        </ul>
+    </aside>
+
+    <section class="messenger__main-content">
+        {{>chat messengerChat}}
+    </section>
+</main>

@@ -1,0 +1,21 @@
+<div class="chat">
+    {{#if name}}
+    <div class="chat__header">
+        {{>header}}
+    </div>
+
+    <div class="chat__content">
+        {{#each messages}}
+        {{>message}}
+        {{/each}}
+    </div>
+
+    <div class="chat__send-wrap">
+        {{>send-form sendForm}}
+    </div>
+    {{else}}
+    <div class="chat__empty">
+        Выберите чат чтобы отправить сообщение
+    </div>
+    {{/if}}
+</div>

@@ -1,0 +1,17 @@
+<div class="header">
+    <div class="header__account-wrap">
+        <div class="header__img-wrap">
+            {{#if img}}
+            <img src="{{img}}" alt="account-img">
+            {{/if}}
+        </div>
+        <div class="header__name">{{name}}</div>
+    </div>
+
+    {{>action-popup adminActions}}
+
+    <div class="header__actions-wrap">
+        <button class="header__action-btn open-sm-popup dotted-btn"></button>
+        {{>action-popup adminActions}}
+    </div>
+</div>

@@ -1,0 +1,61 @@
+@import './chat-list-item/chat-list-item';
+@import './chat/chat';
+@import './chat/header/header';
+@import './chat/message/message';
+@import './chat/send-form/send-form';
+@import './chat/action-popup/action-popup';
+
+.messenger {
+    display: flex;
+    height: 100vh;
+
+    &__sidebar {
+        width: 100%;
+        border-right: 1px solid $grey-lighter;
+
+        @include respond-to(tablet) {
+            flex-basis: 310px;
+        }
+    }
+
+    &__main-content {
+        display: none;
+        position: relative;
+
+        @include respond-to(tablet) {
+            display: block;
+            flex-grow: 1;
+        }
+    }
+
+    &__sidebar-header {
+        padding: 10px;
+        padding-bottom: 14px;
+        border-bottom: 1px solid $grey-lighter;
+    }
+
+    &__account {
+        display: flex;
+        margin-bottom: 12px;
+        align-items: center;
+    }
+
+    &__account-img-wrap {
+        height: 35px;
+        width: 35px;
+        margin-right: 10px;
+        background-color: $grey-lighter;
+        overflow: hidden;
+        border-radius: 50%;
+    }
+
+    &__account-link-wrap {
+        font-size: 12px;
+        color: $grey-dark;
+        cursor: pointer;
+
+        &:hover {
+            opacity: 0.7;
+        }
+    }
+}

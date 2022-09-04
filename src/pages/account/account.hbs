@@ -1,0 +1,40 @@
+<main class="account">
+    <aside class="account__sidebar">
+        <div class="account__prev-btn-wrap">
+            {{>button prevBtn}}
+        </div>
+    </aside>
+
+    <section class="account__main-content">
+        <div class="account__main-content-wrap">
+            <div class="account__img-wrap">
+                {{>account-img}}
+            </div>
+
+            <form class="account__form">
+                {{#if view.account-password-edit}}
+                    {{#each passwordFields}}
+                    {{>field}}
+                    {{/each}}
+                {{else}}
+                    {{#each fields}}
+                    {{>field}}
+                    {{/each}}
+                {{/if}}
+
+                {{#if view.account}}
+                <div class="account__actions-wrap">
+                    <a href="/account-info-edit.html" class="account__action-item link">Изменить данные</a>
+                    <a href="/account-password-edit.html" class="account__action-item link">Изменить пароль</a>
+                    <a href="/login.html" class="account__action-item link link--alert">Выйти</a>
+                </div>
+                {{else}}
+                <div class="account__btn-wrap">
+                    {{>button saveBtn}}
+                </div>
+                {{/if}}
+            </form>
+        </div>
+    </section>
+</main>
+{{>popup popupContext}}

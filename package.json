@@ -1,0 +1,30 @@
+{
+    "name": "middle.messenger.praktikum.yandex",
+    "version": "1.0.0",
+    "description": "Study project of first module",
+    "engine": ">=12",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Bluorenge/middle.messenger.praktikum.yandex.git"
+    },
+    "author": "Bluorenge",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/Bluorenge/middle.messenger.praktikum.yandex/issues"
+    },
+    "homepage": "https://github.com/Bluorenge/middle.messenger.praktikum.yandex#readme",
+    "scripts": {
+        "start": "npm run build && node ./src/server.js",
+        "dev": "parcel ./static/index.html --port 3000",
+        "build": "parcel build ./static/index.html"
+    },
+    "devDependencies": {
+        "@anikin/parcel-transformer-handlebars-precompile": "1.0.1",
+        "@parcel/transformer-sass": "2.7.0",
+        "express": "4.18.1",
+        "handlebars": "4.7.7",
+        "parcel": "2.7.0",
+        "sass": "1.54.5"
+    },
+    "dependencies": {}
+}
