@@ -3,7 +3,7 @@
         <h1 class="login__title">Вход</h1>
         <form class="login__form">
             {{#each fields}}
-                {{{Field label=label name=name type=type class=class validationType=validationType ref=name}}}
+                {{{Field label=label name=name type=type class=class validationType=validationType ref=name isTopLabelPosition=true}}}
             {{/each}}
 
             <div class="login__form-btn-wrap">
