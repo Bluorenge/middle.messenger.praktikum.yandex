@@ -16,7 +16,7 @@
     "scripts": {
         "start": "npm run build && node ./src/server.js",
         "dev": "parcel ./static/index.html --port 3000",
-        "build": "parcel build ./static/index.html",
+        "build": "parcel build ./static/index.html --no-cache --no-optimize --no-scope-hoist",
         "stylelint": "stylelint ./src/**/*.scss",
         "stylelint:fix": "stylelint ./src/**/*.scss --fix",
         "lint": "eslint ./src/**/*.ts",
