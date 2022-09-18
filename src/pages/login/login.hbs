@@ -1,18 +1,18 @@
 <main class="login">
     <div class="login__wrap">
-        <h1 class="login__title">{{title}}</h1>
+        <h1 class="login__title">Вход</h1>
         <form class="login__form">
             {{#each fields}}
-            {{>field}}
+                {{{Field label=label name=name type=type class=class validationType=validationType ref=name}}}
             {{/each}}
 
             <div class="login__form-btn-wrap">
-                {{>button btn}}
+                {{{Button text="Войти" onClick=onClick}}}
             </div>
         </form>
 
         <div class="login__register-link-wrap">
-            <a class="link" href="{{registerLink.link}}">{{registerLink.text}}</a>
+            <a class="link" href="/register.html">Впервые?</a>
         </div>
     </div>
 </main>

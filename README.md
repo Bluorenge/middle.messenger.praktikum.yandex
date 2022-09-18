@@ -19,7 +19,16 @@ messenger
 
 [Ссылка](https://radiant-dragon-58e417.netlify.app/)
 
+## Линтинг
+
+`npm run stylelint` — проверка стилей.
+`npm run lint` — проверка скриптов.
+
 ## Используемые инструменты
 
 - handlebars
 - sass
+- typescript
+- nanoid
+- eslint
+- stylelint

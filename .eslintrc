@@ -1,0 +1,33 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": [
+        "airbnb-typescript/base",
+        "plugin:@typescript-eslint/recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module",
+        "project": "./tsconfig.json"
+    },
+    "rules": {
+        "import/extensions": "off",
+        "import/no-extraneous-dependencies": "off",
+        "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_", "args": "none" }],
+        "@typescript-eslint/no-use-before-define": [
+            "error",
+            {
+                "functions": false
+            }
+        ],
+        "@typescript-eslint/indent": ["warn", 4],
+        "@typescript-eslint/no-explicit-any": "off",
+		"@typescript-eslint/no-non-null-assertion": "off",
+        "@typescript-eslint/no-throw-literal": "off",
+        "@typescript-eslint/no-var-requires": "off",
+        "@typescript-eslint/lines-between-class-members": "off"
+    }
+}

@@ -16,10 +16,10 @@
     }
 
     &__img-wrap {
-        height: 47px;
         width: 47px;
-        margin-right: 10px;
+        height: 47px;
         overflow: hidden;
+        margin-right: 10px;
         border-radius: 50%;
         background-color: $grey-lighter;
     }
@@ -57,7 +57,7 @@
         &--img {
             padding: 2px 7px;
             color: #fff;
-            background: rgba(81, 81, 81, 0.5);
+            background: rgb(81 81 81 / 0.5);
             border-radius: 30px;
         }
     }
