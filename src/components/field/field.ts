@@ -63,7 +63,6 @@ export default class Field extends Block {
             this.checkValid(value);
         }
 
-        console.log("this.props.isTopLabelPosition: ", this.props.isTopLabelPosition);
         if (this.props.isTopLabelPosition) {
             const FILLED_CLASS = 'field--filled';
 
