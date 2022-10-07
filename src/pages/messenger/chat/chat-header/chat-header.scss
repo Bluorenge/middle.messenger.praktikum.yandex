@@ -1,0 +1,32 @@
+.chat-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    border-bottom: 1px solid $grey-light;
+
+    &__account-wrap {
+        display: flex;
+        align-items: center;
+    }
+
+    &__img-wrap {
+        width: 35px;
+        height: 35px;
+        overflow: hidden;
+        margin-right: 10px;
+        background-color: $grey-lighter;
+        border-radius: 50%;
+    }
+
+    &__name {
+        cursor: pointer;
+        font-weight: 600;
+        @include opacity-hover;
+    }
+
+    &__actions-wrap {
+        position: relative;
+        display: inline-flex;
+    }
+}

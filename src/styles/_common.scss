@@ -12,8 +12,8 @@ html {
 
 img {
     display: block;
-    height: auto;
     max-width: 100%;
+    height: auto;
 }
 
 input {
@@ -61,8 +61,8 @@ button {
     width: 6px;
     height: 6px;
     margin-bottom: 1px;
-    border-top: 1px solid currentColor;
-    border-right: 1px solid currentColor;
+    border-top: 1px solid currentcolor;
+    border-right: 1px solid currentcolor;
     transform: rotate(45deg);
 }
 
@@ -72,13 +72,13 @@ button {
 
 .dotted-btn {
     @include reset;
+    @include opacity-hover;
+
     position: relative;
     width: 25px;
     height: 25px;
     border-radius: 50%;
     cursor: pointer;
-
-    @include opacity-hover;
 
     &:hover,
     &--active {
@@ -86,20 +86,20 @@ button {
 
         &::after {
             background-color: $primary-color;
-            box-shadow: 0px 6px $primary-color, 0px 12px $primary-color;
+            box-shadow: 0 6px $primary-color, 0 12px $primary-color;
         }
     }
 
     &::after {
-        content: '';
+        content: "";
         position: absolute;
-        left: calc(50% - 1.5px);
         top: 5px;
-        background: $text-color;
-        border-radius: 50%;
+        left: calc(50% - 1.5px);
         width: 3px;
         height: 3px;
-        box-shadow: 0px 6px $text-color, 0px 12px $text-color;
+        background: $text-color;
+        border-radius: 50%;
+        box-shadow: 0 6px $text-color, 0 12px $text-color;
     }
 }
 
@@ -115,22 +115,22 @@ button {
 
     &::after,
     &::before {
-        content: '';
-        display: block;
+        content: "";
         box-sizing: border-box;
         position: absolute;
+        top: 8px;
+        left: 4px;
+        display: block;
         width: 10px;
         height: 2px;
         background: $primary-color;
-        top: 8px;
-        left: 4px;
     }
 
     &::after {
-        width: 2px;
-        height: 10px;
         top: 4px;
         left: 8px;
+        width: 2px;
+        height: 10px;
     }
 }
 

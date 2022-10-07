@@ -1,10 +1,10 @@
 .login {
-    width: 290px;
     position: absolute;
     top: 50%;
     left: 50%;
-    margin-right: -50%;
+    width: 290px;
     transform: translate(-50%, -50%);
+    margin-right: -50%;
 
     @include respond-to(tablet) {
         width: 340px;
@@ -16,7 +16,7 @@
         padding-bottom: 35px;
         padding-left: 30px;
         text-align: center;
-        box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.14);
+        box-shadow: 0 0 6px rgb(0 0 0 / 0.14);
 
         @include respond-to(tablet) {
             display: flex;

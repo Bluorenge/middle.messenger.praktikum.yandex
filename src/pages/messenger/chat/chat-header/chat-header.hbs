@@ -1,0 +1,15 @@
+<div class="chat-header">
+    <div class="chat-header__account-wrap">
+        <div class="chat-header__img-wrap">
+            {{#if chatImg}}
+                <img src="{{chatImg}}" alt="account-img">
+            {{/if}}
+        </div>
+        <div class="chat-header__name">{{chatName}}</div>
+    </div>
+
+    <div class="chat-header__actions-wrap">
+        <button class="chat-header__action-btn open-sm-popup dotted-btn"></button>
+        {{{ActionPopup position="down" actions=adminActions ref="actionPopup"}}}
+    </div>
+</div>

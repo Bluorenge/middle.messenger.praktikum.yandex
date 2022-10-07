@@ -1,28 +1,28 @@
 <main class="account">
     <aside class="account__sidebar">
         <div class="account__prev-btn-wrap">
-            {{>button prevBtn}}
+            {{{Button class="btn--arrow-left" href="/account.html"}}}
         </div>
     </aside>
 
     <section class="account__main-content">
         <div class="account__main-content-wrap">
             <div class="account__img-wrap">
-                {{>account-img}}
+                {{{AccountImg accountName=accountName}}}
             </div>
 
             <form class="account__form">
-                {{#if view.account-password-edit}}
+                {{#if accountView.account-password-edit}}
                     {{#each passwordFields}}
-                    {{>field}}
+                        {{{Field label=label name=name value=value type=type class=class isDisable=isDisable validationType=validationType ref=name}}}
                     {{/each}}
                 {{else}}
                     {{#each fields}}
-                    {{>field}}
+                        {{{Field label=label name=name value=value type=type class=class isDisable=isDisable validationType=validationType ref=name}}}
                     {{/each}}
                 {{/if}}
 
-                {{#if view.account}}
+                {{#if accountView.account}}
                 <div class="account__actions-wrap">
                     <a href="/account-info-edit.html" class="account__action-item link">Изменить данные</a>
                     <a href="/account-password-edit.html" class="account__action-item link">Изменить пароль</a>
@@ -30,11 +30,10 @@
                 </div>
                 {{else}}
                 <div class="account__btn-wrap">
-                    {{>button saveBtn}}
+                    {{{Button text="Сохранить" onClick=onClick}}}
                 </div>
                 {{/if}}
             </form>
         </div>
     </section>
 </main>
-{{>popup popupContext}}

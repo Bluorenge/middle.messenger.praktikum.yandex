@@ -1,8 +1,8 @@
 .btn {
-    width: 100%;
     display: inline-block;
-    border: none;
+    width: 100%;
     height: inherit;
+    border: none;
     background-color: $primary-color;
     color: #fff;
     cursor: pointer;
@@ -20,7 +20,7 @@
         position: relative;
 
         &::before {
-            content: '';
+            content: "";
             position: absolute;
             top: calc(50% - 10px);
             left: calc(50% - 10px);

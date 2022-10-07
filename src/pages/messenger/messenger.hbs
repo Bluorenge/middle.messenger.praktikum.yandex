@@ -3,31 +3,39 @@
         <div class="messenger__sidebar-header">
             <div class="messenger__account">
                 <div class="messenger__account-img-wrap">
-                    {{#if account.img}}
-                    <img src="{{account.img}}" alt="account-img">
+                    {{#if accountImg}}
+                        <img src="{{accountImg}}" alt="account-img">
                     {{/if}}
                 </div>
+
                 <div class="messenger__account-link-wrap">
-                    <a href="{{account.link}}" class="">
-                        {{account.text}}
+                    <a href="/account.html">
+                        Профиль
                         <span class="arrow-right-icon"></span>
                     </a>
                 </div>
             </div>
 
             <form class="messenger__search-form">
-                {{>field search}}
+                {{{Field label="Поиск" name="search" type="text" class="field--search" icon=searchFieldIcon}}}
             </form>
         </div>
 
         <ul class="messenger__chat-list">
             {{#each chatList}}
-            {{>chat-list-item}}
+                {{{ChatListItem 
+                    img=this.img
+                    chatName=this.chatName
+                    text=this.text
+                    datetime=this.datetime
+                    count=this.count
+                    senderId=this.senderId
+                }}}
             {{/each}}
         </ul>
     </aside>
 
     <section class="messenger__main-content">
-        {{>chat messengerChat}}
+        {{{Chat chatName=selectedСhat.name chatImg=selectedСhat.img}}}
     </section>
 </main>

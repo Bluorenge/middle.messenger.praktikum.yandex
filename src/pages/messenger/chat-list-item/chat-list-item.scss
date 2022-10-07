@@ -9,10 +9,10 @@
     }
 
     &__img-wrap {
-        height: 47px;
         width: 47px;
-        margin-right: 10px;
+        height: 47px;
         overflow: hidden;
+        margin-right: 10px;
         border-radius: 50%;
         background-color: $grey-lighter;
     }
@@ -34,8 +34,8 @@
     &__info {
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
         align-items: center;
+        justify-content: space-between;
     }
 
     &__datetime {
