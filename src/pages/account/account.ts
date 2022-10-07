@@ -2,6 +2,7 @@ import template from './account.hbs';
 import Block from '../../utils/Block';
 import { registerComponent } from '../../utils/hbsHelpers';
 import getFormData from '../../utils/getFormData';
+// @ts-ignore
 import components from './*/*.ts';
 
 Object.entries(components).forEach(([key, value]: any) =>
@@ -123,7 +124,7 @@ export default class Account extends Block {
     }
 }
 
-function setAccountView(props: TObj, pageName: string) {
+function setAccountView(props: Record<string, any>, pageName: string) {
     Object.keys(props.accountView).forEach(
         i => (props.accountView[i] = i === pageName),
     );

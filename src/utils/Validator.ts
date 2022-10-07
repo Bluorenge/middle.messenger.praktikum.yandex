@@ -15,13 +15,13 @@ class Validator {
     }
 
     private name(value: string): [boolean, string] {
-        const isFirstLetterUppercase = /^[A-ZА-Я][a-zа-я\-]/.test(value);
+        const isFirstLetterUppercase = /^[A-ZА-ЯЁ][a-zа-яё\-]/.test(value);
 
         if (!isFirstLetterUppercase) {
             return [false, 'Первая буква должна быть заглавной'];
         }
         return [
-            /^[A-ZА-Я][a-zа-я-]+$/.test(value),
+            /^[A-ZА-ЯЁ][a-zа-яё-]+$/.test(value),
             'Допустимые символы: латиница, кириллица и дефис',
         ];
     }
@@ -40,7 +40,7 @@ class Validator {
             return [false, 'Логин не должен содержать только цифры'];
         }
         return [
-            /[A-Za-z0-9_\-]$/.test(value),
+            /^[A-Za-z0-9_\-]$/.test(value),
             'Допустимые символы: латиница, цифры, _ и -',
         ];
     }
@@ -69,11 +69,11 @@ class Validator {
                 'Длина телефона может быть от 8 до 40 символов',
             ];
         }
-        return [/\+?[0-9]/.test(value), 'Некорректный номер телефона'];
+        return [/^\+?[0-9]$/.test(value), 'Некорректный номер телефона'];
     }
 
-    private isValidLenght(value: string, minLenght: number, maxLengt: number) {
-        return value.length > minLenght && value.length < maxLengt;
+    private isValidLenght(value: string, minLength: number, maxLength: number) {
+        return value.length > minLength && value.length < maxLength;
     }
 
     public validate(type: ValidationType, value: string): [boolean, string] {

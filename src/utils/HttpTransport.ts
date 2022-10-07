@@ -7,13 +7,14 @@ enum METHODS {
 }
 
 type RequestOptions = {
-    method: METHODS;
+    method?: METHODS;
     data?: any;
-    headers?: TObj;
+    headers?: Record<string, string>;
+    timeout?: number;
 };
 
 export default class HTTPTransport {
-    public get = (url: string, options: TObj = {}) => {
+    public get = (url: string, options: RequestOptions = {}) => {
         url = options.data ? url + queryStringify(options.data) : url;
         return this.request(
             url,
@@ -22,7 +23,7 @@ export default class HTTPTransport {
         );
     };
 
-    public post = (url: string, options: TObj = {}) => {
+    public post = (url: string, options: RequestOptions = {}) => {
         return this.request(
             url,
             { ...options, method: METHODS.POST },
@@ -30,7 +31,7 @@ export default class HTTPTransport {
         );
     };
 
-    public put = (url: string, options: TObj = {}) => {
+    public put = (url: string, options: RequestOptions = {}) => {
         return this.request(
             url,
             { ...options, method: METHODS.PUT },
@@ -38,7 +39,7 @@ export default class HTTPTransport {
         );
     };
 
-    public delete = (url: string, options: TObj = {}) => {
+    public delete = (url: string, options: RequestOptions = {}) => {
         return this.request(
             url,
             {
@@ -51,6 +52,10 @@ export default class HTTPTransport {
 
     private request = (url: string, options: RequestOptions, timeout = 5000) => {
         const { method, data, headers = {} } = options;
+
+        if (!method) {
+            return;
+        }
 
         return new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();

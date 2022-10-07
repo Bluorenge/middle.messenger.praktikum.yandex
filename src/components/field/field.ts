@@ -2,13 +2,14 @@ import Block from '../../utils/Block';
 import Validator, { ValidationType } from '../../utils/Validator';
 import template from './field.hbs';
 import { registerComponent } from '../../utils/hbsHelpers';
+// @ts-ignore
 import components from './*/*.ts';
 
 Object.entries(components).forEach(([key, value]: any) =>
     registerComponent(value[key].default),
 );
 
-interface FieldProps {
+type FieldProps = {
     type: string;
     name: string;
     value?: string;
@@ -18,7 +19,7 @@ interface FieldProps {
     label: string;
     class?: string;
     icon?: string;
-}
+};
 
 export default class Field extends Block {
     private _initFieldTitleText: string | null = null;
@@ -65,12 +66,7 @@ export default class Field extends Block {
 
         if (this.props.isTopLabelPosition) {
             const FILLED_CLASS = 'field--filled';
-
-            if (value !== '') {
-                this.getContent()!.classList.add(FILLED_CLASS);
-            } else if (value === '') {
-                this.getContent()!.classList.remove(FILLED_CLASS);
-            }
+            this.getContent()?.classList[value === '' ? 'remove' : 'add'](FILLED_CLASS);
         }
     }
 
@@ -91,7 +87,7 @@ export default class Field extends Block {
 
     public checkValid(value: string): void {
         const [isValid, message] = Validator.validate(
-            this.props.validationType,
+            this.props.validationType as ValidationType,
             value,
         );
 

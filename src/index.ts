@@ -1,5 +1,6 @@
 import './styles/main.scss';
 import { registerComponent } from './utils/hbsHelpers';
+// @ts-ignore
 import commonComponents from './components/**/*.ts';
 
 import PagesLinks from './pages/pages-links/pages-links';

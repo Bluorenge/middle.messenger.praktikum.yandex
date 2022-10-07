@@ -3,6 +3,7 @@ import Block from '../../../utils/Block';
 import messengerChat1 from '../../../../static/img/messenger/img-1.png';
 
 import { registerComponent } from '../../../utils/hbsHelpers';
+// @ts-ignore
 import components from './*/*.ts';
 
 Object.entries(components).forEach(([key, value]: any) =>

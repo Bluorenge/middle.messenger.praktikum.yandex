@@ -19,7 +19,7 @@
         "build": "parcel build ./static/index.html --no-cache --no-optimize --no-scope-hoist",
         "stylelint": "stylelint ./src/**/*.scss",
         "stylelint:fix": "stylelint ./src/**/*.scss --fix",
-        "lint": "eslint ./src/**/*.ts",
+        "lint": "node_modules/.bin/tsc --noEmit && eslint ./src/**/*.ts",
         "lint:fix": "eslint ./src/**/*.ts --fix"
     },
     "devDependencies": {

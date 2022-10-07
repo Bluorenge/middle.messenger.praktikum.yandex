@@ -3,6 +3,7 @@ import Block from '../../utils/Block';
 import lens from '../../../static/img/svg/lens.svg';
 
 import { registerComponent } from '../../utils/hbsHelpers';
+// @ts-ignore
 import components from './*/*.ts';
 
 Object.entries(components).forEach(([key, value]: any) =>
