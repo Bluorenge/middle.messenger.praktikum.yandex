@@ -27,7 +27,7 @@ class Validator {
     }
 
     private login(value: string): [boolean, string] {
-        const isValidLenght = this.isValidLenght(value, 3, 20);
+        const isValidLenght = /^.{3,20}$/.test(value);
         const isOnlyNumber = /^\d+$/.test(value);
 
         if (!isValidLenght) {
@@ -46,7 +46,7 @@ class Validator {
     }
 
     private password(value: string): [boolean, string] {
-        const isValidLenght = this.isValidLenght(value, 8, 40);
+        const isValidLenght = /^.{8,40}$/.test(value);
 
         if (!isValidLenght) {
             return [
@@ -61,7 +61,7 @@ class Validator {
     }
 
     private phone(value: string): [boolean, string] {
-        const isValidLenght = this.isValidLenght(value.replace(/\(|\s|\)/g, ''), 10, 15);
+        const isValidLenght = /^.{10,15}$/.test(value);
 
         if (!isValidLenght) {
             return [
@@ -70,10 +70,6 @@ class Validator {
             ];
         }
         return [/^\+?[0-9]$/.test(value), 'Некорректный номер телефона'];
-    }
-
-    private isValidLenght(value: string, minLength: number, maxLength: number) {
-        return value.length > minLength && value.length < maxLength;
     }
 
     public validate(type: ValidationType, value: string): [boolean, string] {
