@@ -1,11 +1,19 @@
 <div class="popup hidden">
     <div class="popup__wrap">
-        <span class="popup__close" onCli></span>
+        <span class="popup__close"></span>
         <p class="popup__title">{{title}}</p>
         <form class="popup__form">
-            {{{Field label=field.label name=field.name type=field.type class=field.class}}}
+            {{{Field
+                label=field.label
+                name=field.name
+                type=field.type
+                class=field.class
+                accept=field.accept
+                onInputField=field.onInputField
+                isTopLabelPosition=field.isTopLabelPosition
+            }}}
             <div class="popup__form-btn-wrap">
-                {{{Button text=btnText}}}
+                {{{Button text=btnText onClick=onBtnClick}}}
             </div>
             <p class="popup__error">
                 {{field.error}}

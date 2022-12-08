@@ -1,5 +1,17 @@
 <label class="field {{class}}">
-    {{{Input type=type name=name value=value isDisable=isDisable onFocus=onFocus onBlur=onBlur onInput=onInput onChange=onChange class="field__input"}}}
+    {{{Input
+        type=type
+        name=name
+        value=value
+        accept=accept
+        isDisable=isDisable
+        onFocus=onFocus
+        onBlur=onBlur
+        onInput=onInput
+        onChange=onChange
+        isTopLabelPosition=isTopLabelPosition
+        class="field__input"
+    }}}
     {{#if icon}}
         <img src="{{icon}}" class="field__icon" alt="input-icon">
     {{/if}}
@@ -7,6 +19,6 @@
         {{label}}
     </span>
     <div class="field__error">
-        {{{ErrorMessage ref="errorMessage" isValid=true text="Ошибка"}}}
+        {{{ErrorMessage ref="errorMessage"}}}
     </div>
 </label>

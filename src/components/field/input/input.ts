@@ -5,6 +5,7 @@ interface InputProps {
     type: string;
     name: string;
     value?: string;
+    accept?: string;
     isDisable?: boolean;
     class?: string;
     onFocus?: () => void;

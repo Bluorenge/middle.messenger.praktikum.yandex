@@ -1,8 +1,8 @@
-import { EventBus } from './EventBus';
+import EventBus from './EventBus';
 import { nanoid } from 'nanoid';
 
 // Нельзя создавать экземпляр данного класса
-class Block<P extends TObj = TObj> {
+class Block<P extends TObj = {}> {
     static EVENTS = {
         INIT: 'init',
         FLOW_CDM: 'flow:component-did-mount',
@@ -16,6 +16,7 @@ class Block<P extends TObj = TObj> {
     public children: Record<string, Block> = {};
     private eventBus: () => EventBus;
     private _element: HTMLElement | null = null;
+    public static componentName?: string;
 
     constructor(propsWithChildren: P) {
         const { props, children } =
@@ -55,6 +56,20 @@ class Block<P extends TObj = TObj> {
 
         Object.keys(events).forEach(eventName => {
             this._element?.addEventListener(eventName, events[eventName]);
+        });
+    }
+
+    _removeEvents() {
+        const { events } = this.props as P & {
+            events: Record<string, () => void>;
+        };
+
+        if (!events || !this._element) {
+            return;
+        }
+
+        Object.keys(events).forEach(eventName => {
+            this._element!.removeEventListener(eventName, events[eventName]);
         });
     }
 
@@ -102,6 +117,7 @@ class Block<P extends TObj = TObj> {
         }
 
         Object.assign(this.props, nextProps);
+        this.eventBus().emit(Block.EVENTS.FLOW_CDM);
     };
 
     get element() {
@@ -109,6 +125,7 @@ class Block<P extends TObj = TObj> {
     }
 
     private _render() {
+        this._removeEvents();
         const fragment = this.render();
         const newElement = fragment.firstElementChild as HTMLElement;
         this._element?.replaceWith(newElement);
@@ -118,13 +135,7 @@ class Block<P extends TObj = TObj> {
 
     protected compile(template: (context: any) => string, context: any) {
         const contextAndStubs = { ...context };
-
-        // Object.entries(this.children).forEach(([name, component]) => {
-        //     contextAndStubs[name] = `<div data-id="${component.id}"></div>`;
-        // });
-
         const html = template(contextAndStubs);
-
         const temp = document.createElement('template');
         temp.innerHTML = html;
 

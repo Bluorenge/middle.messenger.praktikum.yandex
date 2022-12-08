@@ -4,7 +4,6 @@ import template from './button.hbs';
 interface ButtonProps {
     text: string;
     class?: string;
-    href?: string;
     onClick?: () => void;
 }
 

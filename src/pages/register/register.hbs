@@ -3,7 +3,16 @@
         <h1 class="register__title">Регистрация</h1>
         <form class="register__form">
             {{#each fields}}
-                {{{Field label=label name=name type=type class=class validationType=validationType isTopLabelPosition=true ref=name isTopLabelPosition=true}}}
+                {{{Field
+                    label=label
+                    name=name
+                    type=type
+                    value=value
+                    class=class
+                    validationType=validationType
+                    isTopLabelPosition=true
+                    ref=name
+                }}}
             {{/each}}
 
             <div class="register__form-btn-wrap">
@@ -11,8 +20,12 @@
             </div>
         </form>
 
+        <div class="register__form-error">
+            {{{ErrorMessage isValid=error.isValid text=error.invalidText}}}
+        </div>
+
         <div class="register__register-link-wrap">
-            <a class="link" href="/login.html">Войти</a>
+            {{#Link to="/login"}}Войти{{/Link}}
         </div>
     </div>
 </main>

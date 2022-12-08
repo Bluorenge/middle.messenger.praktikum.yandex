@@ -4,11 +4,12 @@
     border-bottom: 1px solid $grey-lighter;
     cursor: pointer;
 
+    &--active,
     &:hover {
         background-color: $blue-light;
     }
 
-    &__img-wrap {
+    &__avatar-wrap {
         width: 47px;
         height: 47px;
         overflow: hidden;
@@ -17,16 +18,16 @@
         background-color: $grey-lighter;
     }
 
-    &__content {
+    &__content-wrap {
         flex: 1 0 auto;
         margin-right: 25px;
     }
 
-    &__name {
+    &__title {
         font-size: 13px;
     }
 
-    &__text {
+    &__content {
         color: $grey-dark;
         font-size: 12px;
     }
@@ -34,17 +35,17 @@
     &__info {
         display: flex;
         flex-direction: column;
-        align-items: center;
+        align-items: flex-end;
         justify-content: space-between;
     }
 
-    &__datetime {
+    &__time {
         color: $grey-dark;
         font-size: 9px;
         margin-bottom: auto;
     }
 
-    &__count {
+    &__unread_count {
         width: 20px;
         background-color: $primary-color;
         border-radius: 50%;

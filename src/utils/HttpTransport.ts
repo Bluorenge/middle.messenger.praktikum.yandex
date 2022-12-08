@@ -14,10 +14,17 @@ type RequestOptions = {
 };
 
 export default class HTTPTransport {
+    static API_URL = 'https://ya-praktikum.tech/api/v2';
+    protected endpoint: string;
+
+    constructor(endpoint: string) {
+        this.endpoint = `${HTTPTransport.API_URL}${endpoint}`;
+    }
+
     public get = (url: string, options: RequestOptions = {}) => {
         url = options.data ? url + queryStringify(options.data) : url;
         return this.request(
-            url,
+            this.endpoint + url,
             { ...options, method: METHODS.GET },
             options.timeout,
         );
@@ -25,7 +32,7 @@ export default class HTTPTransport {
 
     public post = (url: string, options: RequestOptions = {}) => {
         return this.request(
-            url,
+            this.endpoint + url,
             { ...options, method: METHODS.POST },
             options.timeout,
         );
@@ -33,7 +40,7 @@ export default class HTTPTransport {
 
     public put = (url: string, options: RequestOptions = {}) => {
         return this.request(
-            url,
+            this.endpoint + url,
             { ...options, method: METHODS.PUT },
             options.timeout,
         );
@@ -41,7 +48,7 @@ export default class HTTPTransport {
 
     public delete = (url: string, options: RequestOptions = {}) => {
         return this.request(
-            url,
+            this.endpoint + url,
             {
                 ...options,
                 method: METHODS.DELETE,
@@ -50,16 +57,12 @@ export default class HTTPTransport {
         );
     };
 
-    private request = (url: string, options: RequestOptions, timeout = 5000) => {
-        const { method, data, headers = {} } = options;
-
-        if (!method) {
-            return;
-        }
+    private request = (url: string, options: RequestOptions, timeout = 5000): Promise<XMLHttpRequest> => {
+        const { method, data, headers = { 'Content-Type': 'application/json' } } = options;
 
         return new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();
-            xhr.open(method, url);
+            xhr.open(method!, url);
 
             Object.keys(headers).forEach(key => {
                 xhr.setRequestHeader(key, headers[key]);
@@ -69,15 +72,18 @@ export default class HTTPTransport {
                 resolve(xhr);
             };
 
-            xhr.onabort = reject;
-            xhr.onerror = reject;
+            xhr.onabort = () => reject({ reason: 'abort' });
+            xhr.onerror = () => reject({ reason: 'network error' });
             xhr.timeout = timeout;
-            xhr.ontimeout = reject;
+            xhr.ontimeout = () => reject({ reason: 'timeout' });
+
+            xhr.withCredentials = true;
+            xhr.responseType = 'json';
 
             if (method === METHODS.GET || !data) {
                 xhr.send();
             } else {
-                xhr.send(data);
+                xhr.send(!(data instanceof FormData) ? JSON.stringify(data) : data);
             }
         });
     };

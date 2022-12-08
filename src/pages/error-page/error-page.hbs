@@ -1,5 +1,5 @@
 <main class="error-page">
     <p class="error-page__error">{{error}}</p>
     <p class="error-page__desc">{{desc}}</p>
-    <a href="{{prevLink.link}}" class="error-page__link link">{{prevLink.text}}</a>
+    {{#Link to="/messenger" class="error-page__link"}}Назад к чатам{{/Link}}
 </main>

@@ -3,16 +3,25 @@
         <h1 class="login__title">Вход</h1>
         <form class="login__form">
             {{#each fields}}
-                {{{Field label=label name=name type=type class=class validationType=validationType ref=name isTopLabelPosition=true}}}
+                {{{Field
+                    label=label
+                    name=name
+                    type=type
+                    isTopLabelPosition=true
+                }}}
             {{/each}}
 
             <div class="login__form-btn-wrap">
-                {{{Button text="Войти" onClick=onClick}}}
+                {{{Button text="Войти" onClick=onSingInBtnClick}}}
             </div>
         </form>
 
+        <div class="login__form-error">
+            {{{ErrorMessage isValid=error.isValid text=error.invalidText}}}
+        </div>
+
         <div class="login__register-link-wrap">
-            <a class="link" href="/register.html">Впервые?</a>
+            {{#Link to="/register"}}Впервые?{{/Link}}
         </div>
     </div>
 </main>

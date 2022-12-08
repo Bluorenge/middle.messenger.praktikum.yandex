@@ -1,8 +1,10 @@
 import Block from '../../utils/Block';
 import template from './login.hbs';
 import getFormData from '../../utils/getFormData';
+import AuthController from './../../controllers/AuthController';
+import { withStore } from './../../utils/Store';
 
-export default class Login extends Block {
+class Login extends Block {
     constructor() {
         const loginProps = {
             fields: [
@@ -10,22 +12,22 @@ export default class Login extends Block {
                     type: 'text',
                     name: 'login',
                     label: 'Логин',
-                    class: 'field--top-title',
-                    validationType: 'login',
                 },
                 {
                     type: 'text',
                     name: 'password',
                     label: 'Пароль',
-                    class: 'field--top-title',
-                    validationType: 'password',
                 },
             ],
+            error: {
+                isValid: false,
+                invalidText: '',
+            },
         };
         super(loginProps);
 
         this.setProps({
-            onClick: this.onSignUp.bind(this),
+            onSingInBtnClick: this.onSignIn.bind(this),
         });
     }
 
@@ -33,11 +35,16 @@ export default class Login extends Block {
         return this.compile(template, {
             ...this.props,
             children: this.children,
-            refs: this.refs,
         });
     }
 
-    private onSignUp() {
-        getFormData(this);
+    private onSignIn(e: Event) {
+        e.preventDefault();
+        const data = getFormData(this);
+        AuthController.signIn(data as any);
     }
 }
+
+export const withLoginProps = withStore((state) => ({ ...state.loginProps }));
+
+export default withLoginProps(Login as typeof Block);

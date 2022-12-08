@@ -1,6 +1,7 @@
 import template from './chat.hbs';
 import Block from '../../../utils/Block';
-import messengerChat1 from '../../../../static/img/messenger/img-1.png';
+import store, { StoreData, StoreEvents } from './../../../utils/Store';
+import { isEqual } from '../../../utils/common';
 
 import { registerComponent } from '../../../utils/hbsHelpers';
 // @ts-ignore
@@ -11,43 +12,20 @@ Object.entries(components).forEach(([key, value]: any) =>
 );
 
 export default class Chat extends Block {
-    constructor(selectedChat: TObj) {
-        const chatProps = {
-            ...selectedChat,
-            messages: [
-                {
-                    text: 'Привет! Смотри, тут всплыл интересный кусок лунной космической истории — НАСА в какой-то момент попросила Хассельблад адаптировать модель SWC для полетов на Луну. Сейчас мы все знаем что астронавты летали с моделью 500 EL — и к слову говоря, все тушки этих камер все еще находятся на поверхности Луны, так как астронавты с собой забрали только кассеты с пленкой.<br><br>Хассельблад в итоге адаптировал SWC для космоса, но что-то пошло не так и на ракету они так никогда и не попали. Всего их было произведено 25 штук, одну из них',
-                    img: '',
-                    date: '19 июля',
-                    time: '11:56',
-                    senderId: 3,
-                },
-                {
-                    text: '',
-                    img: messengerChat1,
-                    date: '',
-                    time: '11:56',
-                    senderId: 3,
-                },
-                {
-                    text: 'Круто!',
-                    img: '',
-                    date: '',
-                    time: '12:00',
-                    senderId: 1,
-                    isViewed: true,
-                },
-                {
-                    text: 'Хочу себе такую',
-                    img: '',
-                    date: '',
-                    time: '12:01',
-                    senderId: 1,
-                    isViewed: false,
-                },
-            ],
-        };
-        super(chatProps);
+    constructor(props: TObj) {
+        let state = mapStateToProps(store.getState());
+        super({ ...props, ...state });
+        // Подписываемся здесь, потому что компонент регается без HOC
+        store.on(StoreEvents.MessagesUpdated, () => {
+            const newState = mapStateToProps(store.getState());
+
+            if (!!newState.selectedChat && !isEqual(state, newState)) {
+                state = newState;
+                this.setProps({
+                    ...newState,
+                });
+            }
+        });
     }
 
     render() {
@@ -56,4 +34,22 @@ export default class Chat extends Block {
             children: this.children,
         });
     }
+}
+
+function mapStateToProps(state: StoreData) {
+    const selectedChatId = state.selectedChat;
+
+    if (!selectedChatId) {
+        return {
+            messages: {},
+            selectedChat: undefined,
+            currentUserId: state.currentUser.id,
+        };
+    }
+
+    return {
+        messages: (state.messages || {})[selectedChatId] || {},
+        selectedChat: state.selectedChat,
+        currentUserId: state.currentUser.id,
+    };
 }

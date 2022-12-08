@@ -12,16 +12,21 @@ Object.entries(components).forEach(([key, value]: any) =>
 type FieldProps = {
     type: string;
     name: string;
+    label: string;
     value?: string;
+    accept?: string;
     isDisable?: boolean;
     validationType?: ValidationType;
-    isTopLabelPosition?: boolean;
-    label: string;
+    isTopLabelPosition: boolean;
     class?: string;
     icon?: string;
+    onBlur?: (e: Event) => void;
+    onInput?: (e: Event) => void;
+    onChange?: (e: Event) => void;
+    onInputField?: (e: Event) => void;
 };
 
-export default class Field extends Block {
+export default class Field extends Block<FieldProps> {
     private _initFieldTitleText: string | null = null;
 
     constructor(props: FieldProps) {
@@ -30,6 +35,7 @@ export default class Field extends Block {
         this._initFieldTitleText = this.getFieldTitleEl()!.textContent;
 
         this.setProps({
+            ...props,
             onBlur: this.onInput.bind(this),
             onInput: this.onInput.bind(this),
             onChange: this.onChange.bind(this),
@@ -42,6 +48,10 @@ export default class Field extends Block {
             children: this.children,
             refs: this.refs,
         });
+    }
+
+    componentDidMount() {
+        this.setTopLabelPosition(this.props.value);
     }
 
     get initFieldTitleText(): string | null {
@@ -63,10 +73,11 @@ export default class Field extends Block {
         if (validationType) {
             this.checkValid(value);
         }
+        this.setTopLabelPosition(value);
 
-        if (this.props.isTopLabelPosition) {
-            const FILLED_CLASS = 'field--filled';
-            this.getContent()?.classList[value === '' ? 'remove' : 'add'](FILLED_CLASS);
+        const onInputField = this.props.onInputField;
+        if (onInputField) {
+            onInputField(e);
         }
     }
 
@@ -85,15 +96,25 @@ export default class Field extends Block {
         }
     }
 
-    public checkValid(value: string): void {
+    public checkValid(value: string, compareValue?: string): boolean {
         const [isValid, message] = Validator.validate(
             this.props.validationType as ValidationType,
             value,
+            compareValue,
         );
 
         this.refs.errorMessage.setProps({
             isValid: isValid,
-            text: value !== '' ? message : '',
+            text: !isValid ? message : '',
         });
+
+        return isValid;
+    }
+
+    private setTopLabelPosition(value: string | undefined): void {
+        if (value && this.props.isTopLabelPosition) {
+            const FILLED_CLASS = 'field--filled';
+            this.getContent()?.classList[value === '' ? 'remove' : 'add'](FILLED_CLASS);
+        }
     }
 }

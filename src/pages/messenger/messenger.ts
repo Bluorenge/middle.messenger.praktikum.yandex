@@ -1,6 +1,11 @@
 import template from './messenger.hbs';
 import Block from '../../utils/Block';
 import lens from '../../../static/img/svg/lens.svg';
+import { PopupProps } from './../../components/popup/popup';
+
+import ChatController from './../../controllers/ChatController';
+import { ChatOfList, withStore } from '../../utils/Store';
+import { debounce } from '../../utils/common';
 
 import { registerComponent } from '../../utils/hbsHelpers';
 // @ts-ignore
@@ -10,49 +15,77 @@ Object.entries(components).forEach(([key, value]: any) =>
     registerComponent(value[key].default),
 );
 
-export default class Messenger extends Block {
-    constructor() {
+type MessengerProps = {
+    accountAvatar: string;
+    searchFieldIcon: string;
+    chatList: ChatOfList[];
+    createChatPopup: PopupProps
+    onCreateChatBtnClick?: () => void;
+};
+
+class Messenger extends Block<MessengerProps> {
+    constructor(props: MessengerProps) {
         const messengerProps = {
-            accountImg: '',
+            accountAvatar: props.accountAvatar ?? '',
             searchFieldIcon: lens,
-            chatList: [
-                {
-                    img: '',
-                    chatName: 'Андрей',
-                    text: 'Изображение',
-                    datetime: '10:49',
-                    count: '2',
-                    senderId: 2,
+            chatList: props.chatList,
+            createChatPopup: {
+                title: 'Поиск пользователей',
+                btnText: 'Начать чат',
+                field: {
+                    label: 'Поиск пользователей',
+                    name: 'serach_user',
+                    type: 'text',
+                    value: '',
+                    isTopLabelPosition: true,
                 },
-                {
-                    img: '',
-                    chatName: 'Киноклуб',
-                    text: 'стикер',
-                    datetime: '10:49',
-                    count: '',
-                    senderId: 1,
-                },
-                {
-                    img: '',
-                    chatName: 'Вадим',
-                    text: 'Хочу себе такую',
-                    datetime: '12:01',
-                    count: '',
-                    senderId: 1,
-                },
-            ],
-            selectedСhat: {
-                name: 'Вадим',
-                img: '',
             },
         };
         super(messengerProps);
+
+        this.setProps({
+            ...props,
+            onCreateChatBtnClick: this.onCreateChatBtnClick.bind(this),
+        });
+    }
+
+    init() {
+        ChatController.fetchChats();
+
+        this.props.createChatPopup.field.onInputField =
+            debounce(this.onSearchUsers.bind(this));
+        this.props.createChatPopup.onSend =
+            this.onSendBtnClick.bind(this);
     }
 
     render() {
         return this.compile(template, {
             ...this.props,
             children: this.children,
+            refs: this.refs,
         });
     }
+
+    onCreateChatBtnClick() {
+        const popup = document.querySelector('.popup');
+
+        if (popup) {
+            popup.classList.toggle('hidden');
+        }
+    }
+
+    onSearchUsers(e: Event) {
+        console.log('e: ', e);
+    }
+
+    onSendBtnClick(data: FormData) {
+        console.log('data: ', data);
+    }
 }
+
+export const withChatList = withStore((state) => ({
+    accountAvatar: state.currentUser.avatar,
+    chatList: [...(state.chatList || [])],
+}));
+
+export default withChatList(Messenger as typeof Block);

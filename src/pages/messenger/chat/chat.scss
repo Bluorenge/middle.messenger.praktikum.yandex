@@ -2,6 +2,7 @@
     display: grid;
     grid-template-rows: auto 1fr auto;
     height: 100%;
+    overflow: hidden;
 
     &__header {
         margin-bottom: 10px;
@@ -17,6 +18,8 @@
         margin-top: auto;
         border-bottom: 1px solid $grey-lighter;
         overflow-x: hidden;
+        overflow-y: auto;
+        height: 100%;
     }
 
     &__send-wrap {

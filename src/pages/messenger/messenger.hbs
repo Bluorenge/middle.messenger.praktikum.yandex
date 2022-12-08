@@ -3,39 +3,49 @@
         <div class="messenger__sidebar-header">
             <div class="messenger__account">
                 <div class="messenger__account-img-wrap">
-                    {{#if accountImg}}
-                        <img src="{{accountImg}}" alt="account-img">
+                    {{#if accountAvatar}}
+                        <img src="{{resourcesPath}}{{accountAvatar}}" alt="account-img">
                     {{/if}}
                 </div>
 
                 <div class="messenger__account-link-wrap">
-                    <a href="/account.html">
+                    {{#Link to="/account"}}
                         Профиль
                         <span class="arrow-right-icon"></span>
-                    </a>
+                    {{/Link}}
+                </div>
+
+                <div class="messenger__account-create-chat">
+                    {{{Button text="Создать чат" onClick=onCreateChatBtnClick}}}
                 </div>
             </div>
 
             <form class="messenger__search-form">
-                {{{Field label="Поиск" name="search" type="text" class="field--search" icon=searchFieldIcon}}}
+                {{{Field
+                    label="Поиск"
+                    name="search"
+                    type="text"
+                    class="field--search"
+                    icon=searchFieldIcon
+                }}}
             </form>
         </div>
 
         <ul class="messenger__chat-list">
             {{#each chatList}}
-                {{{ChatListItem 
-                    img=this.img
-                    chatName=this.chatName
-                    text=this.text
-                    datetime=this.datetime
-                    count=this.count
-                    senderId=this.senderId
-                }}}
+                {{{ChatListItem chatData=this}}}
             {{/each}}
         </ul>
     </aside>
 
     <section class="messenger__main-content">
-        {{{Chat chatName=selectedСhat.name chatImg=selectedСhat.img}}}
+        {{{Chat}}}
     </section>
+
+    {{{Popup
+        title=createChatPopup.title
+        btnText=createChatPopup.btnText
+        field=createChatPopup.field
+        onSendBtnClick=createChatPopup.onSendBtnClick
+    }}}
 </main>

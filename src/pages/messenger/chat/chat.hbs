@@ -1,5 +1,5 @@
 <div class="chat">
-    {{#if chatName}}
+    {{#if selectedChat}}
         <div class="chat__header">
             {{{ChatHeader chatImg=chatImg chatName=chatName}}}
         </div>
@@ -7,18 +7,19 @@
         <div class="chat__content">
             {{#each messages}}
                 {{{Message
-                    text=this.text
+                    currentUserId=currentUserId
+                    senderId=this.user_id
+                    text=content
                     img=this.img
                     date=this.date
                     time=this.time
-                    senderId=this.senderId
                     isViewed=this.isViewed
                 }}}
             {{/each}}
         </div>
 
         <div class="chat__send-wrap">
-            {{{SendForm action=adminActions}}}
+            {{{SendForm}}}
         </div>
     {{else}}
         <div class="chat__empty">
