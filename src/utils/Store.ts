@@ -35,7 +35,7 @@ export interface StoreData {
     loginProps: TObj;
     selectedChat: number;
     chatList: ChatOfList[];
-    messages: Record<number, Message>;
+    messages: Message[];
 }
 
 export class Store extends EventBus {

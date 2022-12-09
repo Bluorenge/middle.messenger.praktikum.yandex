@@ -22,6 +22,12 @@
         height: 100%;
     }
 
+    &__content-block-date {
+        align-self: center;
+        margin-bottom: 30px;
+        color: $grey-dark;
+    }
+
     &__send-wrap {
         padding: 11px 20px 11px 30px;
     }

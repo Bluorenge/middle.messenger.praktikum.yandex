@@ -1,6 +1,6 @@
 <div class="account-header">
     <div class="account-header__img-wrap open-popup">
-        <img src="{{resourcesPath}}{{avatar}}" alt="account-img" class="account-header__img" />
+        <img src="{{#if userAvatar}}{{resourcesPath}}{{/if}}{{avatar}}" alt="account-img" class="account-header__img" />
         <div class="account-header__overlay">
             <p>Поменять аватар</p>
         </div>

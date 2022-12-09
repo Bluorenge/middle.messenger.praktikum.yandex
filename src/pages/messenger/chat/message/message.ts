@@ -5,11 +5,10 @@ import dateFormater from '../../../../utils/dateFormatter';
 type MessageProps = {
     currentUserId: number;
     senderId: number;
-    text: string;
-    img: string;
-    date: string | null;
-    time: string;
-    isViewed: boolean;
+    content: string;
+    file: TObj | null;
+    time: string | null;
+    isRead: boolean;
 };
 
 export default class Message extends Block<MessageProps> {
@@ -17,11 +16,10 @@ export default class Message extends Block<MessageProps> {
         const messageProps = {
             currentUserId: props.currentUserId,
             senderId: props.senderId,
-            text: props.content,
-            img: props.img,
-            date: dateFormater(props.date),
-            time: props.time,
-            isViewed: props.isViewed,
+            content: props.content,
+            file: props.file,
+            time: dateFormater(props.time),
+            isRead: props.isRead,
         };
         super(messageProps);
     }

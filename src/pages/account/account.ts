@@ -1,17 +1,15 @@
 import { User } from './../../api/AuthApi';
 import template from './account.hbs';
 import Block from '../../utils/Block';
-import { ErrorMessageProps } from './../../components/error-message/error-message';
 import { PopupProps } from './../../components/popup/popup';
-
-import { registerComponent } from '../../utils/hbsHelpers';
-// @ts-ignore
-import components from './*/*.ts';
-
 import getFormData from '../../utils/getFormData';
 import { withStore } from './../../utils/Store';
 import AuthController from './../../controllers/AuthController';
 import UserController from './../../controllers/UserController';
+
+import { registerComponent } from '../../utils/hbsHelpers';
+// @ts-ignore
+import components from './*/*.ts';
 
 Object.entries(components).forEach(([key, value]: any) =>
     registerComponent(value[key].default),
@@ -24,7 +22,7 @@ type AccountProps = User & {
         ['account-password-edit']: boolean;
     },
     display_name: string | null;
-    password?: string;
+    password: string;
     avatar: string | null;
     accountName: string;
     fields: Field[];
@@ -34,7 +32,8 @@ type AccountProps = User & {
         isValid: boolean;
         invalidText: string;
     },
-    onLinkClick?: (e: Event) => void;
+    onFormBtnClick: (e: Event) => void;
+    onLogoutBtnClick: () => void;
 };
 
 class Account extends Block<AccountProps> {
@@ -137,21 +136,19 @@ class Account extends Block<AccountProps> {
                     class: 'field--file',
                     accept: 'image/*',
                 },
-                onSend: (data: FormData) => this.uploadAvatar(data),
+                onSend: (data: FormData) => UserController.uploadAvatar(data),
             },
             error: {
                 isValid: false,
                 invalidText: '',
             },
+            onFormBtnClick: (e) => this.onFormBtnClick(e),
+            onLogoutBtnClick: () => AuthController.logout(),
         };
         setAccountView(accountProps, window.location.pathname.slice(1));
 
         super(accountProps);
-
-        this.setProps({
-            ...this.props,
-            onLinkClick: this.onLinkClick.bind(this),
-        });
+        this.setProps(this.props);
     }
 
     render() {
@@ -162,26 +159,16 @@ class Account extends Block<AccountProps> {
         });
     }
 
-    private onLinkClick(e: Event) {
-        if (this.props.accountView.account) {
-            AuthController.logout();
-            return;
-        }
+    private onFormBtnClick(e: Event) {
         e.preventDefault();
         const data = getFormData(this as any);
         const isFormValid = this.fieldsValidation(data);
 
-        if (isFormValid) {
-            if (this.props.accountView['account-info-edit']) {
-                UserController.changeProfile(data as any);
-            } else if (this.props.accountView['account-password-edit']) {
-                UserController.changePassword(data as any);
-            }
+        if (isFormValid && this.props.accountView['account-info-edit']) {
+            UserController.changeProfile(data as any);
+        } else if (isFormValid) {
+            UserController.changePassword(data as any);
         }
-    }
-
-    private uploadAvatar(data: FormData) {
-        UserController.uploadAvatar(data);
     }
 
     private fieldsValidation(data: TObj): boolean {

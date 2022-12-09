@@ -44,11 +44,11 @@
                     <div class="account__actions-wrap">
                         {{#Link to="/account-info-edit" class="account__action-item"}}Изменить данные{{/Link}}
                         {{#Link to="/account-password-edit" class="account__action-item"}}Изменить пароль{{/Link}}
-                        {{#Link to="/login" class="account__action-item link--alert" onClick=onLinkClick}}Выйти{{/Link}}
+                        {{#Link to="/login" class="account__action-item link--alert" onClick=onLogoutBtnClick}}Выйти{{/Link}}
                     </div>
                 {{else}}
                     <div class="account__btn-wrap">
-                        {{{Button text="Сохранить" onClick=onLinkClick}}}
+                        {{{Button text="Сохранить" onClick=onFormBtnClick}}}
                     </div>
                 {{/if}}
             </form>
@@ -59,6 +59,6 @@
         title=accountImgPopupProps.title
         btnText=accountImgPopupProps.btnText
         field=accountImgPopupProps.field
-        onSendBtnClick=accountImgPopupProps.onSendBtnClick
+        onSend=accountImgPopupProps.onSend
     }}}
 </main>

@@ -28,6 +28,7 @@ export class UserController {
         } catch (e) {
             console.log('не удалось изменить пароль', response!.response.reason);
         }
+        await AuthController.fetchUser();
     }
 
     public async uploadAvatar(data: FormData) {
@@ -37,6 +38,7 @@ export class UserController {
         } catch (e) {
             console.log('не удалось изменить профиль', response!.response.reason);
         }
+        await AuthController.fetchUser();
     }
 
     private async checkErrorFrom(response: XMLHttpRequest, propsName: string) {

@@ -39,6 +39,7 @@ export default class HTTPTransport {
     };
 
     public put = (url: string, options: RequestOptions = {}) => {
+        console.log("options: ", options);
         return this.request(
             this.endpoint + url,
             { ...options, method: METHODS.PUT },
@@ -59,14 +60,17 @@ export default class HTTPTransport {
 
     private request = (url: string, options: RequestOptions, timeout = 5000): Promise<XMLHttpRequest> => {
         const { method, data, headers = { 'Content-Type': 'application/json' } } = options;
+        const isFormData = data instanceof FormData;
 
         return new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();
             xhr.open(method!, url);
 
-            Object.keys(headers).forEach(key => {
-                xhr.setRequestHeader(key, headers[key]);
-            });
+            if (!isFormData) {
+                Object.keys(headers).forEach(key => {
+                    xhr.setRequestHeader(key, headers[key]);
+                });
+            }
 
             xhr.onload = function () {
                 resolve(xhr);
@@ -83,7 +87,7 @@ export default class HTTPTransport {
             if (method === METHODS.GET || !data) {
                 xhr.send();
             } else {
-                xhr.send(!(data instanceof FormData) ? JSON.stringify(data) : data);
+                xhr.send(isFormData ? data : JSON.stringify(data));
             }
         });
     };
