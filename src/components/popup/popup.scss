@@ -25,9 +25,19 @@
         }
     }
 
+    &__wrap.xl {
+        @include respond-to(tablet) {
+            width: 440px;
+        }
+    }
+
     &__title {
         margin-bottom: 40px;
         font-size: 15px;
+    }
+
+    &__inner-component-wrap {
+        margin-bottom: 15px;
     }
 
     &__close {

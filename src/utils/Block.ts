@@ -7,6 +7,7 @@ class Block<P extends TObj = {}> {
         INIT: 'init',
         FLOW_CDM: 'flow:component-did-mount',
         FLOW_CDU: 'flow:component-did-update',
+        FLOW_CDUn: 'flow:component-did-unmount',
         FLOW_RENDER: 'flow:render',
     } as const;
 
@@ -91,7 +92,8 @@ class Block<P extends TObj = {}> {
         this.componentDidMount();
     }
 
-    componentDidMount() {}
+    componentDidMount() {
+    }
 
     public dispatchComponentDidMount() {
         this.eventBus().emit(Block.EVENTS.FLOW_CDM);
@@ -103,6 +105,7 @@ class Block<P extends TObj = {}> {
 
     private _componentDidUpdate(oldProps: P, newProps: P) {
         if (this.componentDidUpdate(oldProps, newProps)) {
+            this.children = {}; // потому что все дети добавляются из шаблона на этапе рендера
             this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
         }
     }

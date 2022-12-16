@@ -104,7 +104,7 @@ export default class Field extends Block<FieldProps> {
         );
 
         this.refs.errorMessage.setProps({
-            isValid: isValid,
+            isShow: !isValid,
             text: !isValid ? message : '',
         });
 

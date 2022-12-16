@@ -21,33 +21,32 @@ export default class HTTPTransport {
         this.endpoint = `${HTTPTransport.API_URL}${endpoint}`;
     }
 
-    public get = (url: string, options: RequestOptions = {}) => {
+    public get <Response>(url: string, options: RequestOptions = {}): Promise<Response> {
         url = options.data ? url + queryStringify(options.data) : url;
         return this.request(
             this.endpoint + url,
             { ...options, method: METHODS.GET },
             options.timeout,
         );
-    };
+    }
 
-    public post = (url: string, options: RequestOptions = {}) => {
+    public post <Response>(url: string, options: RequestOptions = {}): Promise<Response> {
         return this.request(
             this.endpoint + url,
             { ...options, method: METHODS.POST },
             options.timeout,
         );
-    };
+    }
 
-    public put = (url: string, options: RequestOptions = {}) => {
-        console.log("options: ", options);
+    public put <Response>(url: string, options: RequestOptions = {}): Promise<Response> {
         return this.request(
             this.endpoint + url,
             { ...options, method: METHODS.PUT },
             options.timeout,
         );
-    };
+    }
 
-    public delete = (url: string, options: RequestOptions = {}) => {
+    public delete <Response>(url: string, options: RequestOptions = {}): Promise<Response> {
         return this.request(
             this.endpoint + url,
             {
@@ -56,9 +55,9 @@ export default class HTTPTransport {
             },
             options.timeout,
         );
-    };
+    }
 
-    private request = (url: string, options: RequestOptions, timeout = 5000): Promise<XMLHttpRequest> => {
+    private request <Response>(url: string, options: RequestOptions, timeout = 5000): Promise<Response> {
         const { method, data, headers = { 'Content-Type': 'application/json' } } = options;
         const isFormData = data instanceof FormData;
 
@@ -73,7 +72,7 @@ export default class HTTPTransport {
             }
 
             xhr.onload = function () {
-                resolve(xhr);
+                resolve(xhr.response);
             };
 
             xhr.onabort = () => reject({ reason: 'abort' });
@@ -90,7 +89,7 @@ export default class HTTPTransport {
                 xhr.send(isFormData ? data : JSON.stringify(data));
             }
         });
-    };
+    }
 }
 
 /**

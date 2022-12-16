@@ -1,33 +1,16 @@
 import BaseAPI from './BaseApi';
+import { ProfileData, PasswordData, User } from './../_models/user';
 
-export interface PasswordData {
-    oldPassword: string;
-    newPassword: string;
-}
-
-export interface ProfileData {
-    first_name: string;
-    second_name: string;
-    display_name: string;
-    login: string;
-    email: string;
-    phone: string;
-}
-
-export class UserAPI extends BaseAPI {
+export default class UserAPI extends BaseAPI {
     constructor() {
         super('/user');
     }
 
-    changeProfile(data: ProfileData) {
+    changeProfile(data: ProfileData): Promise<User> {
         return this.http.put('/profile', { data });
     }
 
-    changePassword(data: PasswordData) {
-        return this.http.put('/password', { data });
-    }
-
-    uploadAvatar(data: FormData) {
+    uploadAvatar(data: FormData): Promise<User> {
         return this.http.put('/profile/avatar', {
             data,
             headers: {
@@ -36,13 +19,21 @@ export class UserAPI extends BaseAPI {
         });
     }
 
-    read(id: string): Promise<unknown> {
+    changePassword(data: PasswordData) {
+        return this.http.put('/password', { data });
+    }
+
+    read(id: string): Promise<User> {
         return this.http.get('/user/' + id);
+    }
+
+    getFoundUsers(login: string): Promise<User[]> {
+        return this.http.post('/search', {
+            data: { login },
+        });
     }
 
     create = undefined;
     update = undefined;
     delete = undefined;
 }
-
-export default new UserAPI();

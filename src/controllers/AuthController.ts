@@ -1,24 +1,11 @@
+import AuthAPI from '../api/AuthApi';
+import { SignInData } from './../_models/auth';
 import store from '../utils/Store';
-import API, { AuthAPI, SignInData } from '../api/AuthApi';
-import Router from '../utils/Router';
+import router from '../utils/Router';
+import { Pages } from '../_models/pages';
 
 export class AuthController {
-    private readonly api: AuthAPI;
-
-    constructor() {
-        this.api = API;
-    }
-
-    public async signIn(data: SignInData) {
-        let response: XMLHttpRequest;
-        try {
-            response = await this.api.signIn(data);
-        } catch (e) {
-            console.log('не удалось залогиниться', response!.response.reason);
-        }
-
-        this.checkErrorFrom(response!, 'loginProps');
-    }
+    private api = new AuthAPI();
 
     public async signUp(fieldsData: any, formData: any) {
         // Чтобы при неудачной отправке формы не терялись введённые значения
@@ -26,44 +13,52 @@ export class AuthController {
             field.value = formData[field.name];
         }
         store.set('registerProps.fields', fieldsData);
+        delete formData.confirm_password;
 
-        let response: XMLHttpRequest;
-        try {
-            delete formData.confirm_password;
-            response = await this.api.signUp(formData);
-        } catch (e) {
-            console.log('не удалось зарегаться', response!.response.reason);
-        }
+        await this.requestWithCheckError('registerProps', () => this.api.signUp(formData));
+    }
 
-        this.checkErrorFrom(response!, 'registerProps');
+    public async signIn(data: SignInData) {
+        await this.requestWithCheckError('loginProps', () => this.api.signIn(data));
     }
 
     public async fetchUser() {
         const user = await this.api.read();
-        const userData = user as any;
-        store.set('currentUser', userData.response);
+        store.set('currentUser', user);
     }
 
     public async logout() {
         await this.api.logout();
 
-        Router.go('/login');
+        router.go(Pages.Login);
     }
 
-    private async checkErrorFrom(response: XMLHttpRequest, propsName: string) {
-        const responseStatus = response!.status;
-        const isSuccessedStatus = responseStatus >= 200 && responseStatus < 300;
+    private async requestWithCheckError(propsName: string, req: () => Promise<any>) {
+        store.set(`${propsName}.error`, null);
+        store.set(`${propsName}.isLoading`, true);
 
-        if (!isSuccessedStatus) {
+        let response: Promise<any>;
+        try {
+            response = await req();
+        } catch (error) {
+            console.log('error: ', error);
+        } finally {
+            store.set(`${propsName}.isLoading`, false);
+        }
+
+        const reasonText = (response! as any).reason;
+
+        if (reasonText) {
             store.set(`${propsName}.error`, {
-                isValid: false,
-                invalidText: response!.response.reason,
+                isShow: true,
+                text: reasonText,
             });
             return;
         }
+
         await this.fetchUser();
 
-        Router.go('/messenger');
+        router.go(Pages.Messenger);
     }
 }
 

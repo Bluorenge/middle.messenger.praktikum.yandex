@@ -1,0 +1,27 @@
+.found-users-list {
+    &__list {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    &__item {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        width: 50%;
+        padding: 15px;
+
+        &:not(:nth-last-of-type(-n + 2)) {
+            margin-bottom: 15px;
+        }
+    }
+
+    &__item:hover,
+    &__item--active {
+        background-color: $blue-light;
+    }
+
+    &__avatar {
+        margin-right: 15px;
+    }
+}

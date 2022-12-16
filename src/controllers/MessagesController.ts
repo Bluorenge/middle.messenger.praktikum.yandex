@@ -1,22 +1,6 @@
 import WSTransport, { WSTransportEvents } from '../utils/WSTransport';
 import store, { StoreEvents } from '../utils/Store';
-
-export interface Message {
-    chat_id: number;
-    time: string;
-    type: string;
-    user_id: number;
-    content: string;
-    file?: {
-        id: number;
-        user_id: number;
-        path: string;
-        filename: string;
-        content_type: string;
-        content_size: number;
-        upload_date: string;
-    }
-}
+import { Message } from './../_models/chat';
 
 class MessagesController {
     private sockets: Map<number, WSTransport> = new Map();
@@ -55,6 +39,7 @@ class MessagesController {
             throw new Error(`Chat ${id} is not connected`);
         }
 
+        // TODO: Обработать разные типы сообщений
         socket.send({
             type: message ? 'message' : 'get old',
             content: message ?? '0',

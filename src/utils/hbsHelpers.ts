@@ -1,11 +1,16 @@
 import Handlebars from 'handlebars/dist/handlebars.runtime';
 import { HelperOptions } from 'handlebars';
 import Block from './Block';
+import mockAvatarImg from '../../static/img/svg/photo.svg';
 
 const RESOURCES_PATH = 'https://ya-praktikum.tech/api/v2/resources';
 
 Handlebars.registerHelper('resourcesPath', function () {
     return RESOURCES_PATH;
+});
+
+Handlebars.registerHelper('mockAvatarImg', function () {
+    return mockAvatarImg;
 });
 
 Handlebars.registerHelper(

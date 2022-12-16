@@ -47,19 +47,12 @@ class Route {
 }
 
 class Router {
-    private static __instance: Router;
     private routes: Route[] = [];
     private currentRoute: Route | null = null;
     private history = window.history;
     private notFoundRedirect = '/not-found';
 
-    constructor(private readonly rootQuery: string) {
-        if (Router.__instance) {
-            return Router.__instance;
-        }
-
-        Router.__instance = this;
-    }
+    constructor(private readonly rootQuery: string) {}
 
     public setNotFoundRedirect(pathname: string) {
         this.notFoundRedirect = pathname;

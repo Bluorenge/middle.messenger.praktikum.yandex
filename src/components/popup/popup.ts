@@ -5,6 +5,8 @@ export type PopupProps = {
     title: string;
     btnText: string;
     field: Field;
+    class?: string;
+    innerComponentName?: string;
     onBtnClick?: (e: Event) => void;
     onSend?: (data: FormData) => void;
     events?: {
@@ -27,10 +29,10 @@ export default class Popup extends Block<PopupProps> {
             },
             events: {
                 click: (e: Event) => {
-                    if (
-                        (e.target as Element).classList.contains('popup__close') ||
-                        (e.target as Element).classList.contains('popup__overlay')
-                    ) {
+                    const targetEl = (e.target as Element);
+                    const isCloseElementsClick = targetEl.classList.contains('popup__close') || targetEl.classList.contains('popup__overlay');
+
+                    if (isCloseElementsClick) {
                         this.toggleVisibility();
                     }
                 },

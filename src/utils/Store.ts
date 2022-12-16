@@ -1,32 +1,14 @@
 import EventBus from './EventBus';
 import { isEqual, set } from './common';
 import Block from './Block';
-import { User } from './../api/AuthApi';
-import { Message } from '../controllers/MessagesController';
+import { User } from './../_models/user';
+import { ChatData, Message } from './../_models/chat';
 
 export enum StoreEvents {
     Updated = 'updated',
     MessagesUpdated = 'messages-updated',
     SelectedChatUpdated = 'selectedChat-updated',
-}
-
-export interface ChatOfList {
-    id: number;
-    title: string;
-    avatar: string | null;
-    unread_count: number | null;
-    last_message: {
-        user: {
-            first_name: string;
-            second_name: string;
-            avatar: string | null;
-            email: string;
-            login: string;
-            phone: string;
-        },
-        time: string;
-        content: string;
-    } | null;
+    FoundUsersUpdated = 'foundUsers-updated',
 }
 
 export interface StoreData {
@@ -34,8 +16,10 @@ export interface StoreData {
     registerProps: TObj;
     loginProps: TObj;
     selectedChat: number;
-    chatList: ChatOfList[];
+    chatList: ChatData[];
     messages: Message[];
+    foundUsers: User[];
+    selectUserForCreateChat: string;
 }
 
 export class Store extends EventBus {

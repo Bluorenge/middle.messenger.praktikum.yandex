@@ -2,9 +2,9 @@
     <aside class="messenger__sidebar">
         <div class="messenger__sidebar-header">
             <div class="messenger__account">
-                <div class="messenger__account-img-wrap">
+                <div class="messenger__account-avatar-wrap">
                     {{#if accountAvatar}}
-                        <img src="{{resourcesPath}}{{accountAvatar}}" alt="account-img">
+                        <img src="{{resourcesPath}}{{accountAvatar}}" alt="avatar">
                     {{/if}}
                 </div>
 
@@ -20,15 +20,17 @@
                 </div>
             </div>
 
-            <form class="messenger__search-form">
-                {{{Field
-                    label="Поиск"
-                    name="search"
-                    type="text"
-                    class="field--search"
-                    icon=searchFieldIcon
-                }}}
-            </form>
+            {{#if chatList}}
+                <form class="messenger__search-form">
+                    {{{Field
+                        label="Поиск"
+                        name="search"
+                        type="text"
+                        class="field--search"
+                        icon=searchFieldIcon
+                    }}}
+                </form>
+            {{/if}}
         </div>
 
         <ul class="messenger__chat-list">
@@ -44,8 +46,10 @@
 
     {{{Popup
         title=createChatPopup.title
+        class=createChatPopup.class
         btnText=createChatPopup.btnText
         field=createChatPopup.field
-        onSendBtnClick=createChatPopup.onSendBtnClick
+        onSend=createChatPopup.onSend
+        innerComponentName=createChatPopup.innerComponentName
     }}}
 </main>

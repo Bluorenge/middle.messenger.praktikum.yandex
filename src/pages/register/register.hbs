@@ -21,7 +21,10 @@
         </form>
 
         <div class="register__form-error">
-            {{{ErrorMessage isValid=error.isValid text=error.invalidText}}}
+            {{#if isLoading}}
+                <div class="loader"></div>
+            {{/if}}
+            {{{ErrorMessage isShow=error.isShow text=error.text}}}
         </div>
 
         <div class="register__register-link-wrap">

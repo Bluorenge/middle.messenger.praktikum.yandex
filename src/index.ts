@@ -6,6 +6,7 @@ import commonComponents from './components/**/*.ts';
 
 import Router from './utils/Router';
 import Block from './utils/Block';
+import { Pages } from './_models/pages';
 
 import PagesLinks from './pages/pages-links/pages-links';
 import Login from './pages/login/login';
@@ -21,15 +22,15 @@ window.addEventListener('DOMContentLoaded', async () => {
 
     Router
         .use('/', PagesLinks as typeof Block)
-        .use('/index', PagesLinks as typeof Block)
-        .use('/login', Login as typeof Block)
-        .use('/register', Register as typeof Block)
-        .use('/messenger', Messenger as typeof Block)
-        .use('/account', Account as typeof Block)
-        .use('/account-info-edit', Account as typeof Block)
-        .use('/account-password-edit', Account as typeof Block)
-        .use('/server-error', ErrorPage as typeof Block, '500')
-        .use('/not-found', ErrorPage as typeof Block, '404');
+        .use(Pages.Index, PagesLinks as typeof Block)
+        .use(Pages.Login, Login as typeof Block)
+        .use(Pages.Register, Register as typeof Block)
+        .use(Pages.Messenger, Messenger as typeof Block)
+        .use(Pages.Account, Account as typeof Block)
+        .use(Pages.AccountInfoEdit, Account as typeof Block)
+        .use(Pages.AccountPasswordEdit, Account as typeof Block)
+        .use(Pages.ServerError, ErrorPage as typeof Block, '500')
+        .use(Pages.NotFound, ErrorPage as typeof Block, '404');
 
     try {
         await AuthController.fetchUser();

@@ -21,14 +21,15 @@ export default class Chat extends Block {
             const newState = mapStateToProps(store.getState());
 
             if (!!newState.selectedChat && !isEqual(state, newState)) {
-                for (const mess of newState.messages as any) {
-                    mess.date = null;
+                // Сначала разделяем сообщения на группы по дате
+                for (const message of newState.messages as any) {
+                    message.date = null;
                 }
-                for (const mess of newState.messages as any) {
-                    const dateMessage = dateFormater(mess.time);
+                for (const message of newState.messages as any) {
+                    const dateMessage = dateFormater(message.time);
 
                     if (!(newState.messages as any).find((i: any) => i.date === dateMessage)) {
-                        mess.date = dateMessage;
+                        message.date = dateMessage;
                     }
                 }
                 state = newState;
@@ -45,7 +46,6 @@ export default class Chat extends Block {
 
     render() {
         this.element?.querySelector('.chat__content')?.addEventListener('scroll', this.onScroll);
-        console.count('label');
 
         return this.compile(template, {
             ...this.props,

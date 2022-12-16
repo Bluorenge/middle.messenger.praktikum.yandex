@@ -1,60 +1,60 @@
-import AuthController from './AuthController';
-import API, { ProfileData, PasswordData, UserAPI } from '../api/UserApi';
+import UserAPI from '../api/UserApi';
+import { ProfileData, PasswordData } from './../_models/user';
 import router from '../utils/Router';
-import store from '../utils/Store';
+import { Pages } from './../_models/pages';
+import store, { StoreEvents } from '../utils/Store';
+import AuthController from './AuthController';
 
 export class UserController {
-    private readonly api: UserAPI;
-
-    constructor() {
-        this.api = API;
-    }
+    private api = new UserAPI();
 
     public async changeProfile(data: ProfileData) {
-        let response: XMLHttpRequest;
-        try {
-            response = await this.api.changeProfile(data);
-        } catch (e) {
-            console.log('не удалось изменить профиль', response!.response.reason);
-        }
-
-        this.checkErrorFrom(response!, 'accountProps');
-    }
-
-    public async changePassword(data: PasswordData) {
-        let response: XMLHttpRequest;
-        try {
-            response = await this.api.changePassword(data);
-        } catch (e) {
-            console.log('не удалось изменить пароль', response!.response.reason);
-        }
-        await AuthController.fetchUser();
+        await this.requestWithCheckError(() => this.api.changeProfile(data));
     }
 
     public async uploadAvatar(data: FormData) {
-        let response: XMLHttpRequest;
-        try {
-            response = await this.api.uploadAvatar(data);
-        } catch (e) {
-            console.log('не удалось изменить профиль', response!.response.reason);
-        }
-        await AuthController.fetchUser();
+        await this.requestWithCheckError(() => this.api.uploadAvatar(data));
     }
 
-    private async checkErrorFrom(response: XMLHttpRequest, propsName: string) {
-        const responseStatus = response!.status;
-        const isSuccessedStatus = responseStatus >= 200 || responseStatus < 300;
+    public async changePassword(data: PasswordData) {
+        await this.requestWithCheckError(() => this.api.changePassword(data));
+    }
 
-        if (!isSuccessedStatus) {
-            store.set(`${propsName}.error`, {
-                isValid: false,
-                invalidText: response!.response.reason,
+    public async getUsers(login: string) {
+        if (!login) {
+            store.set('foundUsers', null, StoreEvents.FoundUsersUpdated);
+            return;
+        }
+
+        const response = await this.api.getFoundUsers(login);
+        store.set('foundUsers', response, StoreEvents.FoundUsersUpdated);
+    }
+
+    private async requestWithCheckError(req: () => Promise<any>) {
+        store.set('accountProps.error', null);
+
+        let response: Promise<any>;
+        try {
+            response = await req();
+        } catch (error) {
+            console.log('error: ', error);
+        }
+
+        const reasonText = (response! as any).reason;
+
+        if (reasonText) {
+            store.set('accountProps.error', {
+                isShow: false,
+                text: reasonText,
             });
             return;
         }
+
         await AuthController.fetchUser();
 
-        router.go('/account');
+        router.go(Pages.Account);
+
+        return response!;
     }
 }
 

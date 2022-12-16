@@ -1,5 +1,3 @@
-import store from './Store';
-
 type Indexed<T = unknown> = {
     [key in string]: T;
 };
@@ -85,7 +83,7 @@ function isEqual(lhs: Indexed, rhs: Indexed) {
     return true;
 }
 
-function debounce<T extends Function = Function>(fn: T, ms = 300) {
+function debounce(fn: any, ms = 300) {
     let timeoutId: ReturnType<typeof setTimeout>;
 
     return function (this: any, ...args: any[]) {

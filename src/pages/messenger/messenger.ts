@@ -4,7 +4,9 @@ import lens from '../../../static/img/svg/lens.svg';
 import { PopupProps } from './../../components/popup/popup';
 
 import ChatController from './../../controllers/ChatController';
-import { ChatOfList, withStore } from '../../utils/Store';
+import store, { withStore } from '../../utils/Store';
+import UserController from './../../controllers/UserController';
+import { ChatData } from '../../_models/chat';
 import { debounce } from '../../utils/common';
 
 import { registerComponent } from '../../utils/hbsHelpers';
@@ -18,18 +20,21 @@ Object.entries(components).forEach(([key, value]: any) =>
 type MessengerProps = {
     accountAvatar: string;
     searchFieldIcon: string;
-    chatList: ChatOfList[];
+    chatList: ChatData[];
     createChatPopup: PopupProps
     onCreateChatBtnClick?: () => void;
 };
 
 class Messenger extends Block<MessengerProps> {
     constructor(props: MessengerProps) {
+        console.count('Messenger');
         const messengerProps = {
             accountAvatar: props.accountAvatar ?? '',
             searchFieldIcon: lens,
             chatList: props.chatList,
             createChatPopup: {
+                innerComponentName: 'found-users-list',
+                class: 'xl',
                 title: 'Поиск пользователей',
                 btnText: 'Начать чат',
                 field: {
@@ -38,24 +43,17 @@ class Messenger extends Block<MessengerProps> {
                     type: 'text',
                     value: '',
                     isTopLabelPosition: true,
+                    onInputField: (e: Event) => debounce(this.onSearchUsers(e)),
                 },
+                onSend: () => this.onSendBtnForCreateChatClick(),
             },
+            onCreateChatBtnClick: () => this.onCreateChatBtnClick(),
         };
         super(messengerProps);
-
-        this.setProps({
-            ...props,
-            onCreateChatBtnClick: this.onCreateChatBtnClick.bind(this),
-        });
     }
 
     init() {
         ChatController.fetchChats();
-
-        this.props.createChatPopup.field.onInputField =
-            debounce(this.onSearchUsers.bind(this));
-        this.props.createChatPopup.onSend =
-            this.onSendBtnClick.bind(this);
     }
 
     render() {
@@ -75,11 +73,12 @@ class Messenger extends Block<MessengerProps> {
     }
 
     onSearchUsers(e: Event) {
-        console.log('e: ', e);
+        const searchLogin = (e.target as HTMLInputElement)!.value;
+        UserController.getUsers(searchLogin);
     }
 
-    onSendBtnClick(data: FormData) {
-        console.log('data: ', data);
+    onSendBtnForCreateChatClick() {
+        ChatController.create();
     }
 }
 

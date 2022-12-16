@@ -20,15 +20,12 @@ class Login extends Block {
                 },
             ],
             error: {
-                isValid: false,
-                invalidText: '',
+                isShow: false,
+                text: '',
             },
+            onSingInBtnClick: (e: Event) => this.onSignIn(e),
         };
         super(loginProps);
-
-        this.setProps({
-            onSingInBtnClick: this.onSignIn.bind(this),
-        });
     }
 
     render() {

@@ -1,9 +1,9 @@
-import { User } from './../../api/AuthApi';
 import template from './account.hbs';
 import Block from '../../utils/Block';
 import { PopupProps } from './../../components/popup/popup';
 import getFormData from '../../utils/getFormData';
 import { withStore } from './../../utils/Store';
+import { User } from './../../_models/user';
 import AuthController from './../../controllers/AuthController';
 import UserController from './../../controllers/UserController';
 
@@ -29,8 +29,8 @@ type AccountProps = User & {
     passwordFields: Field[];
     accountImgPopupProps: PopupProps;
     error: {
-        isValid: boolean;
-        invalidText: string;
+        isShow: boolean;
+        text: string;
     },
     onFormBtnClick: (e: Event) => void;
     onLogoutBtnClick: () => void;
@@ -139,16 +139,15 @@ class Account extends Block<AccountProps> {
                 onSend: (data: FormData) => UserController.uploadAvatar(data),
             },
             error: {
-                isValid: false,
-                invalidText: '',
+                isShow: false,
+                text: '',
             },
-            onFormBtnClick: (e) => this.onFormBtnClick(e),
+            onFormBtnClick: (e: Event) => this.onFormBtnClick(e),
             onLogoutBtnClick: () => AuthController.logout(),
         };
         setAccountView(accountProps, window.location.pathname.slice(1));
 
         super(accountProps);
-        this.setProps(this.props);
     }
 
     render() {

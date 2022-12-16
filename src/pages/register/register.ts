@@ -7,10 +7,10 @@ import { withStore } from '../../utils/Store';
 type RegisterProps = {
     fields: Field[],
     error: {
-        isValid: boolean;
-        invalidText: string;
+        isShow: boolean;
+        text: string;
     },
-    onClick?: (e: Event) => void,
+    onClick: (e: Event) => void,
 };
 
 class Register extends Block<RegisterProps> {
@@ -68,16 +68,12 @@ class Register extends Block<RegisterProps> {
                 },
             ],
             error: {
-                isValid: false,
-                invalidText: '',
+                isShow: false,
+                text: '',
             },
+            onClick: (e: Event) => this.onSignUp(e),
         };
         super(registerProps);
-
-        this.setProps({
-            ...this.props,
-            onClick: this.onSignUp.bind(this),
-        });
     }
 
     render() {
@@ -103,6 +99,7 @@ class Register extends Block<RegisterProps> {
         for (const [key, val] of Object.entries(data)) {
             let isValid = this.refs[key].checkValid(val);
 
+            // Потому что пароли проверяем в контроллере
             if (
                 ![data.confirm_password, data.password].includes('')
                 && ['confirm_password', 'password'].includes(key)
