@@ -1,7 +1,9 @@
 import ChatsAPI from '../api/ChatsApi';
-import store, { StoreEvents } from '../utils/Store';
+import store from '../utils/Store';
 import MessagesController from './MessagesController';
+
 import { ChatData } from './../_models/chat';
+import { StoreEvents } from './../_models/store';
 
 export class ChatController {
     private api = new ChatsAPI();
@@ -37,9 +39,8 @@ export class ChatController {
         return this.api.getToken(id);
     }
 
-    public selectChat(id: number) {
-        store.set('selectedChat', id);
-        store.emit(StoreEvents.MessagesUpdated);
+    public selectChat(id: number, title: string, avatar: string | null) {
+        store.set('selectedChat', { id, title, avatar }, StoreEvents.SelectedChatUpdated);
     }
 
     public selectUserForCreateChat(login: string) {

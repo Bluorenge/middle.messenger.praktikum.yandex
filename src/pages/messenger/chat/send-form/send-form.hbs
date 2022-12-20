@@ -4,11 +4,21 @@
             <button class="send-form__action-btn open-sm-popup">
                 <img src="{{attachIcon}}" alt="attach-icon">
             </button>
-            {{{ActionPopup position="up" actions=attachActions ref="actionPopup"}}}
+            {{{ActionPopup
+                position="up"
+                actions=attachActions
+                ref="actionPopup"
+            }}}
         </div>
 
         <div class="send-form__field-wrap">
-            {{{Field label="Сообщение" name="message" type="text" class="field--message" ref="message"}}}
+            {{{Field
+                label="Сообщение"
+                name="message"
+                type="text"
+                class="field--message"
+                ref="message"
+            }}}
         </div>
 
         <div class="send-form__send-btn-wrap">

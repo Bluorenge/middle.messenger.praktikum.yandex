@@ -3,11 +3,11 @@
         margin-bottom: 10px;
     }
 
-    &--right {
+    &--mine {
         margin-left: auto;
     }
 
-    &--right &__content {
+    &--mine &__content {
         background-color: $blue-light;
     }
 

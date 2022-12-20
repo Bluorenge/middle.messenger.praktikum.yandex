@@ -23,7 +23,7 @@ export default class UserAPI extends BaseAPI {
         return this.http.put('/password', { data });
     }
 
-    read(id: string): Promise<User> {
+    read(id: number): Promise<User> {
         return this.http.get('/user/' + id);
     }
 

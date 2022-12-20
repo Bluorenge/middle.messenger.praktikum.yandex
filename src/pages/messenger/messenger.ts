@@ -4,7 +4,7 @@ import lens from '../../../static/img/svg/lens.svg';
 import { PopupProps } from './../../components/popup/popup';
 
 import ChatController from './../../controllers/ChatController';
-import store, { withStore } from '../../utils/Store';
+import { withStore } from '../../utils/Store';
 import UserController from './../../controllers/UserController';
 import { ChatData } from '../../_models/chat';
 import { debounce } from '../../utils/common';
@@ -27,7 +27,6 @@ type MessengerProps = {
 
 class Messenger extends Block<MessengerProps> {
     constructor(props: MessengerProps) {
-        console.count('Messenger');
         const messengerProps = {
             accountAvatar: props.accountAvatar ?? '',
             searchFieldIcon: lens,

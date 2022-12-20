@@ -1,7 +1,7 @@
 <div class="chat">
     {{#if selectedChat}}
         <div class="chat__header">
-            {{{ChatHeader chatImg=chatImg chatName=chatName}}}
+            {{{ChatHeader chatAvatar=selectedChat.avatar chatTitle=selectedChat.title}}}
         </div>
 
         <div class="chat__content">

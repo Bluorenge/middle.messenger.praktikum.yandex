@@ -1,13 +1,13 @@
 import template from './chat-list-item.hbs';
 import Block from '../../../utils/Block';
-import store, { StoreData, StoreEvents } from '../../../utils/Store';
+import { withStore } from '../../../utils/Store';
 import ChatController from './../../../controllers/ChatController';
 import dateFormater from '../../../utils/dateFormatter';
-import { isEqual } from '../../../utils/common';
+import { StoreEvents } from './../../../_models/store';
 
 type ChatListItemProps = {
-    currentUserLogin: string;
-    selectedChat: number;
+    currentUserLogin?: string;
+    selectedChat?: number;
     id: number;
     avatar: string | null;
     title: string;
@@ -20,43 +20,22 @@ type ChatListItemProps = {
     }
 };
 
-export default class ChatListItem extends Block<ChatListItemProps> {
-    constructor({ chatData }: any) {
+class ChatListItem extends Block<ChatListItemProps> {
+    public static componentName = 'ChatListItem';
+
+    constructor({ chatData: { last_message: last_message, ...props } }: any) {
         const chatListItemProps = {
-            id: chatData.id,
-            avatar: chatData.avatar,
-            title: chatData.title,
-            unread_count: chatData.unread_count,
-            time: dateFormater(chatData.last_message?.time),
-            login: chatData.last_message?.user.login,
-            content: chatData.last_message?.content ?? '',
+            time: dateFormater(last_message?.time, true),
+            login: last_message?.user.login || null,
+            content: last_message?.content ?? '',
             events: {
                 click: () => {
-                    ChatController.selectChat(chatData.id);
+                    ChatController.selectChat(this.props.id, this.props.title, this.props.avatar);
                 },
             },
         };
 
-        const mapStateToProps = (state: StoreData) => ({
-            currentUserLogin: state.currentUser.login,
-            selectedChat: state.selectedChat,
-        });
-        let state = mapStateToProps(store.getState());
-
-        super({ ...chatListItemProps, ...state });
-
-        // Подписываемся здесь, потому что компонент регается без HOC
-        store.on(StoreEvents.Updated, () => {
-            const newState = mapStateToProps(store.getState());
-
-            if (!isEqual(state, newState)) {
-                state = newState;
-                this.setProps({
-                    ...chatListItemProps,
-                    ...newState,
-                });
-            }
-        });
+        super({ ...chatListItemProps, ...props });
     }
 
     render() {
@@ -66,3 +45,14 @@ export default class ChatListItem extends Block<ChatListItemProps> {
         });
     }
 }
+
+// * потому что конкретно эти пропсы стора записываются один раз, а чатов может быть больше
+const isForceSetProps = true;
+
+const withSelectedChat = withStore((state) => ({
+    currentUserLogin: state.currentUser.login,
+    selectedChat: state.selectedChat,
+}), StoreEvents.SelectedChatUpdated, isForceSetProps);
+
+
+export default withSelectedChat(ChatListItem as typeof Block);

@@ -10,6 +10,19 @@ export default class EventBus<
     } = {};
 
     on<Event extends MapInterface<E>>(
+        events: Event | Event[],
+        callback: Handler<Args[Event]>,
+    ) {
+        if (Array.isArray(events)) {
+            for (const event of events) {
+                this.addEvent(event, callback);
+            }
+        } else {
+            this.addEvent(events, callback);
+        }
+    }
+
+    private addEvent<Event extends MapInterface<E>>(
         event: Event,
         callback: Handler<Args[Event]>,
     ) {
@@ -21,6 +34,19 @@ export default class EventBus<
     }
 
     off<Event extends MapInterface<E>>(
+        events: Event | Event[],
+        callback: Handler<Args[Event]>,
+    ) {
+        if (Array.isArray(events)) {
+            for (const event of events) {
+                this.removeEvent(event, callback);
+            }
+        } else {
+            this.removeEvent(events, callback);
+        }
+    }
+
+    private removeEvent<Event extends MapInterface<E>>(
         event: Event,
         callback: Handler<Args[Event]>,
     ) {
@@ -28,9 +54,9 @@ export default class EventBus<
             return;
         }
 
-        this.listeners[event] = this.listeners[event]!.filter(
-            listener => listener !== callback,
-        );
+        this.listeners[event] = this.listeners[event]!.filter(listener => {
+            return listener !== callback;
+        });
     }
 
     emit<Event extends MapInterface<E>>(event: Event, ...args: Args[Event]) {

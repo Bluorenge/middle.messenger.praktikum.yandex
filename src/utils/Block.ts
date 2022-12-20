@@ -7,7 +7,7 @@ class Block<P extends TObj = {}> {
         INIT: 'init',
         FLOW_CDM: 'flow:component-did-mount',
         FLOW_CDU: 'flow:component-did-update',
-        FLOW_CDUn: 'flow:component-did-unmount',
+        FLOW_CDUNM: 'flow:component-did-unmount',
         FLOW_RENDER: 'flow:render',
     } as const;
 
@@ -77,6 +77,7 @@ class Block<P extends TObj = {}> {
     _registerEvents(eventBus: EventBus) {
         eventBus.on(Block.EVENTS.INIT, this._init.bind(this));
         eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
+        eventBus.on(Block.EVENTS.FLOW_CDUNM, this._componentDidUnmount.bind(this));
         eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
         eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
     }
@@ -88,18 +89,32 @@ class Block<P extends TObj = {}> {
 
     protected init() {}
 
-    _componentDidMount() {
+    private _componentDidMount() {
         this.componentDidMount();
     }
 
-    componentDidMount() {
-    }
+    protected componentDidMount() {}
 
     public dispatchComponentDidMount() {
         this.eventBus().emit(Block.EVENTS.FLOW_CDM);
 
+        // * ребенка можент не быть на момент первого рендера
         Object.values(this.children).forEach(child =>
             child.dispatchComponentDidMount(),
+        );
+    }
+
+    private _componentDidUnmount() {
+        this.componentDidUnmount();
+    }
+
+    protected componentDidUnmount() {}
+
+    public dispatchComponentDidUnmount() {
+        this.eventBus().emit(Block.EVENTS.FLOW_CDUNM);
+
+        Object.values(this.children).forEach(child =>
+            child.dispatchComponentDidUnmount(),
         );
     }
 
@@ -120,7 +135,6 @@ class Block<P extends TObj = {}> {
         }
 
         Object.assign(this.props, nextProps);
-        this.eventBus().emit(Block.EVENTS.FLOW_CDM);
     };
 
     get element() {

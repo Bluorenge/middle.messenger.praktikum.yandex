@@ -1,14 +1,24 @@
 
-function dateFormater(unformatedDate: string | null | undefined) {
+function dateFormater(unformatedDate: string | null | undefined, isMessage = false) {
     if (!unformatedDate) {
         return null;
     }
     const calcDate = new Date(unformatedDate);
+
+    if (isNaN(+calcDate)) {
+        return unformatedDate;
+    }
+
     const day = calcDate.getDate();
     const diff = new Date().getDate() - day;
 
-    if (diff === 1) {
+    const isYesterday = diff === 1;
+    const isToday = diff < 1;
+
+    if (isYesterday && !isMessage) {
         return 'Вчера';
+    } else if (isToday && !isMessage) {
+        return 'Сегодня';
     }
 
     const hour = calcDate.getHours();
@@ -16,7 +26,7 @@ function dateFormater(unformatedDate: string | null | undefined) {
     const minutes = calcDate.getMinutes();
     const calcMinutes = minutes >= 10 ? minutes : `0${minutes}`;
 
-    if (diff < 1) {
+    if (isToday || isMessage) {
         return `${calcHour}:${calcMinutes}`;
     }
 

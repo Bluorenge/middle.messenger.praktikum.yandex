@@ -30,4 +30,12 @@ export default class Input extends Block {
     render() {
         return this.compile(template, this.props);
     }
+
+    public setValue(value: string) {
+        return (this.element as HTMLInputElement).value = value;
+    }
+
+    public getValue() {
+        return (this.element as HTMLInputElement).value;
+    }
 }

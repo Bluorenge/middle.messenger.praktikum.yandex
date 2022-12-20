@@ -1,13 +1,24 @@
 import template from './send-form.hbs';
 import Block from '../../../../utils/Block';
-import getFormData from '../../../../utils/getFormData';
+import MessagesController from '../../../../controllers/MessagesController';
 
 import clipIcon from '../../../../../static/img/svg/clip.svg';
 import fileIcon from '../../../../../static/img/svg/file.svg';
 import targetIcon from '../../../../../static/img/svg/target.svg';
 import photoIcon from '../../../../../static/img/svg/photo-color-primary.svg';
 
-export default class SendForm extends Block {
+type SendFormProps = {
+    attachIcon: string;
+    attachActions: {
+        text: string;
+        icon: string;
+    }[];
+    events: {
+        click: (e: Event) => void;
+    }
+};
+
+export default class SendForm extends Block<SendFormProps> {
     constructor() {
         const sendFormProps = {
             attachIcon: clipIcon,
@@ -25,24 +36,12 @@ export default class SendForm extends Block {
                     icon: targetIcon,
                 },
             ],
-        };
-        super(sendFormProps);
-
-        this.setProps({
             events: {
-                click: (e: Event) => {
-                    const target = e.target as Element;
-
-                    if (target.closest('.open-sm-popup')) {
-                        e.preventDefault();
-                        this.refs.actionPopup.toggleVisibility();
-                    }
-                    if (target.tagName === 'BUTTON') {
-                        getFormData(this);
-                    }
-                },
+                click: (e: Event) => this.onClick(e),
             },
-        });
+        };
+
+        super(sendFormProps);
     }
 
     render() {
@@ -51,5 +50,24 @@ export default class SendForm extends Block {
             children: this.children,
             refs: this.refs,
         });
+    }
+
+    onClick(e: Event) {
+        const target = e.target as Element;
+
+        if (target.closest('.open-sm-popup')) {
+            e.preventDefault();
+            this.refs.actionPopup.toggleVisibility();
+        }
+        if (target.tagName === 'BUTTON') {
+            const input = this.refs.message.refs.input;
+            const message = input.getValue();
+
+            input.setValue('');
+
+            if (message !== '') {
+                MessagesController.sendMessage(message);
+            }
+        }
     }
 }

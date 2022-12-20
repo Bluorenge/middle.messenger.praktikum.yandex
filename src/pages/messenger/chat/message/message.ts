@@ -12,16 +12,11 @@ type MessageProps = {
 };
 
 export default class Message extends Block<MessageProps> {
-    constructor(props: any) {
-        const messageProps = {
-            currentUserId: props.currentUserId,
-            senderId: props.senderId,
-            content: props.content,
-            file: props.file,
-            time: dateFormater(props.time),
-            isRead: props.isRead,
-        };
-        super(messageProps);
+    constructor({ time, ...props }: any) {
+        super({
+            time: dateFormater(time, true),
+            ...props,
+        });
     }
 
     render() {

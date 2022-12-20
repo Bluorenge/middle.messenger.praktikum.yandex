@@ -1,8 +1,9 @@
 import template from './chat.hbs';
 import Block from '../../../utils/Block';
-import store, { StoreData, StoreEvents } from './../../../utils/Store';
-import { isEqual } from '../../../utils/common';
-import dateFormater from '../../../utils/dateFormatter';
+import { withStore } from './../../../utils/Store';
+
+import { Message } from './../../../_models/chat';
+import { StoreData, StoreEvents } from './../../../_models/store';
 
 import { registerComponent } from '../../../utils/hbsHelpers';
 // @ts-ignore
@@ -12,41 +13,23 @@ Object.entries(components).forEach(([key, value]: any) =>
     registerComponent(value[key].default),
 );
 
-export default class Chat extends Block {
-    constructor() {
-        let state = mapStateToProps(store.getState());
-        super({ ...state });
-        // Подписываемся здесь, потому что компонент регается без HOC
-        store.on(StoreEvents.MessagesUpdated, () => {
-            const newState = mapStateToProps(store.getState());
+type ChatProps = {
+    messages: Message[];
+    selectedChat: number;
+    currentUserId: number;
+};
 
-            if (!!newState.selectedChat && !isEqual(state, newState)) {
-                // Сначала разделяем сообщения на группы по дате
-                for (const message of newState.messages as any) {
-                    message.date = null;
-                }
-                for (const message of newState.messages as any) {
-                    const dateMessage = dateFormater(message.time);
+class Chat extends Block<ChatProps> {
+    public static componentName = 'Chat';
 
-                    if (!(newState.messages as any).find((i: any) => i.date === dateMessage)) {
-                        message.date = dateMessage;
-                    }
-                }
-                state = newState;
-                this.setProps({
-                    ...newState,
-                });
-            }
-        });
-    }
-
-    onScroll(e: any) {
-        console.log('e: ', e);
+    protected componentDidUpdate(oldProps: ChatProps, newProps: ChatProps): boolean {
+        if (!this.props.selectedChat) {
+            return false;
+        }
+        return oldProps !== newProps;
     }
 
     render() {
-        this.element?.querySelector('.chat__content')?.addEventListener('scroll', this.onScroll);
-
         return this.compile(template, {
             ...this.props,
             children: this.children,
@@ -66,8 +49,12 @@ function mapStateToProps(state: StoreData) {
     }
 
     return {
-        messages: (state.messages || [])[selectedChatId] || [],
+        messages: (state.messages || [])[selectedChatId.id] || [],
         selectedChat: state.selectedChat,
         currentUserId: state.currentUser.id,
     };
 }
+
+const withMessages = withStore(mapStateToProps, [StoreEvents.SelectedChatUpdated, StoreEvents.MessagesUpdated], true);
+
+export default withMessages(Chat as typeof Block);

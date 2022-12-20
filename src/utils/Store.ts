@@ -1,26 +1,7 @@
 import EventBus from './EventBus';
 import { isEqual, set } from './common';
 import Block from './Block';
-import { User } from './../_models/user';
-import { ChatData, Message } from './../_models/chat';
-
-export enum StoreEvents {
-    Updated = 'updated',
-    MessagesUpdated = 'messages-updated',
-    SelectedChatUpdated = 'selectedChat-updated',
-    FoundUsersUpdated = 'foundUsers-updated',
-}
-
-export interface StoreData {
-    currentUser: User;
-    registerProps: TObj;
-    loginProps: TObj;
-    selectedChat: number;
-    chatList: ChatData[];
-    messages: Message[];
-    foundUsers: User[];
-    selectUserForCreateChat: string;
-}
+import { StoreEvents, StoreData } from './../_models/store';
 
 export class Store extends EventBus {
     private state: any = {};
@@ -41,16 +22,26 @@ export class Store extends EventBus {
 
 const store = new Store();
 
-export const withStore = (mapStateToProps: (state: StoreData) => TObj) => (Component: typeof Block) => {
-    let state: any;
+export function withStore(
+    mapStateToProps: (state: StoreData) => TObj,
+    nameStoreEvent: string | string[] = StoreEvents.Updated,
+    isForceSetProps = false,
+) {
+    return function (Component: typeof Block) {
+        let state: any;
 
-    return class extends Component {
-        constructor(props: any) {
-            state = mapStateToProps(store.getState());
+        return class extends Component {
+            public static componentName = Component.name || Component.componentName;
 
-            super({ ...props, ...state });
+            constructor(props: any) {
+                state = mapStateToProps(store.getState());
 
-            store.on(StoreEvents.Updated, () => {
+                super({ ...props, ...state });
+
+                store.on(nameStoreEvent, this.storeEventHandler);
+            }
+
+            private storeEventHandler = () => {
                 const newState = mapStateToProps(store.getState());
 
                 if (!isEqual(state, newState)) {
@@ -58,10 +49,18 @@ export const withStore = (mapStateToProps: (state: StoreData) => TObj) => (Compo
                     this.setProps({
                         ...newState,
                     });
+                } else if (isForceSetProps) {
+                    this.setProps({
+                        ...newState,
+                    });
                 }
-            });
-        }
+            };
+
+            protected componentDidUnmount(): void {
+                store.off(nameStoreEvent, this.storeEventHandler);
+            }
+        };
     };
-};
+}
 
 export default store;

@@ -1,6 +1,9 @@
 import WSTransport, { WSTransportEvents } from '../utils/WSTransport';
-import store, { StoreEvents } from '../utils/Store';
+import store from '../utils/Store';
+
 import { Message } from './../_models/chat';
+import { StoreEvents } from './../_models/store';
+import dateFormater from '../utils/dateFormatter';
 
 class MessagesController {
     private sockets: Map<number, WSTransport> = new Map();
@@ -24,8 +27,9 @@ class MessagesController {
         this.sendSocketMessage(id);
     }
 
-    public sendMessage(id: number, message: string) {
-        this.sendSocketMessage(id, message);
+    public sendMessage(message: string) {
+        const chatId = store.getState().selectedChat.id;
+        this.sendSocketMessage(chatId, message);
     }
 
     public closeAll() {
@@ -63,7 +67,21 @@ class MessagesController {
         const currentMessages = (store.getState().messages || [])[id] || [];
 
         messagesToAdd = [...currentMessages, ...messagesToAdd];
+        this.setDateToMessages(messagesToAdd);
         store.set(`messages.${id}`, messagesToAdd, StoreEvents.MessagesUpdated);
+    }
+
+    private setDateToMessages(messages: Message[]) {
+        // Добавляем полям дату, чтобы разделить сообщения на блоки
+        for (const message of messages as any) {
+            message.date = null;
+            const dateMessage = dateFormater(message.time);
+            const isDateBlockExist = (messages as any).find((i: any) => i.date === dateMessage);
+
+            if (!isDateBlockExist) {
+                message.date = dateMessage;
+            }
+        }
     }
 
     private onClose(id: number) {

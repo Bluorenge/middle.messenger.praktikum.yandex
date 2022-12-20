@@ -13,6 +13,7 @@ function render(query: string, block: Block) {
 
     root.innerHTML = '';
     root.append(block.getContent()!);
+    block.dispatchComponentDidMount();
 
     return root;
 }
@@ -28,6 +29,7 @@ class Route {
     ) {}
 
     leave() {
+        this.block?.dispatchComponentDidUnmount();
         this.block = null;
     }
 
@@ -116,7 +118,7 @@ export interface WithRouterProps {
 }
 
 export function withRouter(Component: typeof Block) {
-    return class WithRouter extends Component {
+    return class extends Component {
         public static componentName = Component.name;
 
         constructor(props: any) {
