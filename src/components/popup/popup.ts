@@ -16,28 +16,14 @@ export type PopupProps = {
 
 export default class Popup extends Block<PopupProps> {
     constructor(props: PopupProps) {
-        super({
-            ...props,
-            onBtnClick: (e: Event) => {
-                e.preventDefault();
-                const form = this.getContent()?.querySelector('form');
-
-                if (form && props.onSend) {
-                    const formData = new FormData(form);
-                    props.onSend(formData as any);
-                }
-            },
+        const popupProps = {
+            onBtnClick: (e: Event) => this.onBtnClick(e),
             events: {
-                click: (e: Event) => {
-                    const targetEl = (e.target as Element);
-                    const isCloseElementsClick = targetEl.classList.contains('popup__close') || targetEl.classList.contains('popup__overlay');
-
-                    if (isCloseElementsClick) {
-                        this.toggleVisibility();
-                    }
-                },
+                click: (e: Event) => this.onClick(e),
             },
-        });
+        };
+
+        super({ ...props, ...popupProps });
     }
 
     render() {
@@ -45,5 +31,24 @@ export default class Popup extends Block<PopupProps> {
             ...this.props,
             children: this.children,
         });
+    }
+
+    onBtnClick(e: Event) {
+        e.preventDefault();
+        const form = this.getContent()?.querySelector('form');
+
+        if (form && this.props.onSend) {
+            const formData = new FormData(form);
+            this.props.onSend(formData as any);
+        }
+    }
+
+    onClick(e: Event) {
+        const targetEl = (e.target as Element);
+        const isCloseElementsClick = targetEl.classList.contains('popup__close') || targetEl.classList.contains('popup__overlay');
+
+        if (isCloseElementsClick) {
+            this.toggleVisibility();
+        }
     }
 }

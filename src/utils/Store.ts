@@ -44,12 +44,8 @@ export function withStore(
             private storeEventHandler = () => {
                 const newState = mapStateToProps(store.getState());
 
-                if (!isEqual(state, newState)) {
+                if (!isEqual(state, newState) || isForceSetProps) {
                     state = newState;
-                    this.setProps({
-                        ...newState,
-                    });
-                } else if (isForceSetProps) {
                     this.setProps({
                         ...newState,
                     });

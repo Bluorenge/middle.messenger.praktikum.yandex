@@ -2,25 +2,53 @@ import template from './chat.hbs';
 import Block from '../../../utils/Block';
 import { withStore } from './../../../utils/Store';
 
+import { PopupProps } from './../../../components/popup/popup';
 import { Message } from './../../../_models/chat';
 import { StoreData, StoreEvents } from './../../../_models/store';
 
 import { registerComponent } from '../../../utils/hbsHelpers';
 // @ts-ignore
 import components from './*/*.ts';
+import { debounce } from '../../../utils/common';
 
 Object.entries(components).forEach(([key, value]: any) =>
     registerComponent(value[key].default),
 );
 
 type ChatProps = {
-    messages: Message[];
-    selectedChat: number;
-    currentUserId: number;
+    messages?: Message[];
+    selectedChat?: number;
+    currentUserId?: number;
+    addUserToChatPopup: PopupProps;
 };
 
 class Chat extends Block<ChatProps> {
     public static componentName = 'Chat';
+
+    constructor() {
+        const chatProps = {
+            addUserToChatPopup: {
+                innerComponentName: 'found-users-list',
+                title: 'Поиск пользователей',
+                btnText: 'Начать чат',
+                field: {
+                    label: 'Поиск пользователей',
+                    name: 'serach_user',
+                    type: 'text',
+                    value: '',
+                    isTopLabelPosition: true,
+                    onInputField: (e: Event) => debounce(this.onSearchUsers(e)),
+                },
+                onSend: () => this.onSendBtnForAddUserClick(),
+            },
+        };
+
+        super(chatProps);
+    }
+
+    onSendBtnForAddUserClick() {
+
+    }
 
     protected componentDidUpdate(oldProps: ChatProps, newProps: ChatProps): boolean {
         if (!this.props.selectedChat) {

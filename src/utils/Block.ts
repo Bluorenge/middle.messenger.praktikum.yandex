@@ -120,6 +120,9 @@ class Block<P extends TObj = {}> {
 
     private _componentDidUpdate(oldProps: P, newProps: P) {
         if (this.componentDidUpdate(oldProps, newProps)) {
+            Object.values(this.children).forEach(child =>
+                child.dispatchComponentDidUnmount(),
+            );
             this.children = {}; // потому что все дети добавляются из шаблона на этапе рендера
             this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
         }

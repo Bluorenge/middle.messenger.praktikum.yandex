@@ -15,6 +15,22 @@ import Messenger from './pages/messenger/messenger';
 import Account from './pages/account/account';
 import ErrorPage from './pages/error-page/error-page';
 
+// TODO: добавление в чат пользователя
+// TODO: удаление пользователя из чата
+// TODO: изменение данных пользователя
+// TODO: изменение пароля пользователя
+// TODO: путь к аватрке в чате
+// TODO: проверить добавление новых сообщений и пагинацию
+
+// TODO: тесты для утилит
+// TODO: CSP для статики
+// TODO: защита от уязвимостей
+// TODO: собственная сортировка, стек и очередь
+
+// TODO: скролл в конец сообщений
+// TODO: баг с обнолением отправителя в списке чатов
+// TODO: пройтись по всей архитектуре, проверить связанность
+
 window.addEventListener('DOMContentLoaded', async () => {
     Object.entries(commonComponents).forEach(([key, value]: any) =>
         registerComponent(value[key].default),

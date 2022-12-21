@@ -1,10 +1,21 @@
 import template from './chat-header.hbs';
 import Block from '../../../../utils/Block';
 
-export default class ChatHeader extends Block {
+type ChatHeaderProps = {
+    chatTitle?: string;
+    chatAvatar?: string | null;
+    adminActions: {
+        text: string;
+        class: string;
+    }[];
+    events: {
+        click: (e: Event) => void;
+    }
+};
+
+export default class ChatHeader extends Block<ChatHeaderProps> {
     constructor(props: TObj) {
-        super({
-            ...props,
+        const chatHeaderProps = {
             adminActions: [
                 {
                     text: 'Добавить пользователя',
@@ -15,9 +26,6 @@ export default class ChatHeader extends Block {
                     class: 'remove-icon',
                 },
             ],
-        });
-
-        this.setProps({
             events: {
                 click: (e: Event) => {
                     if ((e.target as Element).closest('.open-sm-popup')) {
@@ -25,7 +33,9 @@ export default class ChatHeader extends Block {
                     }
                 },
             },
-        });
+        };
+
+        super({ ...props, ...chatHeaderProps });
     }
 
     render() {

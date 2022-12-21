@@ -2,6 +2,16 @@ import template from './action-popup.hbs';
 import Block from '../../../../utils/Block';
 
 export default class ActionPopup extends Block {
+    constructor(props: TObj) {
+        super({
+            ...props,
+            events: {
+                click: (e: Event) => {
+                },
+            },
+        });
+    }
+
     render() {
         return this.compile(template, {
             ...this.props,

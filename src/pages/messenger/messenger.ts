@@ -21,7 +21,7 @@ type MessengerProps = {
     accountAvatar: string;
     searchFieldIcon: string;
     chatList: ChatData[];
-    createChatPopup: PopupProps
+    createChatPopup: PopupProps;
     onCreateChatBtnClick?: () => void;
 };
 
@@ -31,6 +31,7 @@ class Messenger extends Block<MessengerProps> {
             accountAvatar: props.accountAvatar ?? '',
             searchFieldIcon: lens,
             chatList: props.chatList,
+            onCreateChatBtnClick: () => this.onCreateChatBtnClick(),
             createChatPopup: {
                 innerComponentName: 'found-users-list',
                 class: 'xl',
@@ -46,8 +47,8 @@ class Messenger extends Block<MessengerProps> {
                 },
                 onSend: () => this.onSendBtnForCreateChatClick(),
             },
-            onCreateChatBtnClick: () => this.onCreateChatBtnClick(),
         };
+
         super(messengerProps);
     }
 
