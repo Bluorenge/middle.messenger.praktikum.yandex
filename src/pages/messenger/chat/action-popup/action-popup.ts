@@ -1,17 +1,17 @@
 import template from './action-popup.hbs';
 import Block from '../../../../utils/Block';
 
-export default class ActionPopup extends Block {
-    constructor(props: TObj) {
-        super({
-            ...props,
-            events: {
-                click: (e: Event) => {
-                },
-            },
-        });
+type ActionPopupProps = {
+    position: string;
+    actions: {
+        text: string;
+        class: string;
+        onClick: () => void;
     }
+    ref: string;
+};
 
+export default class ActionPopup extends Block<ActionPopupProps> {
     render() {
         return this.compile(template, {
             ...this.props,

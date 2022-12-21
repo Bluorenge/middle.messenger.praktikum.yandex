@@ -9,7 +9,6 @@ import { StoreData, StoreEvents } from './../../../_models/store';
 import { registerComponent } from '../../../utils/hbsHelpers';
 // @ts-ignore
 import components from './*/*.ts';
-import { debounce } from '../../../utils/common';
 
 Object.entries(components).forEach(([key, value]: any) =>
     registerComponent(value[key].default),
@@ -25,29 +24,11 @@ type ChatProps = {
 class Chat extends Block<ChatProps> {
     public static componentName = 'Chat';
 
-    constructor() {
-        const chatProps = {
-            addUserToChatPopup: {
-                innerComponentName: 'found-users-list',
-                title: 'Поиск пользователей',
-                btnText: 'Начать чат',
-                field: {
-                    label: 'Поиск пользователей',
-                    name: 'serach_user',
-                    type: 'text',
-                    value: '',
-                    isTopLabelPosition: true,
-                    onInputField: (e: Event) => debounce(this.onSearchUsers(e)),
-                },
-                onSend: () => this.onSendBtnForAddUserClick(),
-            },
-        };
-
-        super(chatProps);
-    }
-
-    onSendBtnForAddUserClick() {
-
+    render() {
+        return this.compile(template, {
+            ...this.props,
+            children: this.children,
+        });
     }
 
     protected componentDidUpdate(oldProps: ChatProps, newProps: ChatProps): boolean {
@@ -55,13 +36,6 @@ class Chat extends Block<ChatProps> {
             return false;
         }
         return oldProps !== newProps;
-    }
-
-    render() {
-        return this.compile(template, {
-            ...this.props,
-            children: this.children,
-        });
     }
 }
 

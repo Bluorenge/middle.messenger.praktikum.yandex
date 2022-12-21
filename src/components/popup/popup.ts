@@ -11,7 +11,8 @@ export type PopupProps = {
     onSend?: (data: FormData) => void;
     events?: {
         click: (e: Event) => void;
-    }
+    },
+    ref?: string;
 };
 
 export default class Popup extends Block<PopupProps> {

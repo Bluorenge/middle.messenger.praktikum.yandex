@@ -5,7 +5,7 @@
     padding: 10px 20px;
     border-bottom: 1px solid $grey-light;
 
-    &__account-wrap {
+    &__title-wrap {
         display: flex;
         align-items: center;
     }
@@ -19,7 +19,7 @@
         border-radius: 50%;
     }
 
-    &__name {
+    &__title {
         cursor: pointer;
         font-weight: 600;
         @include opacity-hover;

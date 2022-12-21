@@ -8,7 +8,7 @@ import { StoreEvents } from './../_models/store';
 export class ChatController {
     private api = new ChatsAPI();
 
-    public async create(title = store.getState().selectUserForCreateChat) {
+    public async create(title: string) {
         await this.api.create(title);
 
         this.fetchChats();

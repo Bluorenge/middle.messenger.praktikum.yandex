@@ -5,9 +5,7 @@ import { PopupProps } from './../../components/popup/popup';
 
 import ChatController from './../../controllers/ChatController';
 import { withStore } from '../../utils/Store';
-import UserController from './../../controllers/UserController';
 import { ChatData } from '../../_models/chat';
-import { debounce } from '../../utils/common';
 
 import { registerComponent } from '../../utils/hbsHelpers';
 // @ts-ignore
@@ -31,21 +29,19 @@ class Messenger extends Block<MessengerProps> {
             accountAvatar: props.accountAvatar ?? '',
             searchFieldIcon: lens,
             chatList: props.chatList,
-            onCreateChatBtnClick: () => this.onCreateChatBtnClick(),
+            onCreateChatBtnClick: () =>
+                this.refs[this.props.createChatPopup.ref!].show(),
             createChatPopup: {
-                innerComponentName: 'found-users-list',
-                class: 'xl',
-                title: 'Поиск пользователей',
-                btnText: 'Начать чат',
+                title: 'Название чата',
+                btnText: 'Создать чат',
                 field: {
-                    label: 'Поиск пользователей',
-                    name: 'serach_user',
+                    label: 'Имя чата',
+                    name: 'search_user',
                     type: 'text',
-                    value: '',
                     isTopLabelPosition: true,
-                    onInputField: (e: Event) => debounce(this.onSearchUsers(e)),
                 },
-                onSend: () => this.onSendBtnForCreateChatClick(),
+                onSend: (formData: FormData) => this.onSendBtnForCreateChatClick(formData),
+                ref: 'createChatPopup',
             },
         };
 
@@ -64,21 +60,9 @@ class Messenger extends Block<MessengerProps> {
         });
     }
 
-    onCreateChatBtnClick() {
-        const popup = document.querySelector('.popup');
-
-        if (popup) {
-            popup.classList.toggle('hidden');
-        }
-    }
-
-    onSearchUsers(e: Event) {
-        const searchLogin = (e.target as HTMLInputElement)!.value;
-        UserController.getUsers(searchLogin);
-    }
-
-    onSendBtnForCreateChatClick() {
-        ChatController.create();
+    onSendBtnForCreateChatClick(formData: FormData) {
+        const newChatName = this.props.createChatPopup.field.name;
+        ChatController.create(formData.get(newChatName) as string);
     }
 }
 

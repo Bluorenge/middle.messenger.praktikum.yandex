@@ -28,9 +28,9 @@ class FoundUsersList extends Block<FoundUsersListProps> {
         super(foundUsersListProps);
     }
 
-    protected componentDidUpdate() {
+    protected componentDidUpdate(oldProps: FoundUsersListProps, newProps: FoundUsersListProps): boolean {
         this.props.initState = false;
-        return true;
+        return oldProps !== newProps;
     }
 
     render() {

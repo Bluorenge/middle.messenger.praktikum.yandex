@@ -29,6 +29,8 @@ import ErrorPage from './pages/error-page/error-page';
 
 // TODO: скролл в конец сообщений
 // TODO: баг с обнолением отправителя в списке чатов
+// TODO: отсортировать список чатов по дате последнего сообщения
+
 // TODO: пройтись по всей архитектуре, проверить связанность
 
 window.addEventListener('DOMContentLoaded', async () => {

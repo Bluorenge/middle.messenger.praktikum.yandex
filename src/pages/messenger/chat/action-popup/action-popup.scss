@@ -2,6 +2,7 @@
     position: absolute;
     box-shadow: 0 0 6px rgb(0 0 0 / 0.14);
     padding: 7.5px 0;
+    z-index: 10;
 
     &--down {
         top: 55px;

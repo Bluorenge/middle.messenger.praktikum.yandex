@@ -1,19 +1,41 @@
 <div class="chat-header">
-    <div class="chat-header__account-wrap">
+    <div class="chat-header__title-wrap">
         <div class="chat-header__img-wrap">
             {{#if chatAvatar}}
                 <img src="{{resourcesPath}}{{chatAvatar}}" alt="account-img">
             {{/if}}
         </div>
-        <div class="chat-header__name">{{chatTitle}}</div>
+        <div class="chat-header__title">{{chatTitle}}</div>
     </div>
 
     <div class="chat-header__actions-wrap">
-        <button class="chat-header__action-btn open-sm-popup dotted-btn"></button>
+        <div class="chat-header__action-btn open-sm-popup dotted-btn">
+            {{{Button class="btn--reset" onClick=onOpenActionPopupBtnClick}}}
+        </div>
+
         {{{ActionPopup
             position="down"
             actions=adminActions
             ref="actionPopup"
+        }}}
+
+        {{{Popup
+            innerComponentName=addUserToChatPopup.innerComponentName
+            class=addUserToChatPopup.class
+            title=addUserToChatPopup.title
+            btnText=addUserToChatPopup.btnText
+            field=addUserToChatPopup.field
+            onSend=addUserToChatPopup.onSend
+            ref=addUserToChatPopup.ref
+        }}}
+
+        {{{Popup
+            innerComponentName=removeUserPopup.innerComponentName
+            title=removeUserPopup.title
+            btnText=removeUserPopup.btnText
+            field=removeUserPopup.field
+            onSend=removeUserPopup.onSend
+            ref=removeUserPopup.ref
         }}}
     </div>
 </div>
