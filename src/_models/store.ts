@@ -1,4 +1,4 @@
-import { ChatData, Message } from './chat';
+import { ChatData, Message, SelectedChat } from './chat';
 import { User } from './user';
 
 export enum StoreEvents {
@@ -12,12 +12,9 @@ export interface StoreData {
     currentUser: User;
     registerProps: TObj;
     loginProps: TObj;
-    selectedChat: {
-        id: number;
-        title: string;
-    };
     chatList: ChatData[];
     messages: Message[];
     foundUsers: User[];
-    selectUserForCreateChat: string;
+    selectedChat: SelectedChat;
+    selectedUser: number;
 }

@@ -43,6 +43,11 @@ export interface DeletedChatData {
     }
 }
 
+export interface DeleteUserFromChatOption {
+    chatId: number;
+    users: number[];
+}
+
 export interface Message {
     chat_id: number;
     time: string;
@@ -58,4 +63,10 @@ export interface Message {
         content_size: number;
         upload_date: string;
     }
+}
+
+export interface SelectedChat {
+    id: number;
+    title: string;
+    avatar: string | null;
 }

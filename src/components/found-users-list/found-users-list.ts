@@ -1,12 +1,12 @@
 import template from './found-users-list.hbs';
 import Block from '../../utils/Block';
 import ChatController from './../../controllers/ChatController';
+
 import { User } from './../../_models/user';
-import { withStore } from '../../utils/Store';
 import { StoreEvents } from './../../_models/store';
+import { withStore } from '../../utils/Store';
 
 type FoundUsersListProps = {
-    initState: boolean;
     events: {
         click: (e: Event) => void;
     }
@@ -18,19 +18,11 @@ class FoundUsersList extends Block<FoundUsersListProps> {
     static ITEM_ACTIVE_CLASS = 'found-users-list__item--active';
 
     constructor() {
-        const foundUsersListProps = {
-            initState: true,
+        super({
             events: {
                 click: (e: Event) => this.onClick(e),
             },
-        };
-
-        super(foundUsersListProps);
-    }
-
-    protected componentDidUpdate(oldProps: FoundUsersListProps, newProps: FoundUsersListProps): boolean {
-        this.props.initState = false;
-        return oldProps !== newProps;
+        });
     }
 
     render() {
@@ -47,11 +39,13 @@ class FoundUsersList extends Block<FoundUsersListProps> {
             listItem.classList.toggle(FoundUsersList.ITEM_ACTIVE_CLASS);
             const name = listItem.querySelector('.found-users-list__name')!.textContent?.trim();
 
-            ChatController.selectUserForCreateChat(name!);
+            ChatController.setSelectedUsers(name!);
         }
     }
 }
 
-const withFoundUsers = withStore((state) => ({ foundUsers: state.foundUsers || [] }), StoreEvents.FoundUsersUpdated);
+const withFoundUsers = withStore((state) => ({
+    foundUsers: state.foundUsers || [],
+}), StoreEvents.FoundUsersUpdated);
 
 export default withFoundUsers(FoundUsersList as typeof Block);

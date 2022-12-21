@@ -1,9 +1,10 @@
 import template from './chat-header.hbs';
 import Block from '../../../../utils/Block';
-import { debounce } from '../../../../utils/common';
-import { PopupProps } from './../../../../components/popup/popup';
+
 import UserController from './../../../../controllers/UserController';
 import ChatController from './../../../../controllers/ChatController';
+import { PopupProps } from './../../../../components/popup/popup';
+import { debounce } from '../../../../utils/common';
 
 type ChatHeaderProps = {
     chatTitle?: string;
@@ -44,14 +45,15 @@ export default class ChatHeader extends Block<ChatHeaderProps> {
                     type: 'text',
                     value: '',
                     isTopLabelPosition: true,
-                    onInputField: (e: Event) => debounce(this.onSearchUsers(e)),
+                    onInputField: (e: Event) => debounce(this.onSearchUsers(e), 800),
                 },
-                onSend: (formData: FormData) => this.onSendBtnForAddUserClick(formData),
+                onSend: () => ChatController.addUsersToChat(),
                 ref: 'addUserToChatPopup',
             },
             removeUserPopup: {
                 innerComponentName: 'found-users-list',
                 title: 'Удалить пользователя',
+                class: 'xl',
                 btnText: 'Удалить',
                 field: {
                     label: 'Имя пользователя',
@@ -61,7 +63,7 @@ export default class ChatHeader extends Block<ChatHeaderProps> {
                     isTopLabelPosition: true,
                     onInputField: (e: Event) => debounce(this.onSearchUsers(e)),
                 },
-                onSend: (formData: FormData) => this.onSendBtnForAddUserClick(formData),
+                onSend: () => ChatController.removeUsersFromChat(),
                 ref: 'removeUserPopup',
             },
             onOpenActionPopupBtnClick: () => this.refs.actionPopup.toggleVisibility(),
@@ -71,6 +73,7 @@ export default class ChatHeader extends Block<ChatHeaderProps> {
     }
 
     render() {
+        console.count('chatHeaderRender');
         return this.compile(template, {
             ...this.props,
             children: this.children,
@@ -81,9 +84,5 @@ export default class ChatHeader extends Block<ChatHeaderProps> {
     onSearchUsers(e: Event) {
         const searchLogin = (e.target as HTMLInputElement)!.value;
         UserController.getUsers(searchLogin);
-    }
-
-    onSendBtnForAddUserClick(formData: FormData) {
-        ChatController.addUserToChat();
     }
 }

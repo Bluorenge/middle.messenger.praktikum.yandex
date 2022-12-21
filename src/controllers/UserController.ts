@@ -33,6 +33,7 @@ export class UserController {
         }
 
         const response = await this.api.getFoundUsers(login);
+        delete store.getState().foundUsers;
         store.set('foundUsers', response, StoreEvents.FoundUsersUpdated);
     }
 

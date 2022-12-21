@@ -4,6 +4,7 @@ import MessagesController from './MessagesController';
 
 import { ChatData } from './../_models/chat';
 import { StoreEvents } from './../_models/store';
+import { User } from './../_models/user';
 
 export class ChatController {
     private api = new ChatsAPI();
@@ -31,20 +32,32 @@ export class ChatController {
         this.fetchChats();
     }
 
-    public addUserToChat(id: number, userId: number) {
-        this.api.addUsers(id, [userId]);
+    public addUsersToChat() {
+        const selectChatId = store.getState().selectedChat.id;
+        const selectedUserId = store.getState().selectedUser.id;
+
+        this.api.addUsers(selectChatId, [selectedUserId]);
+    }
+
+    public removeUsersFromChat() {
+        const selectChatId = store.getState().selectedChat.id;
+        const selectedUserId = store.getState().selectedUser.id;
+
+        this.api.deleteUsers(selectChatId, [selectedUserId]);
     }
 
     public getToken(id: number) {
         return this.api.getToken(id);
     }
 
-    public selectChat(id: number, title: string, avatar: string | null) {
+    public setSelectedChat(id: number, title: string, avatar: string | null) {
         store.set('selectedChat', { id, title, avatar }, StoreEvents.SelectedChatUpdated);
     }
 
-    public selectUserForCreateChat(login: string) {
-        store.set('selectUserForCreateChat', login);
+    public setSelectedUsers(login: string) {
+        const selectedUser = store.getState().foundUsers.find((i: User) => i.login === login).id;
+
+        store.set('selectedUser', selectedUser);
     }
 }
 

@@ -1,10 +1,10 @@
 import template from './chat.hbs';
 import Block from '../../../utils/Block';
-import { withStore } from './../../../utils/Store';
 
 import { PopupProps } from './../../../components/popup/popup';
 import { Message } from './../../../_models/chat';
 import { StoreData, StoreEvents } from './../../../_models/store';
+import { withStore } from './../../../utils/Store';
 
 import { registerComponent } from '../../../utils/hbsHelpers';
 // @ts-ignore

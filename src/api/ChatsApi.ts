@@ -30,7 +30,13 @@ export default class ChatsAPI extends BaseAPI {
 
     addUsers(id: number, users: number[]) {
         return this.http.put('/users', {
-            data: { users, chatId: id },
+            data: { chatId: id, users },
+        });
+    }
+
+    deleteUsers(id: number, users: number[]) {
+        return this.http.delete('/users', {
+            data: { chatId: id, users },
         });
     }
 

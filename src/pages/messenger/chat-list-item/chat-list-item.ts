@@ -30,7 +30,7 @@ class ChatListItem extends Block<ChatListItemProps> {
             content: last_message?.content ?? '',
             events: {
                 click: () => {
-                    ChatController.selectChat(this.props.id, this.props.title, this.props.avatar);
+                    ChatController.setSelectedChat(this.props.id, this.props.title, this.props.avatar);
                 },
             },
         };

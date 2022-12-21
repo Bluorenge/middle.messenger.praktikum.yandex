@@ -56,6 +56,9 @@ class MessagesController {
     }
 
     private onMessage(id: number, messages: Message | Message[]) {
+        if (!Array.isArray(messages) && !messages.user_id) {
+            return;
+        }
         let messagesToAdd: Message[] = [];
 
         if (Array.isArray(messages)) {
