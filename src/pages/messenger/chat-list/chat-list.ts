@@ -27,7 +27,7 @@ class ChatList extends Block<ChatListProps> {
         });
     }
 
-    protected componentDidUpdate(oldProps: ChatListProps, newProps: ChatListProps): boolean {
+    protected componentBeforeUpdate(oldProps: ChatListProps, newProps: ChatListProps): boolean {
         const isNeedUpdate = !isEqual(oldProps, newProps);
         return isNeedUpdate;
     }

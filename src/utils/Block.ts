@@ -6,9 +6,10 @@ class Block<P extends TObj = {}> {
     static EVENTS = {
         INIT: 'init',
         FLOW_CDM: 'flow:component-did-mount',
+        FLOW_RENDER: 'flow:render',
+        FLOW_CBU: 'flow:component-before-update',
         FLOW_CDU: 'flow:component-did-update',
         FLOW_CDUNM: 'flow:component-did-unmount',
-        FLOW_RENDER: 'flow:render',
     } as const;
 
     public id = nanoid(6);
@@ -18,6 +19,7 @@ class Block<P extends TObj = {}> {
     private eventBus: () => EventBus;
     private _element: HTMLElement | null = null;
     public static componentName?: string;
+    private isFirstRender = true;
 
     constructor(propsWithChildren: P) {
         const { props, children } =
@@ -76,10 +78,11 @@ class Block<P extends TObj = {}> {
 
     _registerEvents(eventBus: EventBus) {
         eventBus.on(Block.EVENTS.INIT, this._init.bind(this));
-        eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
-        eventBus.on(Block.EVENTS.FLOW_CDUNM, this._componentDidUnmount.bind(this));
-        eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
         eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
+        eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
+        eventBus.on(Block.EVENTS.FLOW_CBU, this._componentBeforeUpdate.bind(this));
+        eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
+        eventBus.on(Block.EVENTS.FLOW_CDUNM, this._componentDidUnmount.bind(this));
     }
 
     private _init() {
@@ -118,8 +121,8 @@ class Block<P extends TObj = {}> {
         );
     }
 
-    private _componentDidUpdate(oldProps: P, newProps: P) {
-        if (this.componentDidUpdate(oldProps, newProps)) {
+    private _componentBeforeUpdate(oldProps: P, newProps: P) {
+        if (this.componentBeforeUpdate(oldProps, newProps)) {
             Object.values(this.children).forEach(child => {
                 // чтобы не было лишних подписок
                 child.dispatchComponentDidUnmount();
@@ -129,8 +132,19 @@ class Block<P extends TObj = {}> {
         }
     }
 
-    protected componentDidUpdate(oldProps: P, newProps: P) {
+    protected componentBeforeUpdate(oldProps: P, newProps: P) {
         return oldProps !== newProps;
+    }
+
+    private _componentDidUpdate() {
+        this.componentDidUpdate();
+    }
+
+    protected componentDidUpdate() {}
+
+
+    public dispatchComponentDidUpdate() {
+        this.eventBus().emit(Block.EVENTS.FLOW_CDU);
     }
 
     setProps = (nextProps: P) => {
@@ -152,6 +166,16 @@ class Block<P extends TObj = {}> {
         this._element?.replaceWith(newElement);
         this._element = newElement;
         this._addEvents();
+
+        if (this.isFirstRender) {
+            this.isFirstRender = false;
+        } else {
+            this.eventBus().emit(Block.EVENTS.FLOW_CDU);
+
+            Object.values(this.children).forEach(child => {
+                child.dispatchComponentDidUpdate();
+            });
+        }
     }
 
     protected compile(template: (context: any) => string, context: any) {
@@ -195,7 +219,7 @@ class Block<P extends TObj = {}> {
                 const oldTarget = { ...target };
                 target[prop as keyof P] = value;
 
-                this.eventBus().emit(Block.EVENTS.FLOW_CDU, oldTarget, target);
+                this.eventBus().emit(Block.EVENTS.FLOW_CBU, oldTarget, target);
                 return true;
             },
             deleteProperty() {

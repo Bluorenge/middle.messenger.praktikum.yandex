@@ -25,9 +25,12 @@ class ChatMessages extends Block<ChatMessagesProps> {
         });
     }
 
-    protected componentDidUpdate(oldProps: ChatMessagesProps, newProps: ChatMessagesProps): boolean {
-        setTimeout(() => this.getContent()!.scrollTop = this.getContent()!.scrollHeight, 0);
-        return oldProps !== newProps;
+    protected componentDidMount(): void {
+        this.getContent()!.scrollTop = this.getContent()!.scrollHeight;
+    }
+
+    protected componentDidUpdate() {
+        this.getContent()!.scrollTop = this.getContent()!.scrollHeight;
     }
 }
 
