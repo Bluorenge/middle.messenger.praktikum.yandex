@@ -14,7 +14,7 @@ type MessageProps = {
 export default class Message extends Block<MessageProps> {
     constructor({ time, ...props }: any) {
         super({
-            time: dateFormater(time, true),
+            time: dateFormater(time, 'message'),
             ...props,
         });
     }

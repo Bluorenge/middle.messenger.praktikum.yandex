@@ -1,31 +1,21 @@
 <div class="chat">
     {{#if selectedChat}}
         <div class="chat__header">
-            {{{ChatHeader chatAvatar=selectedChat.avatar chatTitle=selectedChat.title}}}
+            {{{ChatHeader
+                chatAvatar=selectedChat.avatar
+                chatTitle=selectedChat.title
+                selectedChatId=selectedChat.id
+            }}}
         </div>
 
-        <div class="chat__content">
-            {{#each messages}}
-                {{#if date}}
-                    <time class="chat__content-block-date">{{date}}</time>
-                {{/if}}
-                {{{Message
-                    currentUserId=../currentUserId
-                    senderId=user_id
-                    content=content
-                    file=file
-                    time=time
-                    isViewed=is_read
-                }}}
-            {{/each}}
-        </div>
+        {{{ChatMessages messages=messages currentUserId=currentUserId ref="ChatMessages"}}}
 
-        <div class="chat__send-wrap">
-            {{{SendForm}}}
+        <div class="chat__footer">
+            {{{ChatFooter}}}
         </div>
     {{else}}
         <div class="chat__empty">
-            Выберите или создайте чат чтобы отправить сообщение
+            Создайте чат, чтобы отправить сообщение
         </div>
     {{/if}}
 </div>

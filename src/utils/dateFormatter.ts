@@ -1,5 +1,4 @@
-
-function dateFormater(unformatedDate: string | null | undefined, isMessage = false) {
+function dateFormater(unformatedDate: string | null | undefined, type?: string) {
     if (!unformatedDate) {
         return null;
     }
@@ -9,6 +8,9 @@ function dateFormater(unformatedDate: string | null | undefined, isMessage = fal
         return unformatedDate;
     }
 
+    const isMessage = type === 'message';
+    const isChatList = type === 'chatList';
+
     const day = calcDate.getDate();
     const diff = new Date().getDate() - day;
 
@@ -17,7 +19,7 @@ function dateFormater(unformatedDate: string | null | undefined, isMessage = fal
 
     if (isYesterday && !isMessage) {
         return 'Вчера';
-    } else if (isToday && !isMessage) {
+    } else if (isToday && !isMessage && !isChatList) {
         return 'Сегодня';
     }
 
@@ -26,7 +28,7 @@ function dateFormater(unformatedDate: string | null | undefined, isMessage = fal
     const minutes = calcDate.getMinutes();
     const calcMinutes = minutes >= 10 ? minutes : `0${minutes}`;
 
-    if (isToday || isMessage) {
+    if (isMessage || isChatList && isToday) {
         return `${calcHour}:${calcMinutes}`;
     }
 

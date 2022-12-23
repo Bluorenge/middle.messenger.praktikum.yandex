@@ -1,17 +1,21 @@
 <div class="found-users-list">
     <ul class="found-users-list__list">
-        {{#each foundUsers}}
-            <li class="found-users-list__item">
-                <img src="
-                    {{#if userAvatar}}
-                        {{resourcesPath}}{{avatar}}
-                    {{else}}
-                        {{{mockAvatarImg}}}
-                    {{/if}}" alt="avatar" class="found-users-list__avatar">
-                <p class="found-users-list__name">
-                    {{login}}
-                </p>
-            </li>
-        {{/each}}
+        {{#if list}}
+            {{#each list}}
+                <li class="found-users-list__item">
+                    <img src="
+                        {{#if userAvatar}}
+                            {{resourcesPath}}{{avatar}}
+                        {{else}}
+                            {{{mockAvatarImg}}}
+                        {{/if}}" alt="avatar" class="found-users-list__avatar">
+                    <p class="found-users-list__name">
+                        {{login}}
+                    </p>
+                </li>
+            {{/each}}
+        {{else unless initState}}
+            <p>Пользователи не найдены</p>
+        {{/if}}
     </ul>
 </div>

@@ -98,10 +98,10 @@ class Block<P extends TObj = {}> {
     public dispatchComponentDidMount() {
         this.eventBus().emit(Block.EVENTS.FLOW_CDM);
 
-        // * ребенка можент не быть на момент первого рендера
-        Object.values(this.children).forEach(child =>
-            child.dispatchComponentDidMount(),
-        );
+        // ! ребенка может не быть на момент первого рендера
+        Object.values(this.children).forEach(child => {
+            child.dispatchComponentDidMount();
+        });
     }
 
     private _componentDidUnmount() {
@@ -120,9 +120,10 @@ class Block<P extends TObj = {}> {
 
     private _componentDidUpdate(oldProps: P, newProps: P) {
         if (this.componentDidUpdate(oldProps, newProps)) {
-            Object.values(this.children).forEach(child =>
-                child.dispatchComponentDidUnmount(),
-            );
+            Object.values(this.children).forEach(child => {
+                // чтобы не было лишних подписок
+                child.dispatchComponentDidUnmount();
+            });
             this.children = {}; // потому что все дети добавляются из шаблона на этапе рендера
             this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
         }
@@ -130,6 +131,10 @@ class Block<P extends TObj = {}> {
 
     protected componentDidUpdate(oldProps: P, newProps: P) {
         return oldProps !== newProps;
+    }
+
+    public dispatchComponentDidUpdate() {
+        this._componentDidMount();
     }
 
     setProps = (nextProps: P) => {
@@ -171,6 +176,8 @@ class Block<P extends TObj = {}> {
             component.getContent()?.append(...Array.from(stub.childNodes));
 
             stub.replaceWith(component.getContent()!);
+            // пропсы могли не измениться, а перерендер произошёл из-за родителя
+            component.eventBus().emit(Block.EVENTS.FLOW_CDU);
         });
 
         return temp.content;

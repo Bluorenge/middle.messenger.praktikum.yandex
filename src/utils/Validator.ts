@@ -4,6 +4,7 @@ export enum ValidationType {
     LOGIN = 'login',
     PHONE = 'phone',
     PASSWORD = 'password',
+    EMPTY = 'empty',
 }
 
 class Validator {
@@ -76,7 +77,7 @@ class Validator {
     }
 
     public validate(type: ValidationType, value: string, compareValue?: string): [boolean, string] {
-        if (!value.length) {
+        if (!value.length || type === ValidationType.EMPTY) {
             return [!!value.length, 'Поле не должно быть пустым'];
         }
         switch (type) {

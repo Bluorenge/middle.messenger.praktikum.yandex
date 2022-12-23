@@ -12,11 +12,13 @@ class Login extends Block {
                     type: 'text',
                     name: 'login',
                     label: 'Логин',
+                    validationType: 'empty',
                 },
                 {
                     type: 'text',
                     name: 'password',
                     label: 'Пароль',
+                    validationType: 'empty',
                 },
             ],
             error: {
@@ -32,13 +34,29 @@ class Login extends Block {
         return this.compile(template, {
             ...this.props,
             children: this.children,
+            refs: this.refs,
         });
     }
 
     private onSignIn(e: Event) {
         e.preventDefault();
         const data = getFormData(this);
-        AuthController.signIn(data as any);
+        const isFormValid = this.fieldsValidation(data);
+
+        if (isFormValid) {
+            AuthController.signIn(data as any);
+        }
+    }
+
+    private fieldsValidation(data: TObj): boolean {
+        const isValidArr = [];
+
+        for (const [key, val] of Object.entries(data)) {
+            const isValid = this.refs[key].checkValid(val);
+            isValidArr.push(isValid);
+        }
+
+        return isValidArr.every(Boolean);
     }
 }
 

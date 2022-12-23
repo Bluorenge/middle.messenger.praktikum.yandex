@@ -31,6 +31,7 @@ export default class Popup extends Block<PopupProps> {
         return this.compile(template, {
             ...this.props,
             children: this.children,
+            refs: this.refs,
         });
     }
 

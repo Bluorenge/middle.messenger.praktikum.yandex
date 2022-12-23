@@ -96,10 +96,10 @@ class Register extends Block<RegisterProps> {
 
     private fieldsValidation(data: TObj): boolean {
         const isValidArr = [];
+
         for (const [key, val] of Object.entries(data)) {
             let isValid = this.refs[key].checkValid(val);
 
-            // Потому что пароли проверяем в контроллере
             if (
                 ![data.confirm_password, data.password].includes('')
                 && ['confirm_password', 'password'].includes(key)

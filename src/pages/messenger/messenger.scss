@@ -1,8 +1,9 @@
 @import "./chat-list-item/chat-list-item";
 @import "./chat/chat";
 @import "./chat/chat-header/chat-header";
+@import "./chat/chat-messages/chat-messages";
 @import "./chat/message/message";
-@import "./chat/send-form/send-form";
+@import "./chat/chat-footer/chat-footer";
 @import "./chat/action-popup/action-popup";
 
 .messenger {

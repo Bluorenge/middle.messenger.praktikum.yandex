@@ -12,9 +12,9 @@
                 onInputField=field.onInputField
                 isTopLabelPosition=field.isTopLabelPosition
             }}}
-            {{#ifEquals innerComponentName 'found-users-list'}}
+            {{#ifEquals innerComponentName 'FoundUsersList'}}
                 <div class="popup__inner-component-wrap">
-                    {{{FoundUsersList}}}
+                    {{{FoundUsersList ref="FoundUsersList"}}}
                 </div>
             {{/ifEquals}}
             <div class="popup__form-btn-wrap">

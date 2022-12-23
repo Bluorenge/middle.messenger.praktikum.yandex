@@ -1,0 +1,16 @@
+<div class="chat-messages">
+    {{#each messages}}
+        {{#if date}}
+            <time class="chat__content-block-date">{{date}}</time>
+        {{/if}}
+
+        {{{Message
+            currentUserId=../currentUserId
+            senderId=user_id
+            content=content
+            file=file
+            time=time
+            isRead=is_read
+        }}}
+    {{/each}}
+</div>

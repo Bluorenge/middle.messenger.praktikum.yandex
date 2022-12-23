@@ -1,4 +1,4 @@
-import template from './send-form.hbs';
+import template from './chat-footer.hbs';
 import Block from '../../../../utils/Block';
 import MessagesController from '../../../../controllers/MessagesController';
 
@@ -13,12 +13,11 @@ type SendFormProps = {
         text: string;
         icon: string;
     }[];
-    events: {
-        click: (e: Event) => void;
-    }
+    onActionBtnClick: () => void;
+    onSendMessageBtnClick: (e: Event) => void;
 };
 
-export default class SendForm extends Block<SendFormProps> {
+export default class ChatFooter extends Block<SendFormProps> {
     constructor() {
         const sendFormProps = {
             attachIcon: clipIcon,
@@ -36,12 +35,15 @@ export default class SendForm extends Block<SendFormProps> {
                     icon: targetIcon,
                 },
             ],
-            events: {
-                click: (e: Event) => this.onClick(e),
-            },
+            onActionBtnClick: () => this.refs.actionPopup.toggleVisibility(),
+            onSendMessageBtnClick: (e: Event) => this.onSendMessageBtnClick(e),
         };
 
         super(sendFormProps);
+    }
+
+    protected init(): void {
+        setTimeout(() => this.refs.message.refs.input.focus(), 0);
     }
 
     render() {
@@ -52,22 +54,15 @@ export default class SendForm extends Block<SendFormProps> {
         });
     }
 
-    onClick(e: Event) {
-        const target = e.target as Element;
+    onSendMessageBtnClick(e: Event) {
+        e.preventDefault();
+        const input = this.refs.message.refs.input;
+        const message = input.getValue();
 
-        if (target.closest('.open-sm-popup')) {
-            e.preventDefault();
-            this.refs.actionPopup.toggleVisibility();
-        }
-        if (target.tagName === 'BUTTON') {
-            const input = this.refs.message.refs.input;
-            const message = input.getValue();
+        input.setValue('');
 
-            input.setValue('');
-
-            if (message !== '') {
-                MessagesController.sendMessage(message);
-            }
+        if (message !== '') {
+            MessagesController.sendMessage(message);
         }
     }
 }

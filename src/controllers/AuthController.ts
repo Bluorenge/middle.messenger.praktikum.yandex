@@ -18,8 +18,8 @@ export class AuthController {
         await this.requestWithCheckError('registerProps', () => this.api.signUp(formData));
     }
 
-    public async signIn(data: SignInData) {
-        await this.requestWithCheckError('loginProps', () => this.api.signIn(data));
+    public signIn(data: SignInData) {
+        this.requestWithCheckError('loginProps', () => this.api.signIn(data));
     }
 
     public async fetchUser() {
@@ -46,7 +46,7 @@ export class AuthController {
             store.set(`${propsName}.isLoading`, false);
         }
 
-        const reasonText = (response! as any).reason;
+        const reasonText = (response! as any)?.reason;
 
         if (reasonText) {
             store.set(`${propsName}.error`, {

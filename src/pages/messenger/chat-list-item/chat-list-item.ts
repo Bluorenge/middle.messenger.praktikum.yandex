@@ -25,7 +25,7 @@ class ChatListItem extends Block<ChatListItemProps> {
 
     constructor({ chatData: { last_message: last_message, ...props } }: any) {
         const chatListItemProps = {
-            time: dateFormater(last_message?.time, true),
+            time: dateFormater(last_message?.time, 'chatList'),
             login: last_message?.user.login || null,
             content: last_message?.content ?? '',
             events: {
@@ -47,12 +47,12 @@ class ChatListItem extends Block<ChatListItemProps> {
 }
 
 // * потому что конкретно эти пропсы стора записываются один раз, а чатов может быть больше
-const isForceSetProps = true;
+const FORCE_SET_PROPS = true;
 
 const withSelectedChat = withStore((state) => ({
     currentUserLogin: state.currentUser.login,
     selectedChat: state.selectedChat,
-}), StoreEvents.SelectedChatUpdated, isForceSetProps);
+}), StoreEvents.SelectedChatUpdated, FORCE_SET_PROPS);
 
 
 export default withSelectedChat(ChatListItem as typeof Block);

@@ -12,7 +12,7 @@
 
             <div class="message__time">
                 {{#ifEquals senderId currentUserId}}
-                    <svg {{#isRead}}class="stroke-color-primary"{{/isRead}} viewBox="0 0 15 7" width="15" height="7"
+                    <svg {{#if isRead}}class="stroke-color-primary"{{/if}} viewBox="0 0 15 7" width="15" height="7"
                         fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path transform="matrix(.70593 .70828 -.70593 .70828 .049 3)" stroke="#999999" d="M0-.5h5.647" />
                         <path transform="matrix(.70593 -.70828 .70593 .70828 4.036 7)" stroke="#999999" d="M0-.5h8.471" />

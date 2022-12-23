@@ -5,7 +5,6 @@ import AuthController from './AuthController';
 
 import { Pages } from './../_models/pages';
 import { ProfileData, PasswordData } from './../_models/user';
-import { StoreEvents } from './../_models/store';
 
 export class UserController {
     private api = new UserAPI();
@@ -26,15 +25,12 @@ export class UserController {
         return this.api.read(id);
     }
 
-    public async getUsers(login: string) {
+    public getUsers(login: string) {
         if (!login) {
-            store.set('foundUsers', null, StoreEvents.FoundUsersUpdated);
-            return;
+            return null;
         }
 
-        const response = await this.api.getFoundUsers(login);
-        delete store.getState().foundUsers;
-        store.set('foundUsers', response, StoreEvents.FoundUsersUpdated);
+        return this.api.getFoundUsers(login);
     }
 
     private async requestWithCheckError(req: () => Promise<any>) {

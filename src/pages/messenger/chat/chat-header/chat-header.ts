@@ -7,6 +7,7 @@ import { PopupProps } from './../../../../components/popup/popup';
 import { debounce } from '../../../../utils/common';
 
 type ChatHeaderProps = {
+    selectedChatId?: number;
     chatTitle?: string;
     chatAvatar?: string | null;
     adminActions: {
@@ -20,6 +21,8 @@ type ChatHeaderProps = {
 };
 
 export default class ChatHeader extends Block<ChatHeaderProps> {
+    public static componentName = 'ChatHeader';
+
     constructor(props: TObj) {
         const chatHeaderProps = {
             adminActions: [
@@ -33,9 +36,14 @@ export default class ChatHeader extends Block<ChatHeaderProps> {
                     class: 'remove-icon',
                     onClick: () => this.refs.removeUserPopup.show(),
                 },
+                {
+                    text: 'Удалить чат',
+                    class: 'remove-icon',
+                    onClick: () => ChatController.delete(this.props.selectedChatId!),
+                },
             ],
             addUserToChatPopup: {
-                innerComponentName: 'found-users-list',
+                innerComponentName: 'FoundUsersList',
                 title: 'Добавить пользователя',
                 class: 'xl',
                 btnText: 'Добавить',
@@ -51,7 +59,7 @@ export default class ChatHeader extends Block<ChatHeaderProps> {
                 ref: 'addUserToChatPopup',
             },
             removeUserPopup: {
-                innerComponentName: 'found-users-list',
+                innerComponentName: 'FoundUsersList',
                 title: 'Удалить пользователя',
                 class: 'xl',
                 btnText: 'Удалить',
@@ -73,7 +81,6 @@ export default class ChatHeader extends Block<ChatHeaderProps> {
     }
 
     render() {
-        console.count('chatHeaderRender');
         return this.compile(template, {
             ...this.props,
             children: this.children,
@@ -81,8 +88,16 @@ export default class ChatHeader extends Block<ChatHeaderProps> {
         });
     }
 
-    onSearchUsers(e: Event) {
+    async onSearchUsers(e: Event) {
         const searchLogin = (e.target as HTMLInputElement)!.value;
-        UserController.getUsers(searchLogin);
+        const userList = await UserController.getUsers(searchLogin);
+        const popupProps = this.props.addUserToChatPopup;
+
+        this.refs[popupProps.ref!]
+            .refs[popupProps.innerComponentName!]
+            .setProps({
+                initState: false,
+                list: userList,
+            });
     }
 }

@@ -3,7 +3,7 @@ import Block from '../../../utils/Block';
 
 import { PopupProps } from './../../../components/popup/popup';
 import { Message } from './../../../_models/chat';
-import { StoreData, StoreEvents } from './../../../_models/store';
+import { StoreEvents } from './../../../_models/store';
 import { withStore } from './../../../utils/Store';
 
 import { registerComponent } from '../../../utils/hbsHelpers';
@@ -28,6 +28,7 @@ class Chat extends Block<ChatProps> {
         return this.compile(template, {
             ...this.props,
             children: this.children,
+            refs: this.refs,
         });
     }
 
@@ -39,24 +40,9 @@ class Chat extends Block<ChatProps> {
     }
 }
 
-function mapStateToProps(state: StoreData) {
-    const selectedChatId = state.selectedChat;
-
-    if (!selectedChatId) {
-        return {
-            messages: [],
-            selectedChat: undefined,
-            currentUserId: state.currentUser.id,
-        };
-    }
-
-    return {
-        messages: (state.messages || [])[selectedChatId.id] || [],
-        selectedChat: state.selectedChat,
-        currentUserId: state.currentUser.id,
-    };
-}
-
-const withMessages = withStore(mapStateToProps, [StoreEvents.SelectedChatUpdated, StoreEvents.MessagesUpdated], true);
+const withMessages = withStore((state) => ({
+    selectedChat: state.selectedChat,
+    currentUserId: state.currentUser.id,
+}), StoreEvents.SelectedChatUpdated);
 
 export default withMessages(Chat as typeof Block);

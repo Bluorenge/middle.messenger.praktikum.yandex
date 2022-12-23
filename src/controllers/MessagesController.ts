@@ -1,4 +1,5 @@
 import WSTransport, { WSTransportEvents } from '../utils/WSTransport';
+import ChatController from './ChatController';
 import store from '../utils/Store';
 
 import { Message } from './../_models/chat';
@@ -72,6 +73,7 @@ class MessagesController {
         messagesToAdd = [...currentMessages, ...messagesToAdd];
         this.setDateToMessages(messagesToAdd);
         store.set(`messages.${id}`, messagesToAdd, StoreEvents.MessagesUpdated);
+        ChatController.fetchChats(); // чтобы обновилось время в списке чатов
     }
 
     private setDateToMessages(messages: Message[]) {

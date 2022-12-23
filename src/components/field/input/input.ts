@@ -31,6 +31,10 @@ export default class Input extends Block {
         return this.compile(template, this.props);
     }
 
+    public focus() {
+        (this.element as HTMLInputElement).focus();
+    }
+
     public setValue(value: string) {
         return (this.element as HTMLInputElement).value = value;
     }

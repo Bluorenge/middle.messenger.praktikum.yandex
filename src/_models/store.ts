@@ -14,7 +14,6 @@ export interface StoreData {
     loginProps: TObj;
     chatList: ChatData[];
     messages: Message[];
-    foundUsers: User[];
     selectedChat: SelectedChat;
     selectedUser: number;
 }

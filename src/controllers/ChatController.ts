@@ -4,7 +4,7 @@ import MessagesController from './MessagesController';
 
 import { ChatData } from './../_models/chat';
 import { StoreEvents } from './../_models/store';
-import { User } from './../_models/user';
+import UserController from './UserController';
 
 export class ChatController {
     private api = new ChatsAPI();
@@ -23,7 +23,16 @@ export class ChatController {
 
             await MessagesController.connect(chat.id, token);
         });
+
+        delete store.getState().chatList;
         store.set('chatList', chats);
+
+        // Чтобы был выбран первый чат из списка
+        const firstChat = chats[0];
+
+        if (firstChat) {
+            this.setSelectedChat(firstChat.id, firstChat.title, firstChat.avatar);
+        }
     }
 
     public async delete(id: number) {
@@ -54,10 +63,10 @@ export class ChatController {
         store.set('selectedChat', { id, title, avatar }, StoreEvents.SelectedChatUpdated);
     }
 
-    public setSelectedUsers(login: string) {
-        const selectedUser = store.getState().foundUsers.find((i: User) => i.login === login).id;
+    public async setSelectedUsers(login: string) {
+        const selectedUser = await UserController.getUsers(login);
 
-        store.set('selectedUser', selectedUser);
+        store.set('selectedUser', selectedUser![0]);
     }
 }
 
