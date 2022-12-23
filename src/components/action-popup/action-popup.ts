@@ -1,5 +1,5 @@
 import template from './action-popup.hbs';
-import Block from '../../../../utils/Block';
+import Block from '../../utils/Block';
 
 type ActionPopupProps = {
     position: string;

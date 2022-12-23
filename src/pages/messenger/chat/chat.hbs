@@ -1,18 +1,14 @@
 <div class="chat">
     {{#if selectedChat}}
-        <div class="chat__header">
-            {{{ChatHeader
-                chatAvatar=selectedChat.avatar
-                chatTitle=selectedChat.title
-                selectedChatId=selectedChat.id
-            }}}
-        </div>
+        {{{ChatHeader
+            chatAvatar=selectedChat.avatar
+            chatTitle=selectedChat.title
+            selectedChatId=selectedChat.id
+        }}}
 
-        {{{ChatMessages messages=messages currentUserId=currentUserId ref="ChatMessages"}}}
+        {{{ChatMessages currentUserId=currentUserId}}}
 
-        <div class="chat__footer">
-            {{{ChatFooter}}}
-        </div>
+        {{{ChatFooter}}}
     {{else}}
         <div class="chat__empty">
             Создайте чат, чтобы отправить сообщение

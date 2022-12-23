@@ -25,14 +25,7 @@ export class ChatController {
         });
 
         delete store.getState().chatList;
-        store.set('chatList', chats);
-
-        // Чтобы был выбран первый чат из списка
-        const firstChat = chats[0];
-
-        if (firstChat) {
-            this.setSelectedChat(firstChat.id, firstChat.title, firstChat.avatar);
-        }
+        store.set('chatList', chats, StoreEvents.ChatListUpdated);
     }
 
     public async delete(id: number) {

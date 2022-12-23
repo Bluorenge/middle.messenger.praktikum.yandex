@@ -1,6 +1,6 @@
 import template from './message.hbs';
-import Block from '../../../../utils/Block';
-import dateFormater from '../../../../utils/dateFormatter';
+import Block from '../../../../../utils/Block';
+import dateFormater from '../../../../../utils/dateFormatter';
 
 type MessageProps = {
     currentUserId: number;

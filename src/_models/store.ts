@@ -6,6 +6,7 @@ export enum StoreEvents {
     MessagesUpdated = 'messages-updated',
     SelectedChatUpdated = 'selectedChat-updated',
     FoundUsersUpdated = 'foundUsers-updated',
+    ChatListUpdated = 'chatList-updated',
 }
 
 export interface StoreData {

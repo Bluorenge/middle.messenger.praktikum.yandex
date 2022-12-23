@@ -5,22 +5,17 @@ import { PopupProps } from './../../components/popup/popup';
 
 import ChatController from './../../controllers/ChatController';
 import { withStore } from '../../utils/Store';
-import { ChatData } from '../../_models/chat';
 
 import { registerComponent } from '../../utils/hbsHelpers';
 // @ts-ignore
 import components from './*/*.ts';
-
-Object.entries(components).forEach(([key, value]: any) =>
-    registerComponent(value[key].default),
-);
+Object.entries(components).forEach(([key, value]: any) => registerComponent(value[key].default));
 
 type MessengerProps = {
     accountAvatar: string;
     searchFieldIcon: string;
-    chatList: ChatData[];
-    createChatPopup: PopupProps;
     onCreateChatBtnClick?: () => void;
+    createChatPopup: PopupProps;
 };
 
 class Messenger extends Block<MessengerProps> {
@@ -28,7 +23,6 @@ class Messenger extends Block<MessengerProps> {
         const messengerProps = {
             accountAvatar: props.accountAvatar ?? '',
             searchFieldIcon: lens,
-            chatList: props.chatList,
             onCreateChatBtnClick: () =>
                 this.refs[this.props.createChatPopup.ref!].show(),
             createChatPopup: {
@@ -68,7 +62,6 @@ class Messenger extends Block<MessengerProps> {
 
 export const withChatList = withStore((state) => ({
     accountAvatar: state.currentUser.avatar,
-    chatList: [...(state.chatList || [])],
 }));
 
 export default withChatList(Messenger as typeof Block);

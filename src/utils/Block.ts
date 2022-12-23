@@ -133,10 +133,6 @@ class Block<P extends TObj = {}> {
         return oldProps !== newProps;
     }
 
-    public dispatchComponentDidUpdate() {
-        this._componentDidMount();
-    }
-
     setProps = (nextProps: P) => {
         if (!nextProps) {
             return;
@@ -176,8 +172,6 @@ class Block<P extends TObj = {}> {
             component.getContent()?.append(...Array.from(stub.childNodes));
 
             stub.replaceWith(component.getContent()!);
-            // пропсы могли не измениться, а перерендер произошёл из-за родителя
-            component.eventBus().emit(Block.EVENTS.FLOW_CDU);
         });
 
         return temp.content;

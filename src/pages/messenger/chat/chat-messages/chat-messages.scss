@@ -10,4 +10,10 @@
     height: 100%;
     overflow-x: hidden;
     overflow-y: auto;
+
+    &__date {
+        align-self: center;
+        margin-bottom: 30px;
+        color: $grey-dark;
+    }
 }

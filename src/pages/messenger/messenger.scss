@@ -1,10 +1,10 @@
-@import "./chat-list-item/chat-list-item";
+@import "./chat-list/chat-list";
+@import "./chat-list/chat-list-item/chat-list-item";
 @import "./chat/chat";
 @import "./chat/chat-header/chat-header";
 @import "./chat/chat-messages/chat-messages";
-@import "./chat/message/message";
+@import "./chat/chat-messages/message/message";
 @import "./chat/chat-footer/chat-footer";
-@import "./chat/action-popup/action-popup";
 
 .messenger {
     display: flex;

@@ -1,24 +1,18 @@
 import template from './chat.hbs';
 import Block from '../../../utils/Block';
 
-import { PopupProps } from './../../../components/popup/popup';
-import { Message } from './../../../_models/chat';
+import { SelectedChat } from './../../../_models/chat';
 import { StoreEvents } from './../../../_models/store';
 import { withStore } from './../../../utils/Store';
 
 import { registerComponent } from '../../../utils/hbsHelpers';
 // @ts-ignore
 import components from './*/*.ts';
-
-Object.entries(components).forEach(([key, value]: any) =>
-    registerComponent(value[key].default),
-);
+Object.entries(components).forEach(([key, value]: any) => registerComponent(value[key].default));
 
 type ChatProps = {
-    messages?: Message[];
-    selectedChat?: number;
-    currentUserId?: number;
-    addUserToChatPopup: PopupProps;
+    selectedChat: SelectedChat;
+    currentUserId: number;
 };
 
 class Chat extends Block<ChatProps> {
@@ -30,13 +24,6 @@ class Chat extends Block<ChatProps> {
             children: this.children,
             refs: this.refs,
         });
-    }
-
-    protected componentDidUpdate(oldProps: ChatProps, newProps: ChatProps): boolean {
-        if (!this.props.selectedChat) {
-            return false;
-        }
-        return oldProps !== newProps;
     }
 }
 

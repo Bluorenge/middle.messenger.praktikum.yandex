@@ -20,24 +20,18 @@
                 </div>
             </div>
 
-            {{#if chatList}}
-                <form class="messenger__search-form">
-                    {{{Field
-                        label="Поиск"
-                        name="search"
-                        type="text"
-                        class="field--search"
-                        icon=searchFieldIcon
-                    }}}
-                </form>
-            {{/if}}
+            <form class="messenger__search-form">
+                {{{Field
+                    label="Поиск"
+                    name="search"
+                    type="text"
+                    class="field--search"
+                    icon=searchFieldIcon
+                }}}
+            </form>
         </div>
 
-        <ul class="messenger__chat-list">
-            {{#each chatList}}
-                {{{ChatListItem chatData=this}}}
-            {{/each}}
-        </ul>
+        {{{ChatList}}}
     </aside>
 
     <section class="messenger__main-content">

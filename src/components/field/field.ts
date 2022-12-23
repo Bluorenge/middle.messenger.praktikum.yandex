@@ -1,6 +1,7 @@
 import Block from '../../utils/Block';
 import Validator, { ValidationType } from '../../utils/Validator';
 import template from './field.hbs';
+
 import { registerComponent } from '../../utils/hbsHelpers';
 // @ts-ignore
 import components from './*/*.ts';
