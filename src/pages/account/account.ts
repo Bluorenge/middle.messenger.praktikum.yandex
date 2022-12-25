@@ -10,10 +10,7 @@ import UserController from './../../controllers/UserController';
 import { registerComponent } from '../../utils/hbsHelpers';
 // @ts-ignore
 import components from './*/*.ts';
-
-Object.entries(components).forEach(([key, value]: any) =>
-    registerComponent(value[key].default),
-);
+Object.entries(components).forEach(([key, value]: any) => registerComponent(value[key].default));
 
 type AccountProps = User & {
     accountView: {
@@ -90,7 +87,7 @@ class Account extends Block<AccountProps> {
                     value: props.display_name ?? '',
                     class: 'field--oneline',
                     isDisable: true,
-                    validationType: '',
+                    validationType: 'none',
                 },
                 {
                     label: 'Телефон',
@@ -105,21 +102,21 @@ class Account extends Block<AccountProps> {
             passwordFields: [
                 {
                     label: 'Старый пароль',
-                    name: 'old_password',
+                    name: 'oldPassword',
                     type: 'text',
                     class: 'field--oneline',
                     validationType: 'password',
                 },
                 {
                     label: 'Новый пароль',
-                    name: 'new_password',
+                    name: 'newPassword',
                     type: 'text',
                     class: 'field--oneline',
                     validationType: 'password',
                 },
                 {
                     label: 'Повторите новый пароль',
-                    name: 'new_password_repeat',
+                    name: 'newPassword_confirm',
                     type: 'text',
                     class: 'field--oneline',
                     validationType: 'password',
@@ -177,9 +174,9 @@ class Account extends Block<AccountProps> {
 
             if (
                 ![data.confirm_password, data.password].includes('')
-                && ['confirm_password', 'password'].includes(key)
+                && ['newPassword', 'newPassword_confirm'].includes(key)
             ) {
-                isValid = this.refs[key].checkValid(data.confirm_password, data.password);
+                isValid = this.refs[key].checkValid(data.newPassword, data.newPassword_confirm);
             }
             isValidArr.push(isValid);
         }
@@ -197,6 +194,6 @@ function setAccountView(props: Record<string, any>, pageName: string): void {
     }
 }
 
-export const withCurrentUser = withStore((state) => ({ ...state.currentUser }));
+export const withCurrentUser = withStore((state) => ({ ...state.currentUser, ...state.accountProps }));
 
 export default withCurrentUser(Account as typeof Block);

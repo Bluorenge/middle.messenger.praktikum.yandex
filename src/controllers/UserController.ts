@@ -44,10 +44,11 @@ export class UserController {
         }
 
         const reasonText = (response! as any).reason;
+        console.log("reasonText: ", reasonText);
 
         if (reasonText) {
             store.set('accountProps.error', {
-                isShow: false,
+                isShow: true,
                 text: reasonText,
             });
             return;

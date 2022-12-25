@@ -13,6 +13,7 @@ export interface StoreData {
     currentUser: User;
     registerProps: TObj;
     loginProps: TObj;
+    accountProps: TObj;
     chatList: ChatData[];
     messages: Message[];
     selectedChat: SelectedChat;

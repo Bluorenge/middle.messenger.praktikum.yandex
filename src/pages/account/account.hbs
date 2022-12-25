@@ -48,7 +48,12 @@
                     </div>
                 {{else}}
                     <div class="account__btn-wrap">
-                        {{{Button text="Сохранить" onClick=onFormBtnClick}}}
+                        {{{Button
+                            text="Сохранить"
+                            onClick=onFormBtnClick
+                            class="account__btn"
+                        }}}
+                        {{{ErrorMessage isShow=error.isShow text=error.text}}}
                     </div>
                 {{/if}}
             </form>
