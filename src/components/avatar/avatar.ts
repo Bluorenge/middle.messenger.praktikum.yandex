@@ -11,7 +11,6 @@ type AvatarProps = {
 
 export default class Avatar extends Block<AvatarProps> {
     constructor(props: any) {
-        console.log("props: ", props);
         super({ ...props, mockAvatarImg });
     }
 

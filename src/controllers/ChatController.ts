@@ -25,11 +25,11 @@ export class ChatController {
         });
 
         delete store.getState().chatList;
-        this.trimMessages(chats);
+        this.trimTextAndSortChats(chats);
         store.set('chatList', chats, StoreEvents.ChatListUpdated);
     }
 
-    private trimMessages(chats: ChatData[]) {
+    private trimTextAndSortChats(chats: ChatData[]) {
         for (const chat of chats) {
             const title = chat.title;
             if (title && title.length > 25) {
@@ -41,6 +41,9 @@ export class ChatController {
                 chat.last_message.content = message.slice(0, 19) + '…';
             }
         }
+        chats.sort((a, b) =>
+            Number(new Date(b.last_message.time)) - Number(new Date(a.last_message.time)),
+        );
     }
 
     public async delete(id: number) {
