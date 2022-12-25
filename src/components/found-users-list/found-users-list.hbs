@@ -3,12 +3,11 @@
         {{#if list}}
             {{#each list}}
                 <li class="found-users-list__item">
-                    <img src="
-                        {{#if userAvatar}}
-                            {{resourcesPath}}{{avatar}}
-                        {{else}}
-                            {{{mockAvatarImg}}}
-                        {{/if}}" alt="avatar" class="found-users-list__avatar">
+                    {{{Avatar
+                        class="found-users-list__avatar-wrap"
+                        avatar=chatAvatar
+                        alt="find-user-avatar"
+                    }}}
                     <p class="found-users-list__name">
                         {{login}}
                     </p>

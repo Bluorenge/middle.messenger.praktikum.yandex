@@ -11,12 +11,11 @@
         align-items: center;
     }
 
-    &__img-wrap {
+    &__avatar-wrap {
         width: 35px;
         height: 35px;
         overflow: hidden;
         margin-right: 10px;
-        background-color: $grey-lighter;
         border-radius: 50%;
     }
 

@@ -1,9 +1,9 @@
 <li class="chat-list-item{{#ifEquals selectedChat.id id}} chat-list-item--active{{/ifEquals}}">
-    <div class="chat-list-item__avatar-wrap">
-        {{#if img}}
-            <img src="{{avatar}}" alt="chat-avatar">
-        {{/if}}
-    </div>
+    {{{Avatar
+        class="chat-list-item__avatar-wrap"
+        avatar=avatar
+        alt="chat-avatar"
+    }}}
 
     <div class="chat-list-item__content-wrap">
         <h3 class="chat-list-item__title">{{title}}</h3>

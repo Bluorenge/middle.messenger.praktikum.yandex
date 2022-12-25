@@ -2,11 +2,11 @@
     <aside class="messenger__sidebar">
         <div class="messenger__sidebar-header">
             <div class="messenger__account">
-                <div class="messenger__account-avatar-wrap">
-                    {{#if accountAvatar}}
-                        <img src="{{resourcesPath}}{{accountAvatar}}" alt="avatar">
-                    {{/if}}
-                </div>
+                {{{Avatar
+                    class="messenger__account-avatar-wrap"
+                    avatar=accountAvatar
+                    alt="account-avatar"
+                }}}
 
                 <div class="messenger__account-link-wrap">
                     {{#Link to="/account"}}

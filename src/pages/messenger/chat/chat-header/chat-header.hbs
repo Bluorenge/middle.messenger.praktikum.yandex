@@ -1,10 +1,10 @@
 <div class="chat-header">
     <div class="chat-header__title-wrap">
-        <div class="chat-header__img-wrap">
-            {{#if chatAvatar}}
-                <img src="{{resourcesPath}}{{chatAvatar}}" alt="account-img">
-            {{/if}}
-        </div>
+        {{{Avatar
+            class="chat-header__avatar-wrap"
+            avatar=chatAvatar
+            alt="account-avatar"
+        }}}
         <div class="chat-header__title">{{chatTitle}}</div>
     </div>
 
