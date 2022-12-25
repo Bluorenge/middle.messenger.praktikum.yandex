@@ -25,7 +25,22 @@ export class ChatController {
         });
 
         delete store.getState().chatList;
+        this.trimMessages(chats);
         store.set('chatList', chats, StoreEvents.ChatListUpdated);
+    }
+
+    private trimMessages(chats: ChatData[]) {
+        for (const chat of chats) {
+            const title = chat.title;
+            if (title && title.length > 25) {
+                chat.title = title.slice(0, 24) + '…';
+            }
+
+            const message = chat.last_message.content;
+            if (message && message.length > 20) {
+                chat.last_message.content = message.slice(0, 19) + '…';
+            }
+        }
     }
 
     public async delete(id: number) {
