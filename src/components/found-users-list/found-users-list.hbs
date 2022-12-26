@@ -1,0 +1,21 @@
+<div class="found-users-list">
+    <ul class="found-users-list__list">
+        {{#if list}}
+            {{#each list}}
+                <li class="found-users-list__item">
+                    {{{Avatar
+                        class="found-users-list__avatar-wrap"
+                        avatar=chatAvatar
+                        alt="find-user-avatar"
+                        isMockedAvatar=true
+                    }}}
+                    <p class="found-users-list__name">
+                        {{login}}
+                    </p>
+                </li>
+            {{/each}}
+        {{else unless initState}}
+            <p>Пользователи не найдены</p>
+        {{/if}}
+    </ul>
+</div>

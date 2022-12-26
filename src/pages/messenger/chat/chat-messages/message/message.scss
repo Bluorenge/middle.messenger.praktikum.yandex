@@ -1,0 +1,54 @@
+.message {
+    &:not(:last-child) {
+        margin-bottom: 10px;
+    }
+
+    &--mine {
+        margin-left: auto;
+    }
+
+    &--mine &__content {
+        background-color: $blue-light;
+    }
+
+    &__img-wrap {
+        width: 47px;
+        height: 47px;
+        overflow: hidden;
+        margin-right: 10px;
+        border-radius: 50%;
+        background-color: $grey-lighter;
+    }
+
+    &__content {
+        position: relative;
+        max-width: 400px;
+        background-color: $grey-lightest;
+
+        &--text {
+            padding: 11px;
+        }
+    }
+
+    &__time {
+        display: block;
+        margin-top: 5px;
+        color: $grey-dark;
+        font-size: 9px;
+        text-align: end;
+
+        &--img,
+        &--inner {
+            position: absolute;
+            right: 11px;
+            bottom: 11px;
+        }
+
+        &--img {
+            padding: 2px 7px;
+            color: #fff;
+            background: rgb(81 81 81 / 0.5);
+            border-radius: 30px;
+        }
+    }
+}

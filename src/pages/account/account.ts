@@ -1,28 +1,54 @@
 import template from './account.hbs';
 import Block from '../../utils/Block';
-import { registerComponent } from '../../utils/hbsHelpers';
+import { PopupProps } from './../../components/popup/popup';
 import getFormData from '../../utils/getFormData';
+import { withStore } from './../../utils/Store';
+import { User } from './../../_models/user';
+import AuthController from './../../controllers/AuthController';
+import UserController from './../../controllers/UserController';
+
+import { registerComponent } from '../../utils/hbsHelpers';
+// @ts-ignore
 import components from './*/*.ts';
+Object.entries(components).forEach(([key, value]: any) => registerComponent(value[key].default));
 
-Object.entries(components).forEach(([key, value]: any) =>
-    registerComponent(value[key].default),
-);
+type AccountProps = User & {
+    accountView: {
+        account: boolean;
+        'account-info-edit': boolean;
+        ['account-password-edit']: boolean;
+    },
+    display_name: string | null;
+    password: string;
+    avatar: string | null;
+    accountName: string;
+    fields: Field[];
+    passwordFields: Field[];
+    accountImgPopupProps: PopupProps;
+    error: {
+        isShow: boolean;
+        text: string;
+    },
+    onFormBtnClick: (e: Event) => void;
+    onLogoutBtnClick: () => void;
+};
 
-export default class Account extends Block {
-    constructor(pageName: string) {
-        const accountProps = {
+class Account extends Block<AccountProps> {
+    constructor(props: AccountProps) {
+        const accountProps: AccountProps = {
+            ...props,
             accountView: {
                 account: false,
                 ['account-info-edit']: false,
                 ['account-password-edit']: false,
             },
-            accountName: 'Иван',
+            accountName: `${props.first_name} ${props.second_name}`,
             fields: [
                 {
                     label: 'Почта',
                     name: 'email',
                     type: 'email',
-                    value: 'pochta@yandex.ru',
+                    value: props.email,
                     class: 'field--oneline',
                     isDisable: true,
                     validationType: 'email',
@@ -31,7 +57,7 @@ export default class Account extends Block {
                     label: 'Логин',
                     name: 'login',
                     type: 'text',
-                    value: 'ivanivanov',
+                    value: props.login,
                     class: 'field--oneline',
                     isDisable: true,
                     validationType: 'login',
@@ -40,7 +66,7 @@ export default class Account extends Block {
                     label: 'Имя',
                     name: 'first_name',
                     type: 'text',
-                    value: 'Иван',
+                    value: props.first_name,
                     class: 'field--oneline',
                     isDisable: true,
                     validationType: 'name',
@@ -49,7 +75,7 @@ export default class Account extends Block {
                     label: 'Фамилия',
                     name: 'second_name',
                     type: 'text',
-                    value: 'Иванов',
+                    value: props.second_name,
                     class: 'field--oneline',
                     isDisable: true,
                     validationType: 'name',
@@ -58,16 +84,16 @@ export default class Account extends Block {
                     label: 'Имя в чате',
                     name: 'display_name',
                     type: 'text',
-                    value: 'Иван',
+                    value: props.display_name ?? '',
                     class: 'field--oneline',
                     isDisable: true,
-                    validationType: '',
+                    validationType: 'none',
                 },
                 {
                     label: 'Телефон',
                     name: 'phone',
                     type: 'text',
-                    value: '+7 (909) 967 30 30',
+                    value: props.phone,
                     class: 'field--oneline',
                     isDisable: true,
                     validationType: 'phone',
@@ -76,37 +102,49 @@ export default class Account extends Block {
             passwordFields: [
                 {
                     label: 'Старый пароль',
-                    name: 'old_password',
+                    name: 'oldPassword',
                     type: 'text',
-                    value: '•••••••••',
                     class: 'field--oneline',
                     validationType: 'password',
                 },
                 {
                     label: 'Новый пароль',
-                    name: 'new_password',
+                    name: 'newPassword',
                     type: 'text',
-                    value: '•••••••••••',
                     class: 'field--oneline',
                     validationType: 'password',
                 },
                 {
                     label: 'Повторите новый пароль',
-                    name: 'new_password_repeat',
+                    name: 'newPassword_confirm',
                     type: 'text',
-                    value: '•••••••••••',
                     class: 'field--oneline',
                     validationType: 'password',
                 },
             ],
+            accountImgPopupProps: {
+                title: 'Загрузите файл',
+                btnText: 'Поменять',
+                field: {
+                    label: 'Выбрать файл на компьютере',
+                    name: 'avatar',
+                    type: 'file',
+                    value: '',
+                    class: 'field--file',
+                    accept: 'image/*',
+                },
+                onSend: (data: FormData) => UserController.uploadAvatar(data),
+            },
+            error: {
+                isShow: false,
+                text: '',
+            },
+            onFormBtnClick: (e: Event) => this.onFormBtnClick(e),
+            onLogoutBtnClick: () => AuthController.logout(),
         };
-        setAccountView(accountProps, pageName);
+        setAccountView(accountProps, window.location.pathname.slice(1));
 
         super(accountProps);
-
-        this.setProps({
-            onClick: this.onClick.bind(this),
-        });
     }
 
     render() {
@@ -117,13 +155,37 @@ export default class Account extends Block {
         });
     }
 
-    private onClick(e: Event) {
+    private onFormBtnClick(e: Event) {
         e.preventDefault();
-        getFormData(this);
+        const data = getFormData(this as any);
+        const isFormValid = this.fieldsValidation(data);
+
+        if (isFormValid && this.props.accountView['account-info-edit']) {
+            UserController.changeProfile(data as any);
+        } else if (isFormValid) {
+            UserController.changePassword(data as any);
+        }
+    }
+
+    private fieldsValidation(data: TObj): boolean {
+        const isValidArr = [];
+        for (const [key, val] of Object.entries(data)) {
+            let isValid = this.refs[key].checkValid(val);
+
+            if (
+                ![data.confirm_password, data.password].includes('')
+                && ['newPassword', 'newPassword_confirm'].includes(key)
+            ) {
+                isValid = this.refs[key].checkValid(data.newPassword, data.newPassword_confirm);
+            }
+            isValidArr.push(isValid);
+        }
+
+        return isValidArr.every(Boolean);
     }
 }
 
-function setAccountView(props: TObj, pageName: string) {
+function setAccountView(props: Record<string, any>, pageName: string): void {
     Object.keys(props.accountView).forEach(
         i => (props.accountView[i] = i === pageName),
     );
@@ -131,3 +193,7 @@ function setAccountView(props: TObj, pageName: string) {
         props.fields[field].isDisable = !props.accountView['account-info-edit'];
     }
 }
+
+export const withCurrentUser = withStore((state) => ({ ...state.currentUser, ...state.accountProps }));
+
+export default withCurrentUser(Account as typeof Block);

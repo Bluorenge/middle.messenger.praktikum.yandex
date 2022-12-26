@@ -1,8 +1,11 @@
 <input
-    class="input"
+    class="input {{class}}{{#if isTopLabelPosition}} field--top-title{{/if}}"
     type="{{type}}"
     name="{{name}}"
     value="{{value}}"
+    {{#if accept}}
+        accept="{{accept}}"
+    {{/if}}
     required
     {{#if isDisable}}
         disabled

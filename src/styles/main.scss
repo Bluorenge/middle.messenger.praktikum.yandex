@@ -6,9 +6,11 @@
 
 @import "../components/field/field";
 @import "../components/field/input/input";
-@import "../components/field/error-message/error-message";
+@import "../components/error-message/error-message";
 @import "../components/button/button";
 @import "../components/popup/popup";
+@import "../components/action-popup/action-popup";
+@import "../components/found-users-list/found-users-list";
 
 @import "../pages/pages-links/pages-links";
 @import "../pages/login/login";

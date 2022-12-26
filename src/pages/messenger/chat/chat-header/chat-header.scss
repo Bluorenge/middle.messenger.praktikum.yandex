@@ -4,22 +4,22 @@
     justify-content: space-between;
     padding: 10px 20px;
     border-bottom: 1px solid $grey-light;
+    margin-bottom: 10px;
 
-    &__account-wrap {
+    &__title-wrap {
         display: flex;
         align-items: center;
     }
 
-    &__img-wrap {
+    &__avatar-wrap {
         width: 35px;
         height: 35px;
         overflow: hidden;
         margin-right: 10px;
-        background-color: $grey-lighter;
         border-radius: 50%;
     }
 
-    &__name {
+    &__title {
         cursor: pointer;
         font-weight: 600;
         @include opacity-hover;

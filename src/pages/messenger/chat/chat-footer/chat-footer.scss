@@ -1,0 +1,33 @@
+.chat-footer {
+    display: flex;
+    align-items: center;
+    padding: 11px 20px 11px 30px;
+
+    &__message-form {
+        display: flex;
+        align-items: center;
+        width: 100%;
+    }
+
+    &__actions-wrap {
+        position: relative;
+        display: inline-flex;
+    }
+
+    &__action-btn {
+        @include reset;
+        width: 25px;
+        height: 25px;
+        margin-right: 10px;
+        cursor: pointer;
+    }
+
+    &__send-btn-wrap {
+        width: 38px;
+        height: 32px;
+    }
+
+    &__field-wrap {
+        flex-grow: 1;
+    }
+}

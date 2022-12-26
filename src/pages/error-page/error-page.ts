@@ -6,10 +6,6 @@ export default class ErrorPage extends Block {
         const errorPageProps = {
             error: error,
             desc: '',
-            prevLink: {
-                link: '/messenger.html',
-                text: 'Назад к чатам',
-            },
         };
         if (errorPageProps.error === '404') {
             errorPageProps.desc = 'Упс. Не туда попали';
@@ -21,6 +17,9 @@ export default class ErrorPage extends Block {
     }
 
     render() {
-        return this.compile(template, this.props);
+        return this.compile(template, {
+            ...this.props,
+            children: this.children,
+        });
     }
 }

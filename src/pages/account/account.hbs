@@ -1,39 +1,69 @@
 <main class="account">
     <aside class="account__sidebar">
         <div class="account__prev-btn-wrap">
-            {{{Button class="btn--arrow-left" href="/account.html"}}}
+            {{{Link to="/messenger" class="btn btn--arrow-left"}}}
         </div>
     </aside>
 
     <section class="account__main-content">
         <div class="account__main-content-wrap">
             <div class="account__img-wrap">
-                {{{AccountImg accountName=accountName}}}
+                {{{AccountHeader accountName=accountName avatar=avatar}}}
             </div>
 
             <form class="account__form">
                 {{#if accountView.account-password-edit}}
                     {{#each passwordFields}}
-                        {{{Field label=label name=name value=value type=type class=class isDisable=isDisable validationType=validationType ref=name}}}
+                        {{{Field
+                            label=label
+                            name=name
+                            value=value
+                            type=type
+                            class=class
+                            isDisable=isDisable
+                            validationType=validationType
+                            ref=name
+                        }}}
                     {{/each}}
                 {{else}}
                     {{#each fields}}
-                        {{{Field label=label name=name value=value type=type class=class isDisable=isDisable validationType=validationType ref=name}}}
+                        {{{Field
+                            label=label
+                            name=name
+                            value=value
+                            type=type
+                            class=class
+                            isDisable=isDisable
+                            validationType=validationType
+                            ref=name
+                        }}}
                     {{/each}}
                 {{/if}}
 
                 {{#if accountView.account}}
-                <div class="account__actions-wrap">
-                    <a href="/account-info-edit.html" class="account__action-item link">Изменить данные</a>
-                    <a href="/account-password-edit.html" class="account__action-item link">Изменить пароль</a>
-                    <a href="/login.html" class="account__action-item link link--alert">Выйти</a>
-                </div>
+                    <div class="account__actions-wrap">
+                        {{#Link to="/account-info-edit" class="account__action-item"}}Изменить данные{{/Link}}
+                        {{#Link to="/account-password-edit" class="account__action-item"}}Изменить пароль{{/Link}}
+                        {{#Link to="/login" class="account__action-item link--alert" onClick=onLogoutBtnClick}}Выйти{{/Link}}
+                    </div>
                 {{else}}
-                <div class="account__btn-wrap">
-                    {{{Button text="Сохранить" onClick=onClick}}}
-                </div>
+                    <div class="account__btn-wrap">
+                        {{{Button
+                            text="Сохранить"
+                            onClick=onFormBtnClick
+                            class="account__btn"
+                        }}}
+                        {{{ErrorMessage isShow=error.isShow text=error.text}}}
+                    </div>
                 {{/if}}
             </form>
         </div>
     </section>
+
+    {{{Popup
+        title=accountImgPopupProps.title
+        btnText=accountImgPopupProps.btnText
+        field=accountImgPopupProps.field
+        onSend=accountImgPopupProps.onSend
+    }}}
 </main>
