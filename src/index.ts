@@ -35,10 +35,10 @@ window.addEventListener('DOMContentLoaded', async () => {
     try {
         await AuthController.fetchUser();
 
-        // Router.go('/messenger');
+        Router.go('/messenger');
     } catch (e) {
         console.log('user don\'t exist', e);
-        // Router.go('/login');
+        Router.go('/login');
     }
 
     Router.start();

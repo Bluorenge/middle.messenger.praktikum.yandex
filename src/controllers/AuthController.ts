@@ -3,6 +3,7 @@ import { SignInData } from './../_models/auth';
 import store from '../utils/Store';
 import router from '../utils/Router';
 import { Pages } from '../_models/pages';
+import MessagesController from './MessagesController';
 
 export class AuthController {
     private api = new AuthAPI();
@@ -23,12 +24,23 @@ export class AuthController {
     }
 
     public async fetchUser() {
-        const user = await this.api.read();
-        store.set('currentUser', user);
+        let response;
+        try {
+            response = await this.api.read();
+            const reasonText = (response! as any)?.reason;
+
+            if (reasonText) {
+                throw new Error(reasonText);
+            }
+            store.set('currentUser', response);
+        } catch (error) {
+            console.log('error: ', error);
+        }
     }
 
     public async logout() {
         await this.api.logout();
+        MessagesController.closeAll();
 
         router.go(Pages.Login);
     }
