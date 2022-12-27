@@ -2,7 +2,7 @@ import ChatsAPI from '../api/ChatsApi';
 import store from '../utils/Store';
 import MessagesController from './MessagesController';
 
-import { ChatData } from './../_models/chat';
+import { ChatData, SelectedChat } from './../_models/chat';
 import { StoreEvents } from './../_models/store';
 import UserController from './UserController';
 
@@ -30,19 +30,23 @@ export class ChatController {
     }
 
     private trimTextAndSortChats(chats: ChatData[]) {
+        if (chats.length === 0) {
+            return;
+        }
+
         for (const chat of chats) {
             const title = chat.title;
             if (title && title.length > 25) {
                 chat.title = title.slice(0, 24) + '…';
             }
 
-            const message = chat.last_message.content;
+            const message = chat.last_message?.content;
             if (message && message.length > 20) {
                 chat.last_message.content = message.slice(0, 19) + '…';
             }
         }
         chats.sort((a, b) =>
-            Number(new Date(b.last_message.time)) - Number(new Date(a.last_message.time)),
+            Number(new Date(b.last_message?.time)) - Number(new Date(a.last_message?.time)),
         );
     }
 
@@ -50,6 +54,7 @@ export class ChatController {
         await this.api.delete(id);
 
         this.fetchChats();
+        this.setSelectedChat(null);
     }
 
     public addUsersToChat() {
@@ -70,8 +75,8 @@ export class ChatController {
         return this.api.getToken(id);
     }
 
-    public setSelectedChat(id: number, title: string, avatar: string | null) {
-        store.set('selectedChat', { id, title, avatar }, StoreEvents.SelectedChatUpdated);
+    public setSelectedChat(chatData: SelectedChat | null) {
+        store.set('selectedChat', chatData, StoreEvents.SelectedChatUpdated);
     }
 
     public async setSelectedUsers(login: string) {
