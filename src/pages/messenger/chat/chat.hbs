@@ -1,28 +1,17 @@
 <div class="chat">
-    {{#if chatName}}
-        <div class="chat__header">
-            {{{ChatHeader chatImg=chatImg chatName=chatName}}}
-        </div>
+    {{#if selectedChat}}
+        {{{ChatHeader
+            chatAvatar=selectedChat.avatar
+            chatTitle=selectedChat.title
+            selectedChatId=selectedChat.id
+        }}}
 
-        <div class="chat__content">
-            {{#each messages}}
-                {{{Message
-                    text=this.text
-                    img=this.img
-                    date=this.date
-                    time=this.time
-                    senderId=this.senderId
-                    isViewed=this.isViewed
-                }}}
-            {{/each}}
-        </div>
+        {{{ChatMessages currentUserId=currentUserId}}}
 
-        <div class="chat__send-wrap">
-            {{{SendForm action=adminActions}}}
-        </div>
+        {{{ChatFooter}}}
     {{else}}
         <div class="chat__empty">
-            Выберите чат чтобы отправить сообщение
+            Создайте или выберите чат, чтобы отправить сообщение
         </div>
     {{/if}}
 </div>

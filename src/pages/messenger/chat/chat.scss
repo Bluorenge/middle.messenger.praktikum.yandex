@@ -2,26 +2,7 @@
     display: grid;
     grid-template-rows: auto 1fr auto;
     height: 100%;
-
-    &__header {
-        margin-bottom: 10px;
-    }
-
-    &__content {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        padding-left: 20px;
-        padding-right: 20px;
-        padding-bottom: 40px;
-        margin-top: auto;
-        border-bottom: 1px solid $grey-lighter;
-        overflow-x: hidden;
-    }
-
-    &__send-wrap {
-        padding: 11px 20px 11px 30px;
-    }
+    overflow: hidden;
 
     &__empty {
         @include center-element;

@@ -5,6 +5,7 @@ interface InputProps {
     type: string;
     name: string;
     value?: string;
+    accept?: string;
     isDisable?: boolean;
     class?: string;
     onFocus?: () => void;
@@ -28,5 +29,17 @@ export default class Input extends Block {
 
     render() {
         return this.compile(template, this.props);
+    }
+
+    public focus() {
+        (this.element as HTMLInputElement).focus();
+    }
+
+    public setValue(value: string) {
+        return (this.element as HTMLInputElement).value = value;
+    }
+
+    public getValue() {
+        return (this.element as HTMLInputElement).value;
     }
 }

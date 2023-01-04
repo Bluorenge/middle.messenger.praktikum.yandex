@@ -1,5 +1,7 @@
 <main class="pages-links">
     {{#each pagesLinks}}
-        <a href="/{{ link }}" class="pages-links__link link">{{ name }}</a>
+        {{#Link to=link class="pages-links__link"}}
+            {{name}}
+        {{/Link}}
     {{/each}}
 </main>

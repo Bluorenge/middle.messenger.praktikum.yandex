@@ -1,0 +1,38 @@
+.action-popup {
+    z-index: 10;
+    position: absolute;
+    box-shadow: 0 0 6px rgb(0 0 0 / 0.14);
+    padding: 7.5px 0;
+
+    &--down {
+        top: 55px;
+        right: 0;
+        width: 210px;
+    }
+
+    &--up {
+        bottom: 50px;
+        left: -10px;
+        width: 162px;
+    }
+
+    &__item {
+        @include reset;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        padding: 7.5px 15px;
+        text-align: left;
+        background-color: #fff;
+        font-size: 12px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: $blue-light;
+        }
+    }
+
+    &__item-icon {
+        margin-right: 15px;
+    }
+}

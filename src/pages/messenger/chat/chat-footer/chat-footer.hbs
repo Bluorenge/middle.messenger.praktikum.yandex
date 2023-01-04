@@ -1,0 +1,29 @@
+<div class="chat-footer">
+    <div class="chat-footer__actions-wrap">
+        {{#Button class="chat-footer__action-btn" onClick=onActionBtnClick}}
+            <img src="{{attachIcon}}" alt="attach-icon">
+        {{/Button}}
+
+        {{{ActionPopup
+            position="up"
+            actions=attachActions
+            ref="actionPopup"
+        }}}
+    </div>
+
+    <form class="chat-footer__message-form">
+        <div class="chat-footer__field-wrap">
+            {{{Field
+                label="Сообщение"
+                name="message"
+                type="text"
+                class="field--message"
+                ref="message"
+            }}}
+        </div>
+
+        <div class="chat-footer__send-btn-wrap">
+            {{{Button class="btn--arrow-right" onClick=onSendMessageBtnClick}}}
+        </div>
+    </form>
+</div>

@@ -1,0 +1,9 @@
+<ul class="chat-list">
+    {{#each chatList}}
+        {{{ChatListItem
+            currentUserLogin=../currentUserLogin
+            selectedChat=../selectedChat
+            chatData=this
+        }}}
+    {{/each}}
+</ul>

@@ -4,6 +4,8 @@ export enum ValidationType {
     LOGIN = 'login',
     PHONE = 'phone',
     PASSWORD = 'password',
+    EMPTY = 'empty',
+    NONE = 'none',
 }
 
 class Validator {
@@ -15,13 +17,13 @@ class Validator {
     }
 
     private name(value: string): [boolean, string] {
-        const isFirstLetterUppercase = /^[A-ZА-ЯЁ][a-zа-яё\-]/.test(value);
+        const isFirstLetterUppercase = /^[A-ZА-ЯЁ](.*)$/.test(value);
 
         if (!isFirstLetterUppercase) {
             return [false, 'Первая буква должна быть заглавной'];
         }
         return [
-            /^[A-ZА-ЯЁ][a-zа-яё-]+$/.test(value),
+            /^[A-ZА-ЯЁa-zа-яё-]+$/.test(value),
             'Допустимые символы: латиница, кириллица и дефис',
         ];
     }
@@ -40,12 +42,12 @@ class Validator {
             return [false, 'Логин не должен содержать только цифры'];
         }
         return [
-            /^[A-Za-z0-9_\-]$/.test(value),
+            /^[A-Za-z0-9_\-]+$/.test(value),
             'Допустимые символы: латиница, цифры, _ и -',
         ];
     }
 
-    private password(value: string): [boolean, string] {
+    private password(value: string, compareValue?: string): [boolean, string] {
         const isValidLenght = /^.{8,40}$/.test(value);
 
         if (!isValidLenght) {
@@ -53,6 +55,9 @@ class Validator {
                 isValidLenght,
                 'Длина пароля должна быть от 8 до 40 символов',
             ];
+        }
+        if (compareValue && value !== compareValue) {
+            return [false, 'Введённые пароли не совпадают'];
         }
         return [
             /[A-Z]/.test(value) && /[0-9]/.test(value),
@@ -66,13 +71,19 @@ class Validator {
         if (!isValidLenght) {
             return [
                 isValidLenght,
-                'Длина телефона может быть от 8 до 40 символов',
+                'Длина телефона может быть от 8 до 15 символов',
             ];
         }
-        return [/^\+?[0-9]$/.test(value), 'Некорректный номер телефона'];
+        return [/^\+?[0-9]+$/.test(value), 'Телефон должен содержать только цифры (возможен плюс в начале)'];
     }
 
-    public validate(type: ValidationType, value: string): [boolean, string] {
+    public validate(type: ValidationType, value: string, compareValue?: string): [boolean, string] {
+        if (type === ValidationType.NONE) {
+            return [true, 'да всё норм'];
+        }
+        if (!value.length || type === ValidationType.EMPTY) {
+            return [!!value.length, 'Поле не должно быть пустым'];
+        }
         switch (type) {
             case ValidationType.EMAIL:
                 return this.email(value);
@@ -83,9 +94,7 @@ class Validator {
             case ValidationType.PHONE:
                 return this.phone(value);
             case ValidationType.PASSWORD:
-                return this.password(value);
-            default:
-                return [!!value.length, 'Поле не должно быть пустым'];
+                return this.password(value, compareValue);
         }
     }
 }

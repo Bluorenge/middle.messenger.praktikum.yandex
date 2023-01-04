@@ -1,38 +1,40 @@
 import Block from '../../utils/Block';
 import template from './pages-links.hbs';
 
-interface LinkObject {
-    name: string;
-    link: string;
-}
+type LinkProps = {
+    pagesLinks: {
+        name: string;
+        link: string;
+    }[];
+};
 
-export default class PagesLinks extends Block {
+export default class PagesLinks extends Block<LinkProps> {
     constructor() {
-        const pagesLinksProps: { pagesLinks: LinkObject[] } = {
+        const pagesLinksProps: LinkProps = {
             pagesLinks: [
                 {
                     name: 'логин',
-                    link: 'login.html',
+                    link: '/login',
                 },
                 {
                     name: 'регистрация',
-                    link: 'register.html',
+                    link: '/register',
                 },
                 {
                     name: 'мессенджер',
-                    link: 'messenger.html',
+                    link: '/messenger',
                 },
                 {
                     name: 'профиль',
-                    link: 'account.html',
+                    link: '/account',
                 },
                 {
                     name: '404',
-                    link: 'not-found.html',
+                    link: '/not-found',
                 },
                 {
                     name: '505',
-                    link: 'server-error.html',
+                    link: '/server-error',
                 },
             ],
         };
@@ -40,6 +42,10 @@ export default class PagesLinks extends Block {
     }
 
     render() {
-        return this.compile(template, this.props);
+        return this.compile(template, {
+            ...this.props,
+            children: this.children,
+            refs: this.refs,
+        });
     }
 }

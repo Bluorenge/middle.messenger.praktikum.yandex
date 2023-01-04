@@ -1,67 +1,79 @@
 import Block from '../../utils/Block';
 import template from './register.hbs';
 import getFormData from '../../utils/getFormData';
+import AuthController from './../../controllers/AuthController';
+import { withStore } from '../../utils/Store';
 
-export default class Register extends Block {
+type RegisterProps = {
+    fields: Field[],
+    error: {
+        isShow: boolean;
+        text: string;
+    },
+    onClick: (e: Event) => void,
+};
+
+class Register extends Block<RegisterProps> {
     constructor() {
-        const registerProps = {
+        const registerProps: RegisterProps = {
             fields: [
                 {
                     label: 'Почта',
                     name: 'email',
                     type: 'email',
-                    class: 'field--top-title',
                     validationType: 'email',
+                    value: '',
                 },
                 {
                     label: 'Логин',
                     name: 'login',
                     type: 'text',
-                    class: 'field--top-title',
                     validationType: 'login',
+                    value: '',
                 },
                 {
                     label: 'Имя',
                     name: 'first_name',
                     type: 'text',
-                    class: 'field--top-title',
                     validationType: 'name',
+                    value: '',
                 },
                 {
                     label: 'Фамилия',
                     name: 'second_name',
                     type: 'text',
-                    class: 'field--top-title',
                     validationType: 'name',
+                    value: '',
                 },
                 {
                     label: 'Телефон',
                     name: 'phone',
                     type: 'text',
-                    class: 'field--top-title',
                     validationType: 'phone',
+                    value: '',
                 },
                 {
                     label: 'Пароль',
                     name: 'password',
                     type: 'text',
-                    class: 'field--top-title',
                     validationType: 'password',
+                    value: '',
                 },
                 {
-                    label: 'Пароль',
-                    name: 'password',
+                    label: 'Пароль (ещё раз)',
+                    name: 'confirm_password',
                     type: 'text',
-                    class: 'field--top-title',
-                    validationType: '',
+                    validationType: 'password',
+                    value: '',
                 },
             ],
+            error: {
+                isShow: false,
+                text: '',
+            },
+            onClick: (e: Event) => this.onSignUp(e),
         };
         super(registerProps);
-
-        this.setProps({
-            onClick: this.onSignIn.bind(this),
-        });
     }
 
     render() {
@@ -72,7 +84,35 @@ export default class Register extends Block {
         });
     }
 
-    private onSignIn() {
-        getFormData(this);
+    private onSignUp(e: Event) {
+        e.preventDefault();
+        const data = getFormData(this as any);
+        const isFormValid = this.fieldsValidation(data);
+
+        if (isFormValid) {
+            AuthController.signUp(this.props.fields, data);
+        }
+    }
+
+    private fieldsValidation(data: TObj): boolean {
+        const isValidArr = [];
+
+        for (const [key, val] of Object.entries(data)) {
+            let isValid = this.refs[key].checkValid(val);
+
+            if (
+                ![data.confirm_password, data.password].includes('')
+                && ['confirm_password', 'password'].includes(key)
+            ) {
+                isValid = this.refs[key].checkValid(data.confirm_password, data.password);
+            }
+            isValidArr.push(isValid);
+        }
+
+        return isValidArr.every(Boolean);
     }
 }
+
+export const withUser = withStore((state) => ({ ...state.registerProps }));
+
+export default withUser(Register as typeof Block);
