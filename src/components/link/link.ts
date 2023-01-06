@@ -8,7 +8,7 @@ interface LinkProps extends WithRouterProps {
     onClick?: () => void;
 }
 
-class Link extends Block {
+export class Link extends Block {
     constructor({ router, onClick, ...props }: LinkProps) {
         super({
             ...props,
