@@ -60,10 +60,14 @@
         display: none;
     }
 
-    &--filled &__title,
+    &--filled-top &__title,
     &--top-title &__input:focus ~ &__title {
         top: -13px;
         font-size: 9px;
+    }
+
+    &--filled &__title {
+        display: none;
     }
 
     &--message &__input,

@@ -7,9 +7,9 @@ import ChatController from './../../controllers/ChatController';
 import { withStore } from '../../utils/Store';
 
 import { registerComponent } from '../../utils/hbsHelpers';
-// @ts-ignore
-import components from './*/*.ts';
-Object.entries(components).forEach(([key, value]: any) => registerComponent(value[key].default));
+const context = require.context('', true, /^.*\/(?!.*test).*\.ts$/);
+const components = context.keys().map(key => context(key));
+components.forEach((item: any) => registerComponent(item.default));
 
 type MessengerProps = {
     accountAvatar: string;
@@ -19,6 +19,8 @@ type MessengerProps = {
 };
 
 class Messenger extends Block<MessengerProps> {
+    public static componentName = 'Messenger';
+
     constructor(props: MessengerProps) {
         const messengerProps = {
             accountAvatar: props.accountAvatar ?? '',
@@ -61,7 +63,7 @@ class Messenger extends Block<MessengerProps> {
     }
 }
 
-export const withChatList = withStore((state) => ({
+const withChatList = withStore((state) => ({
     accountAvatar: state.currentUser.avatar,
 }));
 

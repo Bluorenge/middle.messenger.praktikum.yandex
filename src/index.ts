@@ -1,8 +1,5 @@
 import AuthController from './controllers/AuthController';
 import './styles/main.scss';
-import { registerComponent } from './utils/hbsHelpers';
-// @ts-ignore
-import commonComponents from './components/**/*.ts';
 
 import Router from './utils/Router';
 import Block from './utils/Block';
@@ -15,11 +12,12 @@ import Messenger from './pages/messenger/messenger';
 import Account from './pages/account/account';
 import ErrorPage from './pages/error-page/error-page';
 
-window.addEventListener('DOMContentLoaded', async () => {
-    Object.entries(commonComponents).forEach(([key, value]: any) =>
-        registerComponent(value[key].default),
-    );
+import { registerComponent } from './utils/hbsHelpers';
+const context = require.context('./components', true, /^.*\/(?!.*test).*\.ts$/);
+const components = context.keys().map(key => context(key));
+components.forEach((item: any) => registerComponent(item.default));
 
+window.addEventListener('DOMContentLoaded', async () => {
     Router
         .use('/', PagesLinks as typeof Block)
         .use(Pages.Index, PagesLinks as typeof Block)

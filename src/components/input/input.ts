@@ -1,4 +1,4 @@
-import Block from '../../../utils/Block';
+import Block from '../../utils/Block';
 import template from './input.hbs';
 
 interface InputProps {
@@ -15,6 +15,8 @@ interface InputProps {
 }
 
 export default class Input extends Block {
+    public static componentName = 'Input';
+
     constructor({ onFocus, onBlur, onInput, onChange, ...props }: InputProps) {
         super({
             ...props,
