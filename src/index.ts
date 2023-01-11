@@ -1,4 +1,3 @@
-import AuthController from './controllers/AuthController';
 import './styles/main.scss';
 
 import Router from './utils/Router';
@@ -11,6 +10,7 @@ import Register from './pages/register/register';
 import Messenger from './pages/messenger/messenger';
 import Account from './pages/account/account';
 import ErrorPage from './pages/error-page/error-page';
+import AuthController from './controllers/AuthController';
 
 import { registerComponent } from './utils/hbsHelpers';
 const context = require.context('./components', true, /^.*\/(?!.*test).*\.ts$/);

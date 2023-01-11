@@ -66,7 +66,7 @@
         font-size: 9px;
     }
 
-    &--filled &__title {
+    &--message#{&}--filled &__title {
         display: none;
     }
 

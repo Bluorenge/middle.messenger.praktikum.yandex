@@ -115,12 +115,14 @@ export default class Field extends Block<FieldProps> {
     }
 
     private setLabelVisibility(value: string | undefined): void {
+        const classMethod = value === '' ? 'remove' : 'add';
+
         if (this.props.isTopLabelPosition) {
             const FILLED_TOP_CLASS = 'field--filled-top';
-            this.getContent()?.classList[value === '' ? 'remove' : 'add'](FILLED_TOP_CLASS);
+            this.getContent()?.classList[classMethod](FILLED_TOP_CLASS);
         } else {
             const FILLED_CLASS = 'field--filled';
-            this.getContent()?.classList[value === '' ? 'remove' : 'add'](FILLED_CLASS);
+            this.getContent()?.classList[classMethod](FILLED_CLASS);
         }
     }
 }
