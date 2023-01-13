@@ -20,9 +20,7 @@
     }
 
     &__title {
-        cursor: pointer;
         font-weight: 600;
-        @include opacity-hover;
     }
 
     &__actions-wrap {

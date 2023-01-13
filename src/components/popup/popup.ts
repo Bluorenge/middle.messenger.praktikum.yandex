@@ -4,7 +4,7 @@ import template from './popup.hbs';
 export type PopupProps = {
     title: string;
     btnText: string;
-    field: Field;
+    field?: Field;
     class?: string;
     innerComponentName?: string;
     onBtnClick?: (e: Event) => void;

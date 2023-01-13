@@ -33,13 +33,7 @@ export default class ChatListItem extends Block<ChatListItemProps> {
             login: last_message?.user.login || null,
             content: last_message?.content ?? '',
             events: {
-                click: () => {
-                    ChatController.setSelectedChat({
-                        id: this.props.id,
-                        title: this.props.title,
-                        avatar: this.props.avatar,
-                    });
-                },
+                click: () => this.onClick(),
             },
         };
 
@@ -50,6 +44,14 @@ export default class ChatListItem extends Block<ChatListItemProps> {
         return this.compile(template, {
             ...this.props,
             children: this.children,
+        });
+    }
+
+    async onClick() {
+        ChatController.setSelectedChat({
+            id: this.props.id,
+            title: this.props.title,
+            avatar: this.props.avatar,
         });
     }
 }

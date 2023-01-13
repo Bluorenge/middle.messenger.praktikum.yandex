@@ -11,6 +11,7 @@ function trim(string: string, chars?: string): string {
     return string.replace(reg, '');
 }
 
+// * не умеет перезаписывать значения массивов, только объединять
 function merge(lhs: Indexed, rhs: Indexed): Indexed {
     return [lhs, rhs].reduce((prev, obj) => {
         Object.keys(obj).forEach(key => {

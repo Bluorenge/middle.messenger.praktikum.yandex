@@ -24,7 +24,7 @@ export default class ChatsAPI extends BaseAPI {
         });
     }
 
-    getUsers(params: ChatUsersOption): Promise<ChatUser> {
+    getUsers(params: ChatUsersOption): Promise<ChatUser[]> {
         return this.http.get(`/${params.id}/users`);
     }
 

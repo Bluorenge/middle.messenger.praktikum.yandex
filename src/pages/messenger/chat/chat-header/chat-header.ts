@@ -5,10 +5,11 @@ import UserController from './../../../../controllers/UserController';
 import ChatController from './../../../../controllers/ChatController';
 import { PopupProps } from './../../../../components/popup/popup';
 import { debounce } from '../../../../utils/common';
+import { SelectedChat } from './../../../../_models/chat';
 
 type ChatHeaderProps = {
-    selectedChatId?: number;
-    chatTitle?: string;
+    selectedChat: SelectedChat;
+    chatTitle: string;
     chatAvatar?: string | null;
     adminActions: {
         text: string;
@@ -23,29 +24,33 @@ type ChatHeaderProps = {
 export default class ChatHeader extends Block<ChatHeaderProps> {
     public static componentName = 'ChatHeader';
 
-    constructor(props: TObj) {
+    constructor(props: any) {
+        let adminActions = [
+            {
+                text: 'Добавить пользователя',
+                class: 'add-icon',
+                onClick: () => this.refs.addUserToChatPopup.show(),
+            },
+            {
+                text: 'Удалить пользователя',
+                class: 'remove-icon',
+                onClick: () => this.onRemoveUserPopupOpen(),
+            },
+            {
+                text: 'Удалить чат',
+                class: 'remove-icon',
+                onClick: () => ChatController.delete(this.props.selectedChat.id),
+            },
+        ];
+        if (props.selectedChat.users.length === 0) {
+            adminActions = adminActions.filter(action => action.text !== 'Удалить пользователя');
+        }
         const chatHeaderProps = {
             addChatAvatar: () => this.refs.addChatAvatarPopup.toggleVisibility(),
-            adminActions: [
-                {
-                    text: 'Добавить пользователя',
-                    class: 'add-icon',
-                    onClick: () => this.refs.addUserToChatPopup.show(),
-                },
-                {
-                    text: 'Удалить пользователя',
-                    class: 'remove-icon',
-                    onClick: () => this.refs.removeUserPopup.show(),
-                },
-                {
-                    text: 'Удалить чат',
-                    class: 'remove-icon',
-                    onClick: () => ChatController.delete(this.props.selectedChatId!),
-                },
-            ],
+            adminActions,
             addUserToChatPopup: {
                 ref: 'addUserToChatPopup',
-                innerComponentName: 'FoundUsersList',
+                innerComponentName: 'UsersList',
                 title: 'Добавить пользователя',
                 class: 'xl',
                 btnText: 'Добавить',
@@ -57,23 +62,15 @@ export default class ChatHeader extends Block<ChatHeaderProps> {
                     isTopLabelPosition: true,
                     onInputField: (e: Event) => debounce(this.onSearchUsers(e), 800),
                 },
-                onSend: () => ChatController.addUsersToChat(),
+                onSend: () => this.onAddUserToChatPopupOpen(),
             },
             removeUserPopup: {
                 ref: 'removeUserPopup',
-                innerComponentName: 'FoundUsersList',
+                innerComponentName: 'UsersList',
                 title: 'Удалить пользователя',
                 class: 'xl',
                 btnText: 'Удалить',
-                field: {
-                    label: 'Имя пользователя',
-                    name: 'serach_user',
-                    type: 'text',
-                    value: '',
-                    isTopLabelPosition: true,
-                    onInputField: (e: Event) => debounce(this.onSearchUsers(e), 800),
-                },
-                onSend: () => ChatController.removeUsersFromChat(),
+                onSend: () => ChatController.removeUserFromChat(),
             },
             addChatAvatarPopup: {
                 ref: 'addChatAvatarPopup',
@@ -87,7 +84,7 @@ export default class ChatHeader extends Block<ChatHeaderProps> {
                     class: 'field--file',
                     accept: 'image/*',
                 },
-                onSend: (data: FormData) => ChatController.addChatAvatar(this.props.selectedChatId!, data),
+                onSend: (data: FormData) => ChatController.addChatAvatar(this.props.selectedChat.id, data),
             },
             onOpenActionPopupBtnClick: () => this.refs.actionPopup.toggleVisibility(),
         };
@@ -103,9 +100,26 @@ export default class ChatHeader extends Block<ChatHeaderProps> {
         });
     }
 
+    onRemoveUserPopupOpen() {
+        this.refs.removeUserPopup
+            .refs.UsersList.setProps({
+                list: this.props.selectedChat.users,
+            });
+        this.refs.removeUserPopup.show();
+    }
+
+    onAddUserToChatPopupOpen() {
+        ChatController.addUsersToChat();
+        this.refs.addUserToChatPopup.show();
+    }
+
     async onSearchUsers(e: Event) {
+        // Чтобы не происходил поиск при потере фокуса
+        if (e.type === 'blur') {
+            return;
+        }
         const searchLogin = (e.target as HTMLInputElement)!.value;
-        const userList = await UserController.getUsers(searchLogin);
+        const userList = await UserController.getFoundUsers(searchLogin);
         const popupProps = this.props.addUserToChatPopup;
 
         this.refs[popupProps.ref!]

@@ -59,7 +59,7 @@ class Messenger extends Block<MessengerProps> {
     }
 
     onSendBtnForCreateChatClick(formData: FormData) {
-        const newChatName = this.props.createChatPopup.field.name;
+        const newChatName = this.props.createChatPopup.field!.name;
         ChatController.create(formData.get(newChatName) as string);
         this.refs[this.props.createChatPopup.ref!].hide();
     }

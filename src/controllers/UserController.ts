@@ -25,7 +25,7 @@ export class UserController {
         return this.api.read(id);
     }
 
-    public getUsers(login: string) {
+    public getFoundUsers(login: string) {
         if (!login) {
             return null;
         }

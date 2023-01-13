@@ -2,11 +2,11 @@
     <div class="chat-header__title-wrap">
         {{{Avatar
             class="avatar--interactive chat-header__avatar-wrap"
-            avatarSrc=chatAvatar
+            avatarSrc=selectedChat.avatar
             alt="account-avatar"
             onClick=addChatAvatar
         }}}
-        <div class="chat-header__title">{{chatTitle}}</div>
+        <div class="chat-header__title">{{selectedChat.title}}</div>
     </div>
 
     <div class="chat-header__actions-wrap">
