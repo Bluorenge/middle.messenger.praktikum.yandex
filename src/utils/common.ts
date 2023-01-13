@@ -18,7 +18,11 @@ function merge(lhs: Indexed, rhs: Indexed): Indexed {
             const oVal = obj[key];
 
             if (isArray(pVal) && isArray(oVal)) {
-                prev[key] = [...new Map(pVal.concat(...oVal).map(v => [JSON.stringify(v), v])).values()];
+                prev[key] = [...new Map(
+                    pVal
+                        .concat(...oVal)
+                        .map(v => [JSON.stringify(v), v]),
+                ).values()];
             } else if (isPlainObject(pVal) && isPlainObject(oVal)) {
                 prev[key] = merge(pVal as Indexed, oVal as Indexed);
             } else {

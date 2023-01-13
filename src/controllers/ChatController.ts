@@ -64,12 +64,26 @@ export class ChatController {
         store.set('selectedUser', selectedUser![0]);
     }
 
-    async addChatAvatar(id: number, avatarFormData: FormData) {
+    public async addChatAvatar(id: number, avatarFormData: FormData) {
         avatarFormData.append('chatId', id.toString());
         const { avatar } = await this.api.addChatAvatar(avatarFormData);
 
         await this.fetchChats();
         store.set('selectedChat.avatar', avatar, StoreEvents.SelectedChatUpdated);
+    }
+
+    public async setFoundChats(title: string) {
+        await this.fetchChats();
+
+        if (!title) {
+            return;
+        }
+
+        const chatList = store.getState().chatList;
+        const foundChats = chatList.filter((chat: ChatData) => chat.title.includes(title));
+
+        delete store.getState().chatList;
+        store.set('chatList', foundChats, StoreEvents.ChatListUpdated);
     }
 
     private trimTextAndSortChats(chats: ChatData[]) {

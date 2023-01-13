@@ -5,6 +5,7 @@ import { PopupProps } from './../../components/popup/popup';
 
 import ChatController from './../../controllers/ChatController';
 import { withStore } from '../../utils/Store';
+import { debounce } from '../../utils/common';
 
 import { registerComponent } from '../../utils/hbsHelpers';
 const context = require.context('', true, /^.*\/(?!.*test).*\.ts$/);
@@ -25,6 +26,7 @@ class Messenger extends Block<MessengerProps> {
         const messengerProps = {
             accountAvatar: props.accountAvatar ?? '',
             searchFieldIcon: lens,
+            onInputSearchChat:  (e: Event) => debounce(this.onInputSearchChat(e), 800),
             onCreateChatBtnClick: () =>
                 this.refs[this.props.createChatPopup.ref!].show(),
             createChatPopup: {
@@ -60,6 +62,11 @@ class Messenger extends Block<MessengerProps> {
         const newChatName = this.props.createChatPopup.field.name;
         ChatController.create(formData.get(newChatName) as string);
         this.refs[this.props.createChatPopup.ref!].hide();
+    }
+
+    onInputSearchChat(e: Event) {
+        const searchTitle = (e.target as HTMLInputElement)!.value;
+        ChatController.setFoundChats(searchTitle);
     }
 }
 
