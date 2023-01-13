@@ -15,7 +15,7 @@ function dateFormater(unformatedDate: string | null | undefined, type?: string) 
     const diff = new Date().getDate() - day;
 
     const isYesterday = diff === 1;
-    const isToday = diff < 1;
+    const isToday = diff > 0 && diff < 1;
 
     if (isYesterday && !isMessage) {
         return 'Вчера';
