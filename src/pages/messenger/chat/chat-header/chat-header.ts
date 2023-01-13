@@ -25,6 +25,7 @@ export default class ChatHeader extends Block<ChatHeaderProps> {
 
     constructor(props: TObj) {
         const chatHeaderProps = {
+            addChatAvatar: () => this.refs.addChatAvatarPopup.toggleVisibility(),
             adminActions: [
                 {
                     text: 'Добавить пользователя',
@@ -43,6 +44,7 @@ export default class ChatHeader extends Block<ChatHeaderProps> {
                 },
             ],
             addUserToChatPopup: {
+                ref: 'addUserToChatPopup',
                 innerComponentName: 'FoundUsersList',
                 title: 'Добавить пользователя',
                 class: 'xl',
@@ -56,9 +58,9 @@ export default class ChatHeader extends Block<ChatHeaderProps> {
                     onInputField: (e: Event) => debounce(this.onSearchUsers(e), 800),
                 },
                 onSend: () => ChatController.addUsersToChat(),
-                ref: 'addUserToChatPopup',
             },
             removeUserPopup: {
+                ref: 'removeUserPopup',
                 innerComponentName: 'FoundUsersList',
                 title: 'Удалить пользователя',
                 class: 'xl',
@@ -69,10 +71,23 @@ export default class ChatHeader extends Block<ChatHeaderProps> {
                     type: 'text',
                     value: '',
                     isTopLabelPosition: true,
-                    onInputField: (e: Event) => debounce(this.onSearchUsers(e)),
+                    onInputField: (e: Event) => debounce(this.onSearchUsers(e), 800),
                 },
                 onSend: () => ChatController.removeUsersFromChat(),
-                ref: 'removeUserPopup',
+            },
+            addChatAvatarPopup: {
+                ref: 'addChatAvatarPopup',
+                title: 'Добавить аватар для чата',
+                btnText: 'Добавить',
+                field: {
+                    label: 'Выбрать файл на компьютере',
+                    name: 'avatar',
+                    type: 'file',
+                    value: '',
+                    class: 'field--file',
+                    accept: 'image/*',
+                },
+                onSend: (data: FormData) => ChatController.addChatAvatar(this.props.selectedChatId!, data),
             },
             onOpenActionPopupBtnClick: () => this.refs.actionPopup.toggleVisibility(),
         };

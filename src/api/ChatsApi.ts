@@ -45,5 +45,14 @@ export default class ChatsAPI extends BaseAPI {
         return response?.token;
     }
 
+    addChatAvatar(data: FormData): Promise<ChatData> {
+        return this.http.put('/avatar', {
+            data,
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+    }
+
     update = undefined;
 }
