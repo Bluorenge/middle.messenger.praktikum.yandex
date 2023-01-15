@@ -56,6 +56,11 @@
         }
     }
 
+    &--search &__input:focus ~ &__title,
+    &--search#{&}--filled &__title,
+    &--search#{&}--filled &__icon,
+    &--message &__input:focus ~ &__title,
+    &--message#{&}--filled &__title,
     &--file &__input {
         display: none;
     }
@@ -66,15 +71,12 @@
         font-size: 9px;
     }
 
-    &--message#{&}--filled &__title {
-        display: none;
-    }
-
     &--message &__input,
     &--search &__input {
         background-color: $grey-lighter;
         border: none;
         font-size: 12px;
+        padding: 0 10px;
     }
 
     &--search &__title {
@@ -83,11 +85,6 @@
 
     &--message &__title {
         left: 10px;
-    }
-
-    &--message &__input:focus ~ &__title,
-    &--search &__input:focus ~ &__title {
-        display: none;
     }
 
     &__title {

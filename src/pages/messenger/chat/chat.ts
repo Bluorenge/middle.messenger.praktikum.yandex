@@ -14,7 +14,6 @@ class Chat extends Block<ChatProps> {
     public static componentName = 'Chat';
 
     render() {
-        console.log("this.props!: ", this.props);
         return this.compile(template, {
             ...this.props,
             children: this.children,
