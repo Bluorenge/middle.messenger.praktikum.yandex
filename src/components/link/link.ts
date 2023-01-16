@@ -9,6 +9,8 @@ interface LinkProps extends WithRouterProps {
 }
 
 export class Link extends Block {
+    public static componentName = 'Link';
+
     constructor({ router, onClick, ...props }: LinkProps) {
         super({
             ...props,

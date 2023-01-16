@@ -13,7 +13,7 @@ import ErrorPage from './pages/error-page/error-page';
 import AuthController from './controllers/AuthController';
 
 import { registerComponent } from './utils/hbsHelpers';
-const context = require.context('./components', true, /^.*\/(?!.*test).*\.ts$/);
+const context = require.context('./components/', true, /^.*\/(?!.*test).*\.ts$/);
 const components = context.keys().map(key => context(key));
 components.forEach((item: any) => registerComponent(item.default));
 

@@ -8,7 +8,7 @@ import { withStore } from '../../utils/Store';
 import { debounce } from '../../utils/common';
 
 import { registerComponent } from '../../utils/hbsHelpers';
-const context = require.context('', true, /^.*\/(?!.*test).*\.ts$/);
+const context = require.context('./', true, /^.*\/(?!.*test).*\.ts$/);
 const components = context.keys().map(key => context(key));
 components.forEach((item: any) => registerComponent(item.default));
 

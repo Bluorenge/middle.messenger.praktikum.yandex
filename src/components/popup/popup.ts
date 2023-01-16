@@ -16,6 +16,8 @@ export type PopupProps = {
 };
 
 export default class Popup extends Block<PopupProps> {
+    public static componentName = 'Popup';
+
     constructor(props: PopupProps) {
         const popupProps = {
             onBtnClick: (e: Event) => this.onBtnClick(e),

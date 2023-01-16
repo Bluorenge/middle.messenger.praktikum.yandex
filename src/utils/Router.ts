@@ -119,7 +119,7 @@ export interface WithRouterProps {
 
 export function withRouter(Component: typeof Block) {
     return class extends Component {
-        public static componentName = Component.name;
+        public static componentName = Component.componentName;
 
         constructor(props: any) {
             super({ ...props, router: router });

@@ -12,6 +12,8 @@ type ActionPopupProps = {
 };
 
 export default class ActionPopup extends Block<ActionPopupProps> {
+    public static componentName = 'ActionPopup';
+
     render() {
         return this.compile(template, {
             ...this.props,

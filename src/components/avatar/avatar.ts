@@ -13,6 +13,8 @@ type AvatarProps = {
 };
 
 export default class Avatar extends Block<AvatarProps> {
+    public static componentName = 'Avatar';
+
     constructor({ onClick, ...props }: any) {
         super({
             ...props,

@@ -21,7 +21,7 @@ Handlebars.registerHelper(
 );
 
 export function registerComponent(Component: typeof Block) {
-    if (!Component) {
+    if (!Component || !Component.componentName) {
         return;
     }
     Handlebars.registerHelper(

@@ -31,7 +31,7 @@ export function withStore(
         let state: any;
 
         return class extends Component {
-            public static componentName = Component.name || Component.componentName;
+            public static componentName = Component.componentName;
 
             constructor(props: any) {
                 state = mapStateToProps(store.getState());
