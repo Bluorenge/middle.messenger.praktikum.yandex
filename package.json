@@ -21,13 +21,7 @@
         "stylelint:fix": "stylelint ./src/**/*.scss --fix",
         "lint": "node_modules/.bin/tsc --noEmit && eslint ./src/**/*.ts",
         "lint:fix": "eslint ./src/**/*.ts --fix",
-        "test": "mocha --require ts-node/register --require ./mochaSetup.js './src/**/*.test.ts'",
-        "prepare": "husky install"
-    },
-    "husky": {
-        "hooks": {
-            "pre-commit": "npm-run-all lint:fix lint stylelint:fix stylelint"
-        }
+        "test": "mocha --require ts-node/register --require ./mochaSetup.js './src/**/*.test.ts'"
     },
     "devDependencies": {
         "@types/chai": "4.3.4",
