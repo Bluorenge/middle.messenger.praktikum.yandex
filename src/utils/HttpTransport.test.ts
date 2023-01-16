@@ -2,7 +2,7 @@ import sinon, { SinonFakeXMLHttpRequest, SinonFakeXMLHttpRequestStatic } from 's
 import HTTPTransport from './HttpTransport';
 import { expect } from 'chai';
 
-describe.only('HTTPTransport', () => {
+describe('HTTPTransport', () => {
     let xhr: SinonFakeXMLHttpRequestStatic;
     let instance: HTTPTransport;
     const requests: SinonFakeXMLHttpRequest[] = [];
