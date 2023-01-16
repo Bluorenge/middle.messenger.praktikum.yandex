@@ -115,7 +115,7 @@ export default class Field extends Block<FieldProps> {
     }
 
     private setLabelVisibility(value: string | undefined): void {
-        const classListMethod = value === '' ? 'remove' : 'add';
+        const classListMethod = value ? 'add' : 'remove';
         const FILLED_TOP_CLASS = 'field--filled-top';
         const FILLED_CLASS = 'field--filled';
 
