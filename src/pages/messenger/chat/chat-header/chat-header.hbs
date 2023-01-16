@@ -1,11 +1,12 @@
 <div class="chat-header">
     <div class="chat-header__title-wrap">
         {{{Avatar
-            class="chat-header__avatar-wrap"
-            avatar=chatAvatar
+            class="avatar--interactive chat-header__avatar-wrap"
+            avatarSrc=selectedChat.avatar
             alt="account-avatar"
+            onClick=addChatAvatar
         }}}
-        <div class="chat-header__title">{{chatTitle}}</div>
+        <div class="chat-header__title">{{selectedChat.title}}</div>
     </div>
 
     <div class="chat-header__actions-wrap">
@@ -20,22 +21,31 @@
         }}}
 
         {{{Popup
+            ref=addUserToChatPopup.ref
             innerComponentName=addUserToChatPopup.innerComponentName
-            class=addUserToChatPopup.class
             title=addUserToChatPopup.title
+            class=addUserToChatPopup.class
             btnText=addUserToChatPopup.btnText
             field=addUserToChatPopup.field
             onSend=addUserToChatPopup.onSend
-            ref=addUserToChatPopup.ref
         }}}
 
         {{{Popup
+            ref=removeUserPopup.ref
             innerComponentName=removeUserPopup.innerComponentName
             title=removeUserPopup.title
+            class=addUserToChatPopup.class
             btnText=removeUserPopup.btnText
             field=removeUserPopup.field
             onSend=removeUserPopup.onSend
-            ref=removeUserPopup.ref
+        }}}
+
+        {{{Popup
+            ref=addChatAvatarPopup.ref
+            title=addChatAvatarPopup.title
+            btnText=addChatAvatarPopup.btnText
+            field=addChatAvatarPopup.field
+            onSend=addChatAvatarPopup.onSend
         }}}
     </div>
 </div>

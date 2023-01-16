@@ -1,0 +1,12 @@
+version: "4.16.1"
+services:
+  app-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    environment:
+        - WATCHPACK_POLLING=true
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./src:/var/www/app/src

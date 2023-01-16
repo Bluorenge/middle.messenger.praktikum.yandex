@@ -3,6 +3,7 @@
     position: absolute;
     box-shadow: 0 0 6px rgb(0 0 0 / 0.14);
     padding: 7.5px 0;
+    background-color: #fff;
 
     &--down {
         top: 55px;
@@ -23,7 +24,6 @@
         width: 100%;
         padding: 7.5px 15px;
         text-align: left;
-        background-color: #fff;
         font-size: 12px;
         cursor: pointer;
 

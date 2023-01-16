@@ -4,7 +4,7 @@ import template from './popup.hbs';
 export type PopupProps = {
     title: string;
     btnText: string;
-    field: Field;
+    field?: Field;
     class?: string;
     innerComponentName?: string;
     onBtnClick?: (e: Event) => void;
@@ -16,6 +16,8 @@ export type PopupProps = {
 };
 
 export default class Popup extends Block<PopupProps> {
+    public static componentName = 'Popup';
+
     constructor(props: PopupProps) {
         const popupProps = {
             onBtnClick: (e: Event) => this.onBtnClick(e),

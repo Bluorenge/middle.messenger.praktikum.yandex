@@ -28,16 +28,16 @@ class Route {
         private readonly type: string,
     ) {}
 
-    leave() {
+    public leave() {
         this.block?.dispatchComponentDidUnmount();
         this.block = null;
     }
 
-    match(pathname: string) {
+    public match(pathname: string) {
         return isEqual(pathname, this.pathname);
     }
 
-    render() {
+    public render() {
         if (!this.block) {
             this.block = new this.blockClass(this.type ? this.type : {});
 
@@ -119,7 +119,7 @@ export interface WithRouterProps {
 
 export function withRouter(Component: typeof Block) {
     return class extends Component {
-        public static componentName = Component.name;
+        public static componentName = Component.componentName;
 
         constructor(props: any) {
             super({ ...props, router: router });

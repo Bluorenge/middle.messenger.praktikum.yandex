@@ -8,9 +8,9 @@ import AuthController from './../../controllers/AuthController';
 import UserController from './../../controllers/UserController';
 
 import { registerComponent } from '../../utils/hbsHelpers';
-// @ts-ignore
-import components from './*/*.ts';
-Object.entries(components).forEach(([key, value]: any) => registerComponent(value[key].default));
+const context = require.context('', true, /^.*\/(?!.*test).*\.ts$/);
+const components = context.keys().map(key => context(key));
+components.forEach((item: any) => registerComponent(item.default));
 
 type AccountProps = User & {
     accountView: {
@@ -34,6 +34,8 @@ type AccountProps = User & {
 };
 
 class Account extends Block<AccountProps> {
+    public static componentName = 'Account';
+
     constructor(props: AccountProps) {
         const accountProps: AccountProps = {
             ...props,
@@ -194,6 +196,6 @@ function setAccountView(props: Record<string, any>, pageName: string): void {
     }
 }
 
-export const withCurrentUser = withStore((state) => ({ ...state.currentUser, ...state.accountProps }));
+const withCurrentUser = withStore((state) => ({ ...state.currentUser, ...state.accountProps }));
 
 export default withCurrentUser(Account as typeof Block);

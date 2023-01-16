@@ -24,7 +24,7 @@ export default class ChatsAPI extends BaseAPI {
         });
     }
 
-    getUsers(params: ChatUsersOption): Promise<ChatUser> {
+    getUsers(params: ChatUsersOption): Promise<ChatUser[]> {
         return this.http.get(`/${params.id}/users`);
     }
 
@@ -43,6 +43,15 @@ export default class ChatsAPI extends BaseAPI {
     async getToken(id: number): Promise<string> {
         const response: Token = await this.http.post(`/token/${id}`);
         return response?.token;
+    }
+
+    addChatAvatar(data: FormData): Promise<ChatData> {
+        return this.http.put('/avatar', {
+            data,
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
     }
 
     update = undefined;

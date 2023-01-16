@@ -25,7 +25,7 @@ export class UserController {
         return this.api.read(id);
     }
 
-    public getUsers(login: string) {
+    public getFoundUsers(login: string) {
         if (!login) {
             return null;
         }
@@ -44,7 +44,6 @@ export class UserController {
         }
 
         const reasonText = (response! as any).reason;
-        console.log("reasonText: ", reasonText);
 
         if (reasonText) {
             store.set('accountProps.error', {

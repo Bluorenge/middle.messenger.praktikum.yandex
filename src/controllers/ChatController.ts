@@ -29,6 +29,78 @@ export class ChatController {
         store.set('chatList', chats, StoreEvents.ChatListUpdated);
     }
 
+    public async delete(id: number) {
+        await this.api.delete(id);
+
+        this.fetchChats();
+        store.set('selectedChat', null, StoreEvents.SelectedChatUpdated);
+    }
+
+    public addUsersToChat() {
+        const selectChatId = store.getState().selectedChat.id;
+        const selectedUserId = store.getState().selectedUser.id;
+
+        this.api.addUsers(selectChatId, [selectedUserId]);
+    }
+
+    public removeUserFromChat() {
+        const selectChatId = store.getState().selectedChat.id;
+        const selectedUserId = store.getState().selectedUser.id;
+
+        this.api.deleteUsers(selectChatId, [selectedUserId]);
+        this.fetchChats();
+    }
+
+    public getToken(id: number) {
+        return this.api.getToken(id);
+    }
+
+    public async setSelectedChat(chatData: SelectedChat) {
+        const selectedChat = {
+            id: chatData.id,
+            title: chatData.title,
+            avatar: chatData.avatar,
+            users: await this.getChatUsers(chatData.id),
+        };
+        delete store.getState().selectedChat;
+        store.set('selectedChat', selectedChat, StoreEvents.SelectedChatUpdated);
+    }
+
+    public async setSelectedUsers(login: string) {
+        const selectedUser = await UserController.getFoundUsers(login);
+
+        store.set('selectedUser', selectedUser![0]);
+    }
+
+    public async getChatUsers(idChat: number) {
+        const chatUsers = await this.api.getUsers({ id: idChat });
+        const currentUserId = store.getState().currentUser.id;
+        const chatUsersWithoutCurrentUser = chatUsers.filter(user => user.id !== currentUserId);
+        return chatUsersWithoutCurrentUser;
+    }
+
+    public async addChatAvatar(id: number, avatarFormData: FormData) {
+        avatarFormData.append('chatId', id.toString());
+        const { avatar } = await this.api.addChatAvatar(avatarFormData);
+
+        await this.fetchChats();
+        store.set('selectedChat.avatar', avatar, StoreEvents.SelectedChatUpdated);
+    }
+
+    public async setFoundChats(title: string) {
+        await this.fetchChats();
+
+        if (!title) {
+            return;
+        }
+
+        const chatList = store.getState().chatList;
+        const foundChats = chatList.filter((chat: ChatData) => chat.title.includes(title));
+
+        delete store.getState().chatList;
+        store.set('chatList', foundChats, StoreEvents.ChatListUpdated);
+    }
+
     private trimTextAndSortChats(chats: ChatData[]) {
         if (chats.length === 0) {
             return;
@@ -48,41 +120,6 @@ export class ChatController {
         chats.sort((a, b) =>
             Number(new Date(b.last_message?.time)) - Number(new Date(a.last_message?.time)),
         );
-    }
-
-    public async delete(id: number) {
-        await this.api.delete(id);
-
-        this.fetchChats();
-        this.setSelectedChat(null);
-    }
-
-    public addUsersToChat() {
-        const selectChatId = store.getState().selectedChat.id;
-        const selectedUserId = store.getState().selectedUser.id;
-
-        this.api.addUsers(selectChatId, [selectedUserId]);
-    }
-
-    public removeUsersFromChat() {
-        const selectChatId = store.getState().selectedChat.id;
-        const selectedUserId = store.getState().selectedUser.id;
-
-        this.api.deleteUsers(selectChatId, [selectedUserId]);
-    }
-
-    public getToken(id: number) {
-        return this.api.getToken(id);
-    }
-
-    public setSelectedChat(chatData: SelectedChat | null) {
-        store.set('selectedChat', chatData, StoreEvents.SelectedChatUpdated);
-    }
-
-    public async setSelectedUsers(login: string) {
-        const selectedUser = await UserController.getUsers(login);
-
-        store.set('selectedUser', selectedUser![0]);
     }
 }
 

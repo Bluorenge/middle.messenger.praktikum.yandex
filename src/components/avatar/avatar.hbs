@@ -1,6 +1,6 @@
-<div class="{{class}} {{#unless avatar}}bg-grey-lighter{{/unless}}">
-    {{#if avatar}}
-        <img src="{{resourcesPath}}{{avatar}}" alt="{{alt}}">
+<div class="avatar {{class}} {{#unless avatarSrc}}bg-grey-lighter{{/unless}}">
+    {{#if avatarSrc}}
+        <img src="{{resourcesPath}}{{avatarSrc}}" alt="{{alt}}">
     {{else if isMockedAvatar}}
         <img src="{{{mockAvatarImg}}}" alt="{{alt}}">
     {{/if}}

@@ -4,7 +4,7 @@
             <div class="messenger__account">
                 {{{Avatar
                     class="messenger__account-avatar-wrap"
-                    avatar=accountAvatar
+                    avatarSrc=accountAvatar
                     alt="account-avatar"
                 }}}
 
@@ -27,6 +27,8 @@
                     type="text"
                     class="field--search"
                     icon=searchFieldIcon
+                    onInputField=onInputSearchChat
+                    autocomplete="off"
                 }}}
             </form>
         </div>
