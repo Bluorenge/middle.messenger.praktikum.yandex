@@ -21,7 +21,8 @@
         "stylelint:fix": "stylelint ./src/**/*.scss --fix",
         "lint": "node_modules/.bin/tsc --noEmit && eslint ./src/**/*.ts",
         "lint:fix": "eslint ./src/**/*.ts --fix",
-        "test": "mocha --require ts-node/register --require ./mochaSetup.js './src/**/*.test.ts'"
+        "test": "mocha --require ts-node/register --require ./mochaSetup.js './src/**/*.test.ts'",
+        "prepare": "husky install"
     },
     "husky": {
         "hooks": {
@@ -46,7 +47,7 @@
         "file-loader": "6.2.0",
         "handlebars-loader": "1.7.3",
         "html-webpack-plugin": "5.5.0",
-        "husky": "8.0.3",
+        "husky": "8.0.0",
         "jsdom": "21.0.0",
         "mini-css-extract-plugin": "2.7.2",
         "mocha": "10.2.0",
