@@ -28,10 +28,6 @@ messenger
 `npm run stylelint` — проверка стилей.
 `npm run lint` — проверка скриптов.
 
-## Docker
-
-`docker run -it -p 3000:3000 messenger-app:latest`
-
 ## Используемые инструменты
 
 - handlebars
@@ -41,3 +37,4 @@ messenger
 - eslint
 - stylelint
 - mocha/chai
+- webpack 5
