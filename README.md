@@ -21,7 +21,7 @@ messenger
 
 ## Задеплоенный проект
 
-[Ссылка](https://radiant-dragon-58e417.netlify.app/)
+[Ссылка](https://messenger-7tiw.onrender.com/messenger)
 
 ## Линтинг
 
@@ -38,3 +38,5 @@ messenger
 - stylelint
 - mocha/chai
 - webpack 5
+- husky
+- express
