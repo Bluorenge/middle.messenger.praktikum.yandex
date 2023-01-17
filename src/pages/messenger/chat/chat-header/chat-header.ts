@@ -45,6 +45,7 @@ export default class ChatHeader extends Block<ChatHeaderProps> {
         if (props.selectedChat.users.length === 0) {
             adminActions = adminActions.filter(action => action.text !== 'Удалить пользователя');
         }
+
         const chatHeaderProps = {
             addChatAvatar: () => this.refs.addChatAvatarPopup.toggleVisibility(),
             adminActions,
@@ -59,10 +60,11 @@ export default class ChatHeader extends Block<ChatHeaderProps> {
                     name: 'serach_user',
                     type: 'text',
                     value: '',
+                    autocomplete: 'off',
                     isTopLabelPosition: true,
                     onInputField: (e: Event) => debounce(this.onSearchUsers(e), 800),
                 },
-                onSend: () => this.onAddUserToChatPopupOpen(),
+                onSend: () => ChatController.addUsersToChat(),
             },
             removeUserPopup: {
                 ref: 'removeUserPopup',
@@ -108,18 +110,13 @@ export default class ChatHeader extends Block<ChatHeaderProps> {
         this.refs.removeUserPopup.show();
     }
 
-    onAddUserToChatPopupOpen() {
-        ChatController.addUsersToChat();
-        this.refs.addUserToChatPopup.show();
-    }
-
     async onSearchUsers(e: Event) {
         // Чтобы не происходил поиск при потере фокуса
         if (e.type === 'blur') {
             return;
         }
         const searchLogin = (e.target as HTMLInputElement)!.value;
-        const userList = await UserController.getFoundUsers(searchLogin);
+        const userList = await UserController.getFoundUsers(searchLogin, this.props.selectedChat.users);
         const popupProps = this.props.addUserToChatPopup;
 
         this.refs[popupProps.ref!]

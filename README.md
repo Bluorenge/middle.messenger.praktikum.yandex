@@ -21,7 +21,8 @@ messenger
 
 ## Задеплоенный проект
 
-[Ссылка](https://messenger-7tiw.onrender.com/messenger)
+[На render.com](https://messenger-7tiw.onrender.com/messenger)
+[На netlify](https://radiant-dragon-58e417.netlify.app/)
 
 ## Линтинг
 

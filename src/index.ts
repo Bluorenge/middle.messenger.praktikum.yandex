@@ -4,7 +4,6 @@ import Router from './utils/Router';
 import Block from './utils/Block';
 import { Pages } from './_models/pages';
 
-import PagesLinks from './pages/pages-links/pages-links';
 import Login from './pages/login/login';
 import Register from './pages/register/register';
 import Messenger from './pages/messenger/messenger';
@@ -19,8 +18,8 @@ components.forEach((item: any) => registerComponent(item.default));
 
 window.addEventListener('DOMContentLoaded', async () => {
     Router
-        .use('/', PagesLinks as typeof Block)
-        .use(Pages.Index, PagesLinks as typeof Block)
+        .setProtectedPaths([Pages.Login, Pages.Register])
+        .use('/', Login as typeof Block)
         .use(Pages.Login, Login as typeof Block)
         .use(Pages.Register, Register as typeof Block)
         .use(Pages.Messenger, Messenger as typeof Block)
@@ -31,12 +30,18 @@ window.addEventListener('DOMContentLoaded', async () => {
         .use(Pages.NotFound, ErrorPage as typeof Block, '404');
 
     try {
-        await AuthController.fetchUser();
+        const user: any = await AuthController.fetchUser();
+
+        if (user.reason) {
+            throw new Error(user.reason);
+        }
 
         Router.go('/messenger');
-    } catch (e) {
-        console.log('user don\'t exist', e);
-        Router.go('/login');
+    } catch (error) {
+        console.log('user don\'t exist', error);
+        if (!Router.protectedPaths.includes(window.location.pathname)) {
+            Router.go('/login');
+        }
     }
 
     Router.start();

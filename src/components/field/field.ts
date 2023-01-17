@@ -57,6 +57,10 @@ export default class Field extends Block<FieldProps> {
         this.setLabelVisibility(this.props.value);
     }
 
+    componentDidUpdate() {
+        this.setLabelVisibility(this.props.value);
+    }
+
     get initFieldTitleText(): string | null {
         return this._initFieldTitleText;
     }
