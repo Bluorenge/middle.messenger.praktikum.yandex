@@ -53,11 +53,17 @@ class Router {
     private currentRoute: Route | null = null;
     private history = window.history;
     private notFoundRedirect = '/not-found';
+    public protectedPaths: string[] = [];
 
     constructor(private readonly rootQuery: string) {}
 
     public setNotFoundRedirect(pathname: string) {
         this.notFoundRedirect = pathname;
+    }
+
+    public setProtectedPaths(pathsArr: string[]) {
+        this.protectedPaths = pathsArr;
+        return this;
     }
 
     public use(pathname: string, block: typeof Block, viewType = '') {

@@ -36,6 +36,7 @@ export class AuthController {
         } catch (error) {
             console.log(error);
         }
+        return response;
     }
 
     public async logout() {
@@ -68,9 +69,11 @@ export class AuthController {
             return;
         }
 
-        await this.fetchUser();
+        const user: any = await this.fetchUser();
 
-        router.go(Pages.Messenger);
+        if (!user.reason) {
+            router.go(Pages.Messenger);
+        }
     }
 }
 
