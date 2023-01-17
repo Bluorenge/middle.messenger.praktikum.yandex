@@ -34,7 +34,7 @@ export class AuthController {
             }
             store.set('currentUser', response);
         } catch (error) {
-            console.log('error: ', error);
+            console.log(error);
         }
     }
 
@@ -53,7 +53,7 @@ export class AuthController {
         try {
             response = await req();
         } catch (error) {
-            console.log('error: ', error);
+            console.log(error);
         } finally {
             store.set(`${propsName}.isLoading`, false);
         }

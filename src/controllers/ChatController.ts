@@ -16,17 +16,29 @@ export class ChatController {
     }
 
     public async fetchChats() {
-        const chats = await this.api.read();
+        let chats: any;
 
-        chats.map(async (chat: ChatData) => {
-            const token = await this.getToken(chat.id);
+        try {
+            chats = await this.api.read();
 
-            await MessagesController.connect(chat.id, token);
-        });
+            const reasonText = chats.reason;
 
-        delete store.getState().chatList;
-        this.trimTextAndSortChats(chats);
-        store.set('chatList', chats, StoreEvents.ChatListUpdated);
+            if (reasonText) {
+                throw new Error(reasonText);
+            }
+
+            chats.map(async (chat: ChatData) => {
+                const token = await this.getToken(chat.id);
+
+                await MessagesController.connect(chat.id, token);
+            });
+
+            delete store.getState().chatList;
+            this.trimTextAndSortChats(chats);
+            store.set('chatList', chats, StoreEvents.ChatListUpdated);
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     public async delete(id: number) {
@@ -37,18 +49,11 @@ export class ChatController {
     }
 
     public addUsersToChat() {
-        const selectChatId = store.getState().selectedChat.id;
-        const selectedUserId = store.getState().selectedUser.id;
-
-        this.api.addUsers(selectChatId, [selectedUserId]);
+        this.updateSelectedChatUser('addUsers');
     }
 
     public removeUserFromChat() {
-        const selectChatId = store.getState().selectedChat.id;
-        const selectedUserId = store.getState().selectedUser.id;
-
-        this.api.deleteUsers(selectChatId, [selectedUserId]);
-        this.fetchChats();
+        this.updateSelectedChatUser('deleteUsers');
     }
 
     public getToken(id: number) {
@@ -72,13 +77,6 @@ export class ChatController {
         store.set('selectedUser', selectedUser![0]);
     }
 
-    public async getChatUsers(idChat: number) {
-        const chatUsers = await this.api.getUsers({ id: idChat });
-        const currentUserId = store.getState().currentUser.id;
-        const chatUsersWithoutCurrentUser = chatUsers.filter(user => user.id !== currentUserId);
-        return chatUsersWithoutCurrentUser;
-    }
-
     public async addChatAvatar(id: number, avatarFormData: FormData) {
         avatarFormData.append('chatId', id.toString());
         const { avatar } = await this.api.addChatAvatar(avatarFormData);
@@ -99,6 +97,25 @@ export class ChatController {
 
         delete store.getState().chatList;
         store.set('chatList', foundChats, StoreEvents.ChatListUpdated);
+    }
+
+    private async updateSelectedChatUser(type: 'addUsers' | 'deleteUsers') {
+        const selectChatId = store.getState().selectedChat.id;
+        const selectedUserId = store.getState().selectedUser.id;
+
+        await this.api[type](selectChatId, [selectedUserId]);
+
+        const selectedChatUser = await this.getChatUsers(selectChatId);
+        delete store.getState().selectedChat.users;
+        store.set('selectedChat.users', selectedChatUser, StoreEvents.SelectedChatUpdated);
+    }
+
+    private async getChatUsers(idChat: number) {
+        const chatUsers = await this.api.getUsers({ id: idChat });
+        const currentUserId = store.getState().currentUser.id;
+        const chatUsersWithoutCurrentUser = chatUsers.filter(user => user.id !== currentUserId);
+
+        return chatUsersWithoutCurrentUser;
     }
 
     private trimTextAndSortChats(chats: ChatData[]) {
