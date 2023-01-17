@@ -4,7 +4,6 @@ import Router from './utils/Router';
 import Block from './utils/Block';
 import { Pages } from './_models/pages';
 
-import PagesLinks from './pages/pages-links/pages-links';
 import Login from './pages/login/login';
 import Register from './pages/register/register';
 import Messenger from './pages/messenger/messenger';
@@ -19,8 +18,7 @@ components.forEach((item: any) => registerComponent(item.default));
 
 window.addEventListener('DOMContentLoaded', async () => {
     Router
-        .use('/', PagesLinks as typeof Block)
-        .use(Pages.Index, PagesLinks as typeof Block)
+        .use('/', Login as typeof Block)
         .use(Pages.Login, Login as typeof Block)
         .use(Pages.Register, Register as typeof Block)
         .use(Pages.Messenger, Messenger as typeof Block)

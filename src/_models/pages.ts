@@ -1,5 +1,4 @@
 export enum Pages {
-    Index = '/index',
     Login = '/login',
     Register = '/register',
     Messenger = '/messenger',
