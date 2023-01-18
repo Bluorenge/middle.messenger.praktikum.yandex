@@ -1,5 +1,5 @@
 <div class="chat-footer">
-    <div class="chat-footer__actions-wrap">
+    <div class="chat-footer__actions-wrap hidden">
         {{#Button class="chat-footer__action-btn" onClick=onActionBtnClick}}
             <img src="{{attachIcon}}" alt="attach-icon">
         {{/Button}}
@@ -9,7 +9,7 @@
             actions=attachActions
             ref="actionPopup"
         }}}
-    </div>
+    </div
 
     <form class="chat-footer__message-form">
         <div class="chat-footer__field-wrap">
@@ -19,6 +19,7 @@
                 type="text"
                 class="field--message"
                 ref="message"
+                autocomplete="off"
             }}}
         </div>
 

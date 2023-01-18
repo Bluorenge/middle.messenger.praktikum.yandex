@@ -2,14 +2,6 @@ import Block from '../../utils/Block';
 import Validator, { ValidationType } from '../../utils/Validator';
 import template from './field.hbs';
 
-import { registerComponent } from '../../utils/hbsHelpers';
-// @ts-ignore
-import components from './*/*.ts';
-
-Object.entries(components).forEach(([key, value]: any) =>
-    registerComponent(value[key].default),
-);
-
 type FieldProps = {
     type: string;
     name: string;
@@ -19,8 +11,9 @@ type FieldProps = {
     isDisable?: boolean;
     validationType?: ValidationType;
     isTopLabelPosition: boolean;
-    class?: string;
     icon?: string;
+    class: string;
+    autocomplete: 'on' | 'off';
     onBlur?: (e: Event) => void;
     onInput?: (e: Event) => void;
     onChange?: (e: Event) => void;
@@ -28,10 +21,19 @@ type FieldProps = {
 };
 
 export default class Field extends Block<FieldProps> {
+    public static componentName = 'Field';
+
     private _initFieldTitleText: string | null = null;
 
     constructor(props: FieldProps) {
-        super(props);
+        const fieldProps = props;
+
+        fieldProps.class = `field__input ${fieldProps.class ? fieldProps.class : ''}`;
+        if (!fieldProps.autocomplete) {
+            fieldProps.autocomplete = 'on';
+        }
+
+        super(fieldProps);
 
         this._initFieldTitleText = this.getFieldTitleEl()!.textContent;
 
@@ -52,7 +54,11 @@ export default class Field extends Block<FieldProps> {
     }
 
     componentDidMount() {
-        this.setTopLabelPosition(this.props.value);
+        this.setLabelVisibility(this.props.value);
+    }
+
+    componentDidUpdate() {
+        this.setLabelVisibility(this.props.value);
     }
 
     get initFieldTitleText(): string | null {
@@ -74,7 +80,7 @@ export default class Field extends Block<FieldProps> {
         if (validationType) {
             this.checkValid(value);
         }
-        this.setTopLabelPosition(value);
+        this.setLabelVisibility(value);
 
         const onInputField = this.props.onInputField;
         if (onInputField) {
@@ -112,10 +118,15 @@ export default class Field extends Block<FieldProps> {
         return isValid;
     }
 
-    private setTopLabelPosition(value: string | undefined): void {
-        if (value && this.props.isTopLabelPosition) {
-            const FILLED_CLASS = 'field--filled';
-            this.getContent()?.classList[value === '' ? 'remove' : 'add'](FILLED_CLASS);
+    private setLabelVisibility(value: string | undefined): void {
+        const classListMethod = value ? 'add' : 'remove';
+        const FILLED_TOP_CLASS = 'field--filled-top';
+        const FILLED_CLASS = 'field--filled';
+
+        if (this.props.isTopLabelPosition) {
+            this.getContent()?.classList[classListMethod](FILLED_TOP_CLASS);
+        } else {
+            this.getContent()?.classList[classListMethod](FILLED_CLASS);
         }
     }
 }

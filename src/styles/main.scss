@@ -5,14 +5,14 @@
 @import "_common";
 
 @import "../components/field/field";
-@import "../components/field/input/input";
+@import "../components/input/input";
+@import "../components/avatar/avatar";
 @import "../components/error-message/error-message";
 @import "../components/button/button";
 @import "../components/popup/popup";
 @import "../components/action-popup/action-popup";
-@import "../components/found-users-list/found-users-list";
+@import "../components/users-list/users-list";
 
-@import "../pages/pages-links/pages-links";
 @import "../pages/login/login";
 @import "../pages/register/register";
 @import "../pages/messenger/messenger";

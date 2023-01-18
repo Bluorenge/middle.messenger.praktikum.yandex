@@ -28,16 +28,16 @@ class Route {
         private readonly type: string,
     ) {}
 
-    leave() {
+    public leave() {
         this.block?.dispatchComponentDidUnmount();
         this.block = null;
     }
 
-    match(pathname: string) {
+    public match(pathname: string) {
         return isEqual(pathname, this.pathname);
     }
 
-    render() {
+    public render() {
         if (!this.block) {
             this.block = new this.blockClass(this.type ? this.type : {});
 
@@ -53,11 +53,17 @@ class Router {
     private currentRoute: Route | null = null;
     private history = window.history;
     private notFoundRedirect = '/not-found';
+    public protectedPaths: string[] = [];
 
     constructor(private readonly rootQuery: string) {}
 
     public setNotFoundRedirect(pathname: string) {
         this.notFoundRedirect = pathname;
+    }
+
+    public setProtectedPaths(pathsArr: string[]) {
+        this.protectedPaths = pathsArr;
+        return this;
     }
 
     public use(pathname: string, block: typeof Block, viewType = '') {
@@ -119,7 +125,7 @@ export interface WithRouterProps {
 
 export function withRouter(Component: typeof Block) {
     return class extends Component {
-        public static componentName = Component.name;
+        public static componentName = Component.componentName;
 
         constructor(props: any) {
             super({ ...props, router: router });

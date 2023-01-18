@@ -8,6 +8,8 @@ export type ErrorMessageProps = {
 };
 
 export default class ErrorMessage extends Block<ErrorMessageProps> {
+    public static componentName = 'ErrorMessage';
+
     render() {
         return this.compile(template, this.props);
     }

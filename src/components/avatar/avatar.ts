@@ -3,15 +3,26 @@ import template from './avatar.hbs';
 import mockAvatarImg from '../../../static/img/svg/photo.svg';
 
 type AvatarProps = {
-    avatar: string | null;
+    avatarSrc: string | null;
     alt: string;
     class?: string;
     isMockedAvatar?: boolean;
+    events: {
+        click: () => void;
+    }
 };
 
 export default class Avatar extends Block<AvatarProps> {
-    constructor(props: any) {
-        super({ ...props, mockAvatarImg });
+    public static componentName = 'Avatar';
+
+    constructor({ onClick, ...props }: any) {
+        super({
+            ...props,
+            mockAvatarImg,
+            events: {
+                click: onClick,
+            },
+        });
     }
 
     render() {

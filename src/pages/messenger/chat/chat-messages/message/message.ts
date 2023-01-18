@@ -12,6 +12,8 @@ type MessageProps = {
 };
 
 export default class Message extends Block<MessageProps> {
+    public static componentName = 'Message';
+
     constructor({ time, ...props }: any) {
         super({
             time: dateFormater(time, 'message'),

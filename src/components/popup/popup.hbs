@@ -3,18 +3,21 @@
         <span class="popup__close"></span>
         <p class="popup__title">{{title}}</p>
         <form class="popup__form">
-            {{{Field
-                label=field.label
-                name=field.name
-                type=field.type
-                class=field.class
-                accept=field.accept
-                onInputField=field.onInputField
-                isTopLabelPosition=field.isTopLabelPosition
-            }}}
-            {{#ifEquals innerComponentName 'FoundUsersList'}}
+            {{#if field}}
+                {{{Field
+                    label=field.label
+                    name=field.name
+                    type=field.type
+                    class=field.class
+                    accept=field.accept
+                    autocomplete=field.autocomplete
+                    onInputField=field.onInputField
+                    isTopLabelPosition=field.isTopLabelPosition
+                }}}
+            {{/if}}
+            {{#ifEquals innerComponentName 'UsersList'}}
                 <div class="popup__inner-component-wrap">
-                    {{{FoundUsersList ref="FoundUsersList"}}}
+                    {{{UsersList ref="UsersList"}}}
                 </div>
             {{/ifEquals}}
             <div class="popup__form-btn-wrap">

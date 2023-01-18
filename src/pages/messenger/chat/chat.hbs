@@ -1,12 +1,8 @@
 <div class="chat">
     {{#if selectedChat}}
-        {{{ChatHeader
-            chatAvatar=selectedChat.avatar
-            chatTitle=selectedChat.title
-            selectedChatId=selectedChat.id
-        }}}
+        {{{ChatHeader selectedChat=selectedChat }}}
 
-        {{{ChatMessages currentUserId=currentUserId}}}
+        {{{ChatMessages currentUserId=currentUserId }}}
 
         {{{ChatFooter}}}
     {{else}}

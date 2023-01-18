@@ -34,8 +34,9 @@ export class AuthController {
             }
             store.set('currentUser', response);
         } catch (error) {
-            console.log('error: ', error);
+            console.log(error);
         }
+        return response;
     }
 
     public async logout() {
@@ -53,7 +54,7 @@ export class AuthController {
         try {
             response = await req();
         } catch (error) {
-            console.log('error: ', error);
+            console.log(error);
         } finally {
             store.set(`${propsName}.isLoading`, false);
         }
@@ -68,9 +69,11 @@ export class AuthController {
             return;
         }
 
-        await this.fetchUser();
+        const user: any = await this.fetchUser();
 
-        router.go(Pages.Messenger);
+        if (!user.reason) {
+            router.go(Pages.Messenger);
+        }
     }
 }
 

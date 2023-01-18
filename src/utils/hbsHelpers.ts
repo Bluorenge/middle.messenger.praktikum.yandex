@@ -1,4 +1,4 @@
-import Handlebars from 'handlebars/dist/handlebars.runtime';
+const Handlebars = require('handlebars/runtime');
 import { HelperOptions } from 'handlebars';
 import Block from './Block';
 import mockAvatarImg from '../../static/img/svg/photo.svg';
@@ -21,6 +21,9 @@ Handlebars.registerHelper(
 );
 
 export function registerComponent(Component: typeof Block) {
+    if (!Component || !Component.componentName) {
+        return;
+    }
     Handlebars.registerHelper(
         Component.componentName || Component.name,
         function (this: any, { hash, data, fn }: HelperOptions) {

@@ -4,7 +4,7 @@ import getFormData from '../../utils/getFormData';
 import AuthController from './../../controllers/AuthController';
 import { withStore } from './../../utils/Store';
 
-class Login extends Block {
+export class Login extends Block {
     constructor() {
         const loginProps = {
             fields: [

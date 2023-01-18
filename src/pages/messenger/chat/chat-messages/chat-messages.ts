@@ -5,11 +5,6 @@ import { Message } from './../../../../_models/chat';
 import { withStore } from '../../../../utils/Store';
 import { StoreEvents } from './../../../../_models/store';
 
-import { registerComponent } from '../../../../utils/hbsHelpers';
-// @ts-ignore
-import components from './*/*.ts';
-Object.entries(components).forEach(([key, value]: any) => registerComponent(value[key].default));
-
 type ChatMessagesProps = {
     messages?: Message[];
 };

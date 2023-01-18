@@ -1,4 +1,4 @@
-import EventBus from './EventBus';
+import { EventBus } from './EventBus';
 import { isEqual, set } from './common';
 import Block from './Block';
 import { StoreEvents, StoreData } from './../_models/store';
@@ -31,7 +31,7 @@ export function withStore(
         let state: any;
 
         return class extends Component {
-            public static componentName = Component.name || Component.componentName;
+            public static componentName = Component.componentName;
 
             constructor(props: any) {
                 state = mapStateToProps(store.getState());

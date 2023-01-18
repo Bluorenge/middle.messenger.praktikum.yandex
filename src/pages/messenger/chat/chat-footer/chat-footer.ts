@@ -18,6 +18,8 @@ type SendFormProps = {
 };
 
 export default class ChatFooter extends Block<SendFormProps> {
+    public static componentName = 'ChatFooter';
+
     constructor() {
         const sendFormProps = {
             attachIcon: clipIcon,

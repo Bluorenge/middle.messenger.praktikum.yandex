@@ -56,11 +56,16 @@
         }
     }
 
+    &--search &__input:focus ~ &__title,
+    &--search#{&}--filled &__title,
+    &--search#{&}--filled &__icon,
+    &--message &__input:focus ~ &__title,
+    &--message#{&}--filled &__title,
     &--file &__input {
         display: none;
     }
 
-    &--filled &__title,
+    &--filled-top &__title,
     &--top-title &__input:focus ~ &__title {
         top: -13px;
         font-size: 9px;
@@ -71,6 +76,7 @@
         background-color: $grey-lighter;
         border: none;
         font-size: 12px;
+        padding: 0 10px;
     }
 
     &--search &__title {
@@ -81,17 +87,12 @@
         left: 10px;
     }
 
-    &--message &__input:focus ~ &__title,
-    &--search &__input:focus ~ &__title {
-        display: none;
-    }
-
     &__title {
         z-index: 10;
         pointer-events: none;
         position: absolute;
         top: calc(50% - 9px);
-        left: 0;
+        left: 1px;
         color: $grey-dark;
         transition: all 0.2s ease-in-out;
     }

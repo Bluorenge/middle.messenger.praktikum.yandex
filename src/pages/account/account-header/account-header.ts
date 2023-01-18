@@ -2,6 +2,8 @@ import Block from '../../../utils/Block';
 import template from './account-header.hbs';
 
 export default class AccountHeader extends Block {
+    public static componentName = 'AccountHeader';
+
     constructor(props: TObj) {
         super({
             ...props,

@@ -6,11 +6,6 @@ import { StoreEvents } from '../../../_models/store';
 import { SelectedChat, ChatData } from './../../../_models/chat';
 import { isEqual } from '../../../utils/common';
 
-import { registerComponent } from '../../../utils/hbsHelpers';
-// @ts-ignore
-import components from './*/*.ts';
-Object.entries(components).forEach(([key, value]: any) => registerComponent(value[key].default));
-
 type ChatListProps = {
     currentUserLogin: string;
     selectedChat: SelectedChat;

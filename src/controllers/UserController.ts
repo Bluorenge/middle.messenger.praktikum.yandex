@@ -21,16 +21,22 @@ export class UserController {
         await this.requestWithCheckError(() => this.api.changePassword(data));
     }
 
-    getUser(id: number) {
+    public getUser(id: number) {
         return this.api.read(id);
     }
 
-    public getUsers(login: string) {
+    public async getFoundUsers(login: string, usersList?: any[]) {
         if (!login) {
             return null;
         }
 
-        return this.api.getFoundUsers(login);
+        let foundUsers = await this.api.getFoundUsers(login);
+        if (usersList) {
+            foundUsers = foundUsers.filter(x =>
+                !usersList.find(y => x.id === y.id),
+            );
+        }
+        return foundUsers;
     }
 
     private async requestWithCheckError(req: () => Promise<any>) {
@@ -40,11 +46,10 @@ export class UserController {
         try {
             response = await req();
         } catch (error) {
-            console.log('error: ', error);
+            console.log(error);
         }
 
         const reasonText = (response! as any).reason;
-        console.log("reasonText: ", reasonText);
 
         if (reasonText) {
             store.set('accountProps.error', {
